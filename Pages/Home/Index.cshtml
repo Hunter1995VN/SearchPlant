@@ -1,0 +1,187 @@
+﻿@page
+@model SearchPlant.Pages.Home.IndexModel
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+ 
+<div class="home-page">
+    <div class="container my-5">
+        <!-- Header chào mừng -->
+        <div class="home-header text-center mb-5">
+            <h1 class="home-title">Chào mừng đến với SearchPlant 🌿</h1>
+            <p class="lead text-muted">Khám phá thông tin chi tiết về các loại cây trồng, chu kỳ sinh trưởng, vùng phân bố và nhiều hơn nữa.</p>
+        </div>
+
+        <!--Slider-->
+        @if(Model.TopRatedPlants.Any())
+            {
+                 <div class="top-rated-section mb-5">
+                <h4 class="section-title">⭐ Các cây được đánh giá cao</h4>
+                <!-- Swiper -->
+                <div class="swiper top-rated-slider">
+                    <div class="swiper-wrapper">
+                        @foreach (var plant in Model.TopRatedPlants)
+                        {
+                            <div class="swiper-slide">
+                                <!-- Tái sử dụng giao diện thẻ cây -->
+                                <div class="plant-card h-100">
+                                    <img src="@(string.IsNullOrEmpty(plant.Imagepath) ? "/images/placeholder.png" : plant.Imagepath)" class="card-img-top plant-image" alt="@plant.Plantname" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">@plant.Plantname</h5>
+                                        @{
+                                            var hasRating = Model.PlantRatings.TryGetValue(plant.Plantid, out var ratingInfo);
+                                        }
+                                        @if(hasRating)
+                                        {
+                                            <div class="d-flex align-items-center my-2 star-rating-summary">
+                                                <div class="stars me-2">
+                                                    @for (int i = 1; i <= 5; i++) {
+                                                        <i class="bi @(i <= ratingInfo.Average ? "bi-star-fill" : (i - 0.5 <= ratingInfo.Average ? "bi-star-half" : "bi-star"))"></i>
+                                                    }
+                                                </div>
+                                                <span class="rating-text text-muted small">@ratingInfo.Average.ToString("F1")</span>
+                                            </div>
+                                        }
+                                        <a asp-page="/Detail/Index" asp-route-id="@plant.Plantid" class="btn btn-success btn-detail mt-auto">Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <!-- Thêm nút điều hướng -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+            }
+
+                    <!--End of Slider-->
+
+        <hr class="mb-5">
+ 
+        <!-- Danh sách cây trồng -->
+        <h4 class="section-title">🌿 Danh sách cây trồng</h4>
+        @if (Model.Plants.Count == 0)
+        {
+            <div class="text-center p-5 border rounded bg-light empty-state">
+                <i class="bi bi-tree empty-state-icon"></i>
+                <h4 class="mt-3">Không có cây nào trong hệ thống</h4>
+                <p class="text-muted">Hãy kiểm tra lại hoặc liên hệ quản trị viên.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var plant in Model.Plants)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="plant-card h-100">
+                            @if (!string.IsNullOrEmpty(plant.Imagepath))
+                            {
+                                <img src="@plant.Imagepath" class="card-img-top plant-image" alt="@plant.Plantname" />
+                            }
+                            else
+                            {
+                                <img src="/images/placeholder.png" class="card-img-top plant-image" alt="Placeholder" />
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@plant.Plantname</h5>
+                                <p class="card-subtitle text-muted fst-italic">Tên khoa học: @plant.Scientificname</p>
+
+                                 @{
+                                    var hasRating = Model.PlantRatings.TryGetValue(plant.Plantid, out var ratingInfo);
+                                }
+                                <div class="d-flex align-items-center my-2 star-rating-summary">
+                                    @if (hasRating)
+                                    {
+                                        <div class="stars me-2" style="color: #FFC107;">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                <i class="bi @(i <= ratingInfo.Average ? "bi-star-fill" : (i - 0.5 <= ratingInfo.Average ? "bi-star-half" : "bi-star"))"></i>
+                                            }
+                                        </div>
+                                        <span class="rating-text text-muted small">
+                                            @ratingInfo.Average.ToString("F1") (@ratingInfo.Count)
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="rating-text text-muted small fst-italic">Chưa có đánh giá</span>
+                                    }
+                                </div>
+                                @if (plant.Regions != null && plant.Regions.Any())
+                                {
+                                    <p class="card-text"><i class="bi bi-geo-alt me-2 text-success"></i>Vùng: @string.Join(", ", plant.Regions.Select(r => r.Regionname))</p>
+                                }
+                                @if (plant.Cycle != null)
+                                {
+                                    <p class="card-text"><i class="bi bi-arrow-repeat me-2 text-success"></i>Chu kỳ: @plant.Cycle.Cyclename</p>
+                                }
+                               
+                                <a asp-page="/Detail/Index" asp-route-id="@plant.Plantid" class="btn btn-success btn-detail mt-2">Xem chi tiết <i class="bi bi-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+ 
+            <!-- Phân trang -->
+            <nav aria-label="Pagination" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                        <a class="page-link" href="/Home/?page=@(Model.CurrentPage - 1)" aria-label="Previous">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="/Home/?page=@i">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link" href="/Home/?page=@(Model.CurrentPage + 1)" aria-label="Next">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        }
+    </div>
+</div>
+
+@section Scripts{
+    <!--JS + CSS Import for Swipper -->
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+            var swiper = new Swiper(".top-rated-slider", {
+                loop: true,
+                spaceBetween: 25,
+                grabCursor: true,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                // Responsive breakpoints
+                breakpoints: {
+                    // khi chiều rộng cửa sổ >= 576px
+                    576: {
+                        slidesPerView: 2,
+                    },
+                    // khi chiều rộng cửa sổ >= 768px
+                    768: {
+                        slidesPerView: 3,
+                    },
+                    // khi chiều rộng cửa sổ >= 1200px
+                    1200: {
+                        slidesPerView: 4,
+                    }
+                }
+            });
+        });
+    </script>
+}
+ 

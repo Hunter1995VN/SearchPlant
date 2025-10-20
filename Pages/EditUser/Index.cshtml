@@ -1,0 +1,175 @@
+﻿@page "{id:int}"
+@model SearchPlant.Pages.EditUser.IndexModel
+@{
+    ViewData["Title"] = "Chỉnh sửa người dùng";
+    Layout = "_AdminLayout";
+}
+
+<form method="post">
+    <!-- Page Header with Action Buttons -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-0">Chỉnh sửa: @Model.AppUser.Username</h4>
+            <p class="text-muted mb-0">Cập nhật thông tin chi tiết cho người dùng.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-page="/UserManager/Index" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>Quay lại
+            </a>
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-check me-2"></i>Lưu thay đổi
+            </button>
+        </div>
+    </div>
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    <input type="hidden" asp-for="AppUser.Userid" />
+
+    <div class="row">
+        <!-- Left Column: User Info -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4" style="border-radius: 1rem;">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-4">Thông tin tài khoản</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="AppUser.Username" class="form-label">Tên người dùng</label>
+                            <input asp-for="AppUser.Username" class="form-control" />
+                            <span asp-validation-for="AppUser.Username" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="AppUser.Email" class="form-label">Email</label>
+                            <input asp-for="AppUser.Email" class="form-control" />
+                            <span asp-validation-for="AppUser.Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="AppUser.Role" class="form-label">Vai trò</label>
+                        <select asp-for="AppUser.Role" class="form-select">
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                        <span asp-validation-for="AppUser.Role" class="text-danger"></span>
+                    </div>
+                    <div class="card shadow-sm border-0 mb-4" style="border-radius: 1rem;">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-4">Đổi mật khẩu</h5>
+                            <p class="text-muted small">Để trống các ô bên dưới nếu bạn không muốn thay đổi mật khẩu.
+                            </p>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="NewPassword" class="form-label"></label>
+                                    <input asp-for="NewPassword" class="form-control" type="password" />
+                                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label asp-for="ConfirmPassword" class="form-label"></label>
+                                    <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <!-- Right Column: Avatar and Status -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4" style="border-radius: 1rem;">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-4">Ảnh đại diện</h5>
+                    <!-- Thêm ID="avatarPreview" vào thẻ img -->
+                    <img id="avatarPreview" src="@(Model.AppUser.Avatarurl ?? "/images/avatar.png")"
+                        class="img-fluid rounded mb-3" alt="Avatar Preview"
+                        style="max-height: 200px; width: 100%; object-fit: cover;">
+                    <div class="mb-3">
+                        <label asp-for="AppUser.Avatarurl" class="form-label">Đường dẫn ảnh</label>
+                        <!-- Thêm ID="avatarUrlInput" vào thẻ input -->
+                        <input id="avatarUrlInput" asp-for="AppUser.Avatarurl" class="form-control"
+                            placeholder="https://example.com/image.png" />
+                        <!-- Thêm một span để hiển thị lỗi URL -->
+                        <span id="avatarUrlError" class="text-danger small mt-1"></span>
+                        <span asp-validation-for="AppUser.Avatarurl" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow-sm border-0" style="border-radius: 1rem;">
+                <div class="card-body p-4">
+                    <h5 class="card-title mb-4">Trạng thái</h5>
+                    <div class="mb-3">
+                        <label asp-for="AppUser.Status" class="form-label">Trạng thái tài khoản</label>
+                        <select asp-for="AppUser.Status" class="form-select">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <span asp-validation-for="AppUser.Status" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        // Đảm bảo script chỉ chạy sau khi toàn bộ trang đã được tải
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Lấy các phần tử từ DOM bằng ID
+            const avatarInput = document.getElementById('avatarUrlInput');
+            const avatarPreview = document.getElementById('avatarPreview');
+            const avatarError = document.getElementById('avatarUrlError');
+            const defaultAvatarUrl = '/images/avatar.png'; // Lưu URL ảnh mặc định
+
+            let IsHandlingError = false;
+            // 1. Tự động cập nhật ảnh xem trước khi người dùng nhập URL
+            function updateAvatar(url) {
+                // Nếu không có URL, dùng URL mặc định
+                const finalUrl = url ? url.trim() : defaultAvatarUrl;
+
+                // Nếu URL mới trùng với URL hiện tại thì không làm gì cả
+                if (avatarPreview.src === finalUrl) {
+                    return;
+                }
+
+                // Đặt lại cờ lỗi trước khi thử URL mới
+                isHandlingError = false;
+                avatarError.textContent = '';
+                avatarPreview.src = finalUrl;
+            }
+
+            // Sự kiện khi người dùng nhập liệu
+            avatarInput.addEventListener('input', function () {
+                updateAvatar(this.value);
+            });
+
+            // Sự kiện khi tải ảnh thất bại
+            avatarPreview.addEventListener('error', function () {
+                // Nếu chúng ta đang trong quá trình xử lý lỗi rồi thì thoát ra
+                // để tránh vòng lặp
+                if (isHandlingError) {
+                    return;
+                }
+
+                // Đánh dấu là chúng ta đang xử lý lỗi
+                isHandlingError = true;
+
+                // Hiển thị thông báo lỗi
+                avatarError.textContent = 'Đường dẫn ảnh không hợp lệ hoặc không thể tải.';
+
+                // Đặt lại ảnh về mặc định
+                this.src = defaultAvatarUrl;
+            });
+
+            // Kiểm tra ảnh ban đầu khi tải trang
+            // Nếu ảnh ban đầu đã bị lỗi, sự kiện 'error' sẽ được kích hoạt
+            // và đoạn code trên sẽ xử lý nó.
+        });
+    </script>
+}

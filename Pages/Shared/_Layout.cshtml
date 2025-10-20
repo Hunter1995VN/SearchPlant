@@ -1,0 +1,212 @@
+﻿@using System.Security.Claims
+@using Microsoft.EntityFrameworkCore
+@using SearchPlant.Models
+@inject SearchPlantContext _context
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SearchPlant</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SearchPlant.styles.css" asp-append-version="true" />
+</head>
+
+<body class="main-layout">
+    <header class="main-header">
+        <div class="main-header-container">
+            <!-- Nhóm bên trái: Logo và Menu -->
+            <div class="header-group-left d-flex align-items-center">
+                <!-- Logo -->
+                <div class="header-left">
+                    <a href="/" class="header-logo d-flex align-items-center">
+                        <i class="bi bi-flower1 logo-icon"></i>
+                        <span class="logo-text">SearchPlant</span>
+                    </a>
+                </div>
+
+                <!-- ===== MENU ĐIỀU HƯỚNG MỚI ===== -->
+                <nav class="main-nav d-none d-lg-flex">
+                    <ul class="nav-list">
+                        <li><a href="/" class="nav-link">Home</a></li>
+                        <li><a href="/About" class="nav-link">About Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Nhóm bên phải: Search và User -->
+            <div class="header-group-right d-flex align-items-center">
+                <!-- Search Box -->
+                <div class="header-center">
+                    <form method="get" asp-page="/Search/Index" class="search-box-new">
+                        <input type="text" name="query" value="@Context.Request.Query["query"]"
+                               class="form-control" placeholder="Search for plants..." />
+                        <button type="submit" class="btn-search-new">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+
+<!-- Favorites Button -->
+@if (User.Identity.IsAuthenticated)
+{
+    int initialFavoritesCount = 0;
+    var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (!string.IsNullOrEmpty(userIdString))
+    {
+        var userId = int.Parse(userIdString);
+        initialFavoritesCount = await _context.UserFavorites.CountAsync(f => f.Userid == userId);
+    }
+    <a asp-page="/Favorite/Index" class="favorites-button" data-bs-toggle="tooltip" title="Xem cây yêu thích">
+        <i class="bi bi-heart-fill"></i>
+        <span id="favorites-counter-badge" class="favorites-badge @(initialFavoritesCount == 0 ? "d-none" : "")">@initialFavoritesCount</span>
+    </a>
+}
+ 
+                <!-- User/Login Section -->
+                <div class="header-right">
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a href="/Login" class="btn btn-login-custom">
+                            <i class="bi bi-shield-lock"></i>
+                            <span>Đăng nhập</span>
+                        </a>
+                    }
+                    else
+                    {
+                        
+           
+
+
+
+                        <div class="user-profile dropdown">
+                            <button class="btn btn-profile dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <img src="@(User.FindFirst("AvatarUrl")?.Value ?? "/images/avatar.png")" alt="avatar" class="header-avatar">
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end mt-2">
+                                <li><h6 class="dropdown-header">Chào, @User.Identity.Name</h6></li>
+                                <li><a class="dropdown-item" href="/Profile"><i class="bi bi-person-circle me-2"></i> Thông tin cá nhân</a></li>
+                                @* Đã bỏ link Admin theo yêu cầu *@
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" asp-page="/Logout/Index" class="d-inline">
+                                        <button type="submit" class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i> Đăng xuất</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container main-content-area">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <!-- FOOTER MỚI ĐÃ ĐƯỢC ÁP DỤNG -->
+<footer class="footer_area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Main Widget -->
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="single-footer-widget">
+                    <div class="footer-logo mb-3 d-flex align-items-center">
+                         <i class="bi bi-flower1 logo-icon"></i>
+                         <span class="logo-text">SearchPlant</span>
+                    </div>
+                    <p>The leading plant information lookup platform, providing accurate and reliable data.</p>
+                    <div class="copywrite-text mb-5">
+                        <p class="mb-0">&copy; 2025 SearchPlant. All rights reserved.</p>
+                    </div>
+                    <div class="footer_social_area">
+                        <a href="#" data-bs-toggle="tooltip" title="Facebook"><i class="fa fa-facebook"></i></a>
+                        <a href="#" data-bs-toggle="tooltip" title="Pinterest"><i class="fa fa-pinterest"></i></a>
+                        <a href="#" data-bs-toggle="tooltip" title="Youtube"><i class="fa fa-youtube"></i></a>
+                        <a href="#" data-bs-toggle="tooltip" title="Twitter"><i class="fa fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- Links Widget -->
+            <div class="col-12 col-md-6 col-lg-8">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-sm-4 col-md-4">
+                        <div class="single-footer-widget">
+                            <h5 class="widget-title">About</h5>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">About Us</a></li>
+                                    <li><a href="#">Terms &amp; Conditions</a></li>
+                                    <li><a href="#">Policy</a></li>
+                                    <li><a href="#">Community</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4 col-md-4">
+                        <div class="single-footer-widget">
+                            <h5 class="widget-title">Support</h5>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">Help</a></li>
+                                    <li><a href="#">Technical Support</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-4 col-md-4">
+                        <div class="single-footer-widget">
+                            <h5 class="widget-title">Contact</h5>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="#">Call Center</a></li>
+                                    <li><a href="#">Email Us</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const counterBadge = document.getElementById('favorites-counter-badge');
+            if (counterBadge) {
+                // Lắng nghe sự kiện được bắn ra từ các trang khác
+                document.addEventListener('favoritesUpdated', function (event) {
+                    const newCount = event.detail.count;
+                    
+                    counterBadge.textContent = newCount;
+
+                    if (newCount > 0) {
+                        counterBadge.classList.remove('d-none');
+                    } else {
+                        counterBadge.classList.add('d-none');
+                    }
+                });
+            }
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

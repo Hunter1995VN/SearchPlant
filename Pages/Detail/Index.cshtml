@@ -1,0 +1,627 @@
+﻿@page "{id:int}"
+@model SearchPlant.Pages.Plants.DetailsModel
+@{
+    ViewData["Title"] = "Chi tiết cây trồng";
+    Layout = User.IsInRole("Admin") ? "_AdminLayout" : "_Layout";
+    var isUserAuthenticated = User.Identity.IsAuthenticated;
+}
+ 
+<div class="plant-detail-page">
+    <div class="container my-5">
+        @if (Model.Plant == null)
+        {
+            <div class="alert alert-warning">Không tìm thấy thông tin cây trồng bạn yêu cầu.</div>
+        }
+        else
+        {
+            <!-- TIÊU ĐỀ & TÓM TẮT -->
+            <div class="plant-header" data-bs-toggle="tooltip" data-bs-placement="top" title="@Model.Plant.Tooltiptext">
+                <h1 class="plant-title">@Model.Plant.Plantname</h1>
+                <p class="scientific-name mb-3">@Model.Plant.Scientificname</p>
+                <div class="d-flex align-items-center my-3">
+        <!-- Vùng hiển thị sao -->
+        <div id="plant-rating" 
+             class="star-rating" 
+             data-plant-id="@Model.Plant.Plantid" 
+             data-current-rating="@Model.CurrentUserRating"
+             data-user-authenticated="@User.Identity.IsAuthenticated.ToString().ToLower()">
+            
+            @for (int i = 1; i <= 5; i++)
+            {
+                // Logic hiển thị sao vàng, sao rưỡi, hoặc sao trống dựa trên điểm trung bình
+                string starClass = "bi-star";
+                if (i <= Model.AverageRating) {
+                    starClass = "bi-star-fill";
+                } else if (i - 0.5 <= Model.AverageRating) {
+                    starClass = "bi-star-half";
+                }
+                <i class="bi @starClass" data-value="@i"></i>
+            }
+        </div>
+        <!-- Vùng hiển thị text (điểm trung bình và số lượt) -->
+        <span id="rating-text" class="ms-2 text-muted">
+            @if (Model.TotalRatings > 0)
+            {
+                @($"{Model.AverageRating:F1} sao từ {Model.TotalRatings} đánh giá")
+            }
+            else
+            {
+                @("Chưa có đánh giá")
+            }
+        </span>
+
+         <!-- Icon trái tim ở góc -->
+  <div class="my-3"> <!-- Bọc trong một div để nó xuống dòng nếu không đủ chỗ -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        var btnClass = Model.IsFavoritedByUser ? "btn-success" : "btn-outline-success";
+        var iconClass = Model.IsFavoritedByUser ? "bi-heart-fill" : "bi-heart";
+        var btnText = Model.IsFavoritedByUser ? "Đã yêu thích" : "Thêm vào yêu thích";
+
+        <button id="favorite-toggle-btn" 
+                class="btn @btnClass d-flex align-items-center" 
+                data-plant-id="@Model.Plant.Plantid"
+                data-is-favorited="@Model.IsFavoritedByUser.ToString().ToLower()">
+            <i class="bi @iconClass me-2"></i>
+            <span id="favorite-btn-text">@btnText</span>
+        </button>
+    }
+    else
+    {
+        <a asp-page="/Login/Index" asp-route-returnUrl="@Url.Page("/Plants/Details", new { id = Model.Plant.Plantid })"
+           class="btn btn-outline-success d-flex align-items-center"
+           data-bs-toggle="tooltip" title="Đăng nhập để lưu cây này">
+            <i class="bi bi-heart me-2"></i>
+            <span>Thêm vào yêu thích</span>
+        </a>
+    }
+</div>
+    </div>
+                @if (!string.IsNullOrEmpty(Model.Plant.Tooltiptext))
+                {
+                    <p class="lead text-muted">@Model.Plant.Tooltiptext</p>
+                }
+            </div>
+ 
+            <div class="row">
+                <!-- CỘT BÊN TRÁI: ẢNH VÀ CÁC THÔNG TIN DẠNG TAG -->
+                <div class="col-lg-4">
+                    <div class="detail-card mb-4">
+                        <img src="@(string.IsNullOrEmpty(Model.Plant.Imagepath) ? "/images/placeholder.png" : Model.Plant.Imagepath)" alt="@Model.Plant.Plantname" class="img-fluid plant-image" />
+                    </div>
+                    @if (Model.Plant.Types.Any())
+                    {
+                        <div class="detail-card">
+                            <div class="card-header"><i class="bi bi-bookmarks-fill me-2"></i>Phân loại</div>
+                            <div class="card-body tag-container">
+                                @foreach (var item in Model.Plant.Types)
+                                {
+                                    <span class="info-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Typedescription">@item.Typename</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Plant.Properties.Any())
+                    {
+                        <div class="detail-card">
+                            <div class="card-header"><i class="bi bi-tags-fill me-2"></i>Đặc tính</div>
+                            <div class="card-body tag-container">
+                                @foreach (var item in Model.Plant.Properties)
+                                {
+                                    <span class="info-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Description">@item.Propertyname</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Plant.Regions.Any())
+                    {
+                        <div class="detail-card">
+                            <div class="card-header"><i class="bi bi-compass-fill me-2"></i>Môi trường sống</div>
+                            <div class="card-body tag-container">
+                                @foreach (var item in Model.Plant.Regions)
+                                {
+                                    <span class="info-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Regiondescription">@item.Regionname</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Plant.Soils.Any())
+                    {
+                        <div class="detail-card">
+                            <div class="card-header"><i class="bi bi-layers-fill me-2"></i>Loại đất phù hợp</div>
+                            <div class="card-body tag-container">
+                                @foreach (var item in Model.Plant.Soils)
+                                {
+                                    <span class="info-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Description">@item.Soilname</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+ 
+                <!-- CỘT BÊN PHẢI: MÔ TẢ VÀ THÔNG TIN CHI TIẾT -->
+                <div class="col-lg-8">
+                    @if (!string.IsNullOrEmpty(Model.Plant.Description))
+                    {
+                        <div class="detail-card">
+                            <div class="card-header"><i class="bi bi-info-circle-fill me-2"></i>Mô tả chi tiết</div>
+                            <div class="card-body">
+                                <div class="description-text">@Html.Raw(Model.Plant.Description.Replace("\n", "<br />"))</div>
+                            </div>
+                        </div>
+                    }
+                    <div class="detail-card">
+                        <div class="card-header"><i class="bi bi-thermometer-half me-2"></i>Điều kiện sinh trưởng</div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><strong>Độ pH đất:</strong> @(Model.Plant.Minph.HasValue ? $"{Model.Plant.Minph} - {Model.Plant.Maxph}" : "Chưa có thông tin")</li>
+                                <li class="list-group-item"><strong>Độ ẩm đất (%):</strong> @(Model.Plant.Minhumidity.HasValue ? $"{Model.Plant.Minhumidity} - {Model.Plant.Maxhumidity}" : "Chưa có thông tin")</li>
+                                <li class="list-group-item"><strong>Nhiệt độ (°C):</strong> @(Model.Plant.Mintemperature.HasValue ? $"{Model.Plant.Mintemperature} - {Model.Plant.Maxtemperature}" : "Chưa có thông tin")</li>
+                                <li class="list-group-item"><strong>Yêu cầu ánh sáng:</strong> @(string.IsNullOrEmpty(Model.Plant.Lighttype) ? "Chưa có thông tin" : Model.Plant.Lighttype)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="card-header"><i class="bi bi-heart-pulse-fill me-2"></i>Chăm sóc & Sức khỏe</div>
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">Phương pháp tưới</h6>
+                            <div class="tag-container mb-3">
+                                @if (Model.Plant.Waterings.Any())
+                                {
+                                    foreach (var item in Model.Plant.Waterings)
+                                    {
+                                        <span class="info-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="@item.Description">@item.Methodname</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="mb-0">Chưa có thông tin</p>
+                                }
+                            </div>
+                            <h6 class="card-subtitle mt-4 mb-2 text-muted">Phân bón phù hợp</h6>
+                            <div class="tag-container mb-3">
+                                @if (Model.Plant.Fertilizers.Any())
+                                {
+                                    foreach (var item in Model.Plant.Fertilizers)
+                                    {
+                                        var tooltipContent = $"Thành phần: {item.Composition}\nLưu ý: {item.Usagenote}";
+                                        <span class="info-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="@tooltipContent">@item.Fertilizername</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="mb-0">Chưa có thông tin</p>
+                                }
+                            </div>
+                            <h6 class="card-subtitle mt-4 mb-2 text-muted">Bệnh thường gặp</h6>
+                            <div class="tag-container">
+                                @if (Model.Plant.Diseases.Any())
+                                {
+                                    foreach (var item in Model.Plant.Diseases)
+                                    {
+                                        var tooltipContent = $"Triệu chứng: {item.Symptoms}\nNguyên nhân: {item.Cause}";
+                                        <span class="info-badge" data-bs-toggle="tooltip" data-bs-placement="top" title="@tooltipContent">@item.Diseasename</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="mb-0">Chưa có thông tin</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="card-header"><i class="bi bi-three-dots me-2"></i>Thông tin khác</div>
+                        <div class="card-body">
+                            <p data-bs-toggle="tooltip" data-bs-placement="top" title="@Model.Plant.Cycle.Description"><strong>Chu kỳ sinh trưởng:</strong> @(Model.Plant.Cycle?.Cyclename ?? "Chưa có thông tin")</p>
+                            <p><strong>Mùa vụ:</strong> @(Model.Plant.Seasons.Any() ? string.Join(", ", Model.Plant.Seasons.Select(s => s.Seasonname)) : "Chưa có thông tin")</p>
+                            <p><strong>Tình trạng bảo tồn:</strong> @(Model.Plant.Statuses.Any() ? string.Join(", ", Model.Plant.Statuses.Select(s => s.Statusname)) : "Chưa có thông tin")</p>
+                            <p class="text-muted small mt-3">Lần cuối cập nhật: @Model.Plant.Lastupdated?.ToString("dd/MM/yyyy")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ 
+            <hr class="my-5" />
+ 
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <section id="comments">
+                        @if (isUserAuthenticated)
+                        {
+                          <!-- Đã sửa asp-route-plantId thành asp-route-id để khớp với route template -->
+        <form method="post" asp-page-handler="NewComment" asp-route-plantId="@Model.Plant.Plantid" id="comment-form">
+                                @Html.AntiForgeryToken()
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h3 class="mb-0">Thảo luận</h3>
+                                    <button type="submit" class="btn btn-success">Gửi bình luận</button>
+                                </div>
+                                <fieldset>
+                                    <div class="row">
+                                        <div class="col-auto d-none d-sm-block">
+                                            <img class="img-fluid rounded-circle" style="width: 64px; height: 64px;" src=@Model.CurrentUserAvatarUrl alt="User Avatar">
+                                        </div>
+                                        <div class="form-group col">
+                                            <textarea class="form-control" asp-for="NewCommentContent" placeholder="Viết bình luận của bạn..." required rows="4"></textarea>
+                                            <span asp-validation-for="NewCommentContent" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info text-center">
+                                Vui lòng <a asp-page="/Account/Login" asp-route-returnUrl="@Url.Page("/Plants/Details", new { id = Model.Plant.Plantid })">đăng nhập</a> để tham gia thảo luận.
+                            </div>
+                        }
+ 
+                        <!-- Thêm id="comment-count" để cập nhật động số lượng bình luận -->
+                        <h4 class="mt-5 mb-4" id="comment-count">@Model.Comments.Count bình luận</h4>
+                        <div id="comment-list-container">
+                        @if (Model.Comments != null && Model.Comments.Any())
+                        {
+                            foreach (var comment in Model.Comments)
+                            {
+                                <partial name="_CommentItem" model="comment" />
+                            }
+                        }
+                        </div>
+                       @if (Model.Comments == null || !Model.Comments.Any())
+{
+    <p id="no-comments-message">Chưa có bình luận nào. Hãy là người đầu tiên!</p>
+}
+                    </section>
+                </div>
+            </div>
+ 
+            <div class="mt-4">
+                <a href="@Model.ReturnUrl" class="btn btn-outline-success">
+                    <i class="bi bi-arrow-left"></i> Quay lại
+                </a>
+            </div>
+        }
+    </div>
+</div>
+ 
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+ 
+     @if (User?.Identity?.IsAuthenticated == true)
+    {
+        <script>
+            $(document).ready(function () {
+                var token = $('input[name="__RequestVerificationToken"]').val();
+ 
+                // Xử lý nút reaction (giữ nguyên)
+                $('#comments').on('click', '.reaction-button', function (e) {
+                    e.preventDefault();
+                    var button = $(this);
+                    var commentId = button.data('comment-id');
+                    var reactionType = button.data('reaction-type');
+                    $.ajax({
+                        type: "POST",
+                        url: "?handler=Reaction&id=@Model.Plant.Plantid",
+                        headers: { "XSRF-TOKEN": token },
+                        data: { commentId: commentId, reactionType: reactionType },
+                        success: function (response) {
+                            if (response.success) {
+                                $('#likes-count-' + commentId).text(response.likes);
+                                $('#dislikes-count-' + commentId).text(response.dislikes);
+                            }
+                        }
+                        //... error handling
+                    });
+                });
+ 
+                // Xử lý xóa bình luận (giữ nguyên)
+                // Xử lý xóa bình luận (PHIÊN BẢN ĐÃ SỬA)
+$('#comments').on('click', '.delete-comment-btn', function (e) {
+    e.preventDefault();
+    if (!confirm("Bạn có chắc chắn muốn xóa bình luận này không? Các bình luận trả lời cũng sẽ bị xóa.")) { return; }
+    
+    var button = $(this);
+    var commentId = button.data('comment-id');
+
+    $.ajax({
+        type: "POST",
+        url: "?handler=DeleteComment",
+        headers: { "XSRF-TOKEN": token },
+        data: { commentId: commentId },
+        success: function (response) {
+            if (response.success) {
+                var commentElement = $('#comment-' + commentId);
+
+                // === BẮT ĐẦU CODE MỚI ĐỂ CẬP NHẬT SỐ LƯỢNG ===
+
+                // 1. Đếm số lượng bình luận trả lời bên trong bình luận sắp bị xóa
+                // Giả định mỗi bình luận con cũng là một div có id bắt đầu bằng "comment-"
+                var repliesCount = commentElement.find('.replies > [id^="comment-"]').length;
+                
+                // 2. Tổng số cần trừ = 1 (bình luận cha) + số lượng trả lời
+                var totalToDelete = 1 + repliesCount;
+
+                // 3. Lấy và cập nhật số lượng tổng
+                var countElement = $('#comment-count');
+                // Dùng parseInt để lấy số từ chuỗi "15 bình luận"
+                var currentCount = parseInt(countElement.text()) || 0;
+                var newCount = Math.max(0, currentCount - totalToDelete); // Đảm bảo không bị số âm
+                
+                countElement.text(newCount + " bình luận");
+
+                // 4. Hiển thị lại thông báo nếu không còn bình luận nào
+                if (newCount === 0) {
+                    $('#no-comments-message').show();
+                }
+
+                // === KẾT THÚC CODE MỚI ===
+
+                // Làm mờ và xóa bình luận khỏi giao diện
+                commentElement.fadeOut(500, function () {
+                    $(this).remove();
+                });
+            } else {
+                alert(response.message || "Không thể xóa bình luận.");
+            }
+        },
+        error: function (xhr) {
+            // ... error handling của bạn ...
+        }
+    });
+});
+
+                // Xử lý gửi bình luận mới (giữ nguyên)
+                $('#comment-form').on('submit', function (e) {
+                    e.preventDefault(); 
+                    var form = $(this);
+                    var content = $('#NewCommentContent').val();
+                    if (!content.trim()) {
+                        alert("Nội dung bình luận không được để trống.");
+                        return;
+                    }
+                    $.ajax({
+                        type: "POST",
+                        url: form.attr('action'),
+                        headers: { "XSRF-TOKEN": token },
+                        data: { NewCommentContent: content },
+                        success: function (response) {
+                            if (response.success && response.html) {
+                                $(response.html).hide().prependTo('#comment-list-container').fadeIn(500);
+                                $('#NewCommentContent').val('');
+                                var countElement = $('#comment-count');
+                                var currentCount = parseInt(countElement.text()) || 0;
+                                countElement.text((currentCount + 1) + " bình luận");
+                                $('#no-comments-message').hide();
+                            } else {
+                                alert(response.message || "Đã có lỗi xảy ra. Không thể gửi bình luận.");
+                            }
+                        },
+                        error: function () {
+                            alert("Đã có lỗi kết nối. Vui lòng thử lại.");
+                        }
+                    });
+                });
+
+                // === BẮT ĐẦU CODE MỚI CHO TÍNH NĂNG REPLY ===
+                
+                // 1. Xử lý khi nhấn nút "Trả lời"
+                $('#comments').on('click', '.reply-button', function (e) {
+                    e.preventDefault();
+                    var button = $(this);
+                    var commentId = button.data('comment-id');
+                    var commentElement = $('#comment-' + commentId);
+
+                    $('.reply-form-container').remove();
+
+                    var replyFormHtml = `
+                        <div class="reply-form-container mt-3" style="margin-left: 78px;">
+                            <form class="reply-form" data-parent-id="${commentId}">
+                                <div class="form-group">
+                                    <textarea class="form-control" name="NewCommentContent" placeholder="Viết câu trả lời của bạn..." required rows="3"></textarea>
+                                </div>
+                                <div class="mt-2 text-end">
+                                    <button type="button" class="btn btn-sm btn-secondary cancel-reply-btn">Hủy</button>
+                                    <button type="submit" class="btn btn-sm btn-success">Gửi trả lời</button>
+                                </div>
+                            </form>
+                        </div>
+                    `;
+                    commentElement.find('.comment-actions').first().after(replyFormHtml);
+                    commentElement.find('textarea').focus();
+                });
+
+                // 2. Xử lý khi nhấn nút "Hủy" trên form trả lời
+                $('#comments').on('click', '.cancel-reply-btn', function () {
+                    $(this).closest('.reply-form-container').remove();
+                });
+
+                // 3. Xử lý khi GỬI form trả lời
+                $('#comments').on('submit', '.reply-form', function (e) {
+                    e.preventDefault();
+                    var form = $(this);
+                    var parentId = form.data('parent-id');
+                    var content = form.find('textarea[name="NewCommentContent"]').val();
+                    
+                    if (!content.trim()) {
+                        alert("Nội dung trả lời không được để trống.");
+                        return;
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "?handler=NewComment&plantId=@Model.Plant.Plantid",
+                        headers: { "XSRF-TOKEN": token },
+                        data: { 
+                            NewCommentContent: content,
+                            parentId: parentId 
+                        },
+                        success: function (response) {
+                            if (response.success && response.html) {
+                                var repliesContainer = $('#comment-' + parentId).find('.replies').first();
+                                if (repliesContainer.length === 0) {
+                                    $('#comment-' + parentId).children('.flex-grow-1').append('<div class="replies mt-3"></div>');
+                                    repliesContainer = $('#comment-' + parentId).find('.replies').first();
+                                }
+                                $(response.html).hide().appendTo(repliesContainer).fadeIn(500);
+                                form.closest('.reply-form-container').remove();
+                                var countElement = $('#comment-count');
+                                var currentCount = parseInt(countElement.text()) || 0;
+                                countElement.text((currentCount + 1) + " bình luận");
+                            } else {
+                                alert(response.message || "Không thể gửi trả lời.");
+                            }
+                        },
+                        error: function () {
+                            alert("Đã có lỗi kết nối khi gửi trả lời.");
+                        }
+                    });
+                });
+                      var ratingContainer = $('#plant-rating');
+                if (ratingContainer.data('user-authenticated')) {
+                    var stars = ratingContainer.find('i');
+                    var initialUserRating = ratingContainer.data('current-rating');
+
+                    // Hàm cập nhật trạng thái các ngôi sao (tô màu vàng cho đánh giá của người dùng)
+                    function updateUserStars(rating) {
+                        stars.each(function() {
+                            var starValue = $(this).data('value');
+                            $(this).removeClass('bi-star-fill bi-star-half bi-star') // Reset classes
+                                   .addClass(starValue <= rating ? 'bi-star-fill' : 'bi-star');
+                        });
+                    }
+
+                    // Sự kiện khi di chuột qua các ngôi sao để tạo hiệu ứng
+                    stars.on('mouseover', function() {
+                        updateUserStars($(this).data('value'));
+                    });
+
+                    // Sự kiện khi di chuột ra khỏi, trả về trạng thái đã đánh giá
+                    ratingContainer.on('mouseleave', function() {
+                        updateUserStars(initialUserRating);
+                    });
+
+                    // Sự kiện khi nhấp chuột để gửi đánh giá
+                    stars.on('click', function() {
+                        var ratingValue = $(this).data('value');
+                        var plantId = ratingContainer.data('plant-id');
+                        var newRatingValue;
+                        if (ratingValue === initialUserRating) {
+        // Nếu click lại -> HỦY đánh giá, đặt giá trị về 0
+        newRatingValue = 0; 
+    } else {
+        // Nếu chọn sao khác -> ĐẶT đánh giá mới
+        newRatingValue = ratingValue;
+    }
+                        // Cập nhật trạng thái "đã chọn" ngay lập tức
+                        initialUserRating = newRatingValue;
+                        ratingContainer.data('current-rating', newRatingValue);
+                        updateUserStars(newRatingValue);
+
+                        // Gửi yêu cầu AJAX lên server
+                        $.ajax({
+                            type: "POST",
+                            url: `?handler=RatePlant`,
+                            headers: { "XSRF-TOKEN": token },
+                            data: {
+                                plantId: plantId,
+                                ratingValue: newRatingValue
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    // Cập nhật lại text hiển thị điểm trung bình và số lượt
+                                    $('#rating-text').text(`${response.averageRating} sao từ ${response.totalRatings} đánh giá`);
+                                    // Bạn có thể thêm một thông báo toast ở đây để trải nghiệm tốt hơn
+                                    // Ví dụ: toastr.success('Cảm ơn bạn đã đánh giá!');
+                                } else {
+                                    alert(response.message || "Đã có lỗi xảy ra.");
+                                    updateUserStars(ratingContainer.data('current-rating')); // Trả lại sao cũ nếu lỗi
+                                }
+                            },
+                            error: function(xhr) {
+                                alert(xhr.status === 401 ? "Vui lòng đăng nhập để đánh giá." : "Lỗi kết nối. Không thể gửi đánh giá.");
+                                updateUserStars(ratingContainer.data('current-rating'));
+                            }
+                        });
+                    });
+                    
+                    // Cập nhật trạng thái sao của người dùng lúc ban đầu tải trang
+                    updateUserStars(initialUserRating);
+                }
+                // === KẾT THÚC CODE MỚI CHO TÍNH NĂNG RATING ===
+   $('#favorite-toggle-btn').on('click', function() {
+                    var button = $(this);
+                    var plantId = button.data('plant-id');
+                    var isFavorited = button.data('is-favorited') === true;
+
+                    var url = `/api/Favorites${isFavorited ? `/${plantId}` : ''}`;
+                    var method = isFavorited ? 'DELETE' : 'POST';
+
+                    var ajaxData = (method === 'POST') ? JSON.stringify({ plantId: parseInt(plantId) }) : null;
+                    var contentType = (method === 'POST') ? 'application/json' : 'application/x-www-form-urlencoded';
+
+                    $.ajax({
+                        type: method,
+                        url: url,
+                        headers: {
+                            // Dùng token đã lấy ở trên cho nhất quán
+                            "RequestVerificationToken": token 
+                        },
+                        data: ajaxData,
+                        contentType: contentType,
+                        success: function(response) {
+                            // Gọi hàm cập nhật giao diện với trạng thái MỚI
+                            updateFavoriteButton(button, !isFavorited);
+                        },
+                        error: function(xhr) {
+                            alert('Đã xảy ra lỗi. Vui lòng thử lại. Mã lỗi: ' + xhr.status);
+                            console.error("Lỗi khi yêu thích:", xhr.responseText);
+                        }
+                    });
+                });
+
+                // HÀM NÀY VỪA CẬP NHẬT NÚT, VỪA "BẮN" SỰ KIỆN LÊN HEADER
+                function updateFavoriteButton(buttonElement, newIsFavoritedState) {
+                    // --- Phần 1: Cập nhật giao diện của chính cái nút vừa click ---
+                    var btnText = buttonElement.find('#favorite-btn-text');
+                    var btnIcon = buttonElement.find('i');
+                    
+                    buttonElement.data('is-favorited', newIsFavoritedState);
+
+                    if (newIsFavoritedState) {
+                        buttonElement.removeClass('btn-outline-success').addClass('btn-success');
+                        btnIcon.removeClass('bi-heart').addClass('bi-heart-fill');
+                        btnText.text('Đã yêu thích');
+                    } else {
+                        buttonElement.removeClass('btn-success').addClass('btn-outline-success');
+                        btnIcon.removeClass('bi-heart-fill').addClass('bi-heart');
+                        btnText.text('Thêm vào yêu thích');
+                    }
+
+                    // --- Phần 2: Gửi thông báo lên cho bộ đếm ở header ---
+                    const counterBadge = document.getElementById('favorites-counter-badge');
+                    if (counterBadge) { // Chỉ thực hiện nếu tìm thấy bộ đếm
+                        let currentCount = parseInt(counterBadge.textContent) || 0;
+                        const newCount = newIsFavoritedState ? currentCount + 1 : Math.max(0, currentCount - 1);
+
+                        // Tạo và bắn ra sự kiện tùy chỉnh
+                        const updateEvent = new CustomEvent('favoritesUpdated', { 
+                            detail: { 
+                                count: newCount 
+                            } 
+                        });
+                        document.dispatchEvent(updateEvent);
+                    }
+                }
+            });
+        </script>
+        
+    }
+    
+}

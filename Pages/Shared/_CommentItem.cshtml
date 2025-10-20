@@ -1,0 +1,47 @@
+@using SearchPlant.ViewModels
+@model CommentViewModel
+
+<div class="d-flex mt-4" id="comment-@Model.Id">
+    <div class="flex-shrink-0 me-3">
+        <img class="rounded-circle" src="@(Model.AvatarUrl ?? "https://bootdey.com/img/Content/avatar/avatar6.png")"
+            alt="User Avatar" style="width: 64px; height: 64px;">
+    </div>
+    <div class="flex-grow-1">
+        <div class="d-flex justify-content-between">
+            <h5 class="mt-0 mb-1">@Model.Username</h5>
+            <small class="text-muted">@Model.CreatedAtFormatted</small>
+        </div>
+        <p class="mb-2">@Model.Content</p>
+
+        <div class="comment-actions small">
+            <a href="#" class="text-decoration-none me-3 reaction-button" data-comment-id="@Model.Id"
+                data-reaction-type="1">
+                <i class="bi bi-hand-thumbs-up"></i> Like (<span id="likes-count-@Model.Id">@Model.Likes</span>)
+            </a>
+            <a href="#" class="text-decoration-none me-3 reaction-button" data-comment-id="@Model.Id"
+                data-reaction-type="-1">
+                <i class="bi bi-hand-thumbs-down"></i> Dislike (<span
+                    id="dislikes-count-@Model.Id">@Model.Dislikes</span>)
+            </a>
+            <a href="#" class="text-decoration-none reply-button" data-comment-id="@Model.Id">
+                <i class="bi bi-reply"></i> Trả lời
+            </a>
+            @if (Model.CanDelete)
+            {
+                <a href="#!" class="link-danger ms-3 delete-comment-btn" data-comment-id="@Model.Id">
+                    <i class="bi bi-trash"></i> Xóa
+                </a>
+            }
+        </div>
+
+        @if (Model.Replies != null && Model.Replies.Any())
+        {
+            <div class="replies mt-3">
+                @foreach (var reply in Model.Replies)
+                {
+                    <partial name="_CommentItem" model="reply" />
+                }
+            </div>
+        }
+    </div>
+</div>

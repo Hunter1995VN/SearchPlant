@@ -1,0 +1,3886 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.img-fluid {
+    width: 400px;
+    height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+/*--------------------------------------------------------------------------*/
+/* Admin-Layout */
+/*---------------------------------------------------------------------------*/
+.admin-th {
+    background: linear-gradient(135deg, #f8f8f8 0%, #e8f5e9 70%, #c8e6c9 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+ 
+/* Sidebar */
+.admin-sidebar {
+    background: linear-gradient(180deg, #a8e6cf 0%, #c8e6c9 50%, #dcedc8 100%);
+    min-width: 240px;
+    max-width: 260px;
+    padding: 2.5rem 1.2rem 1.5rem 1.2rem;
+    box-shadow: 4px 0 20px rgba(76, 175, 80, 0.12);
+    border-radius: 0 28px 28px 0;
+    color: #2e7d32;
+    position: sticky;
+    top: 0;
+    height: auto;
+    transition: all 0.3s ease;
+}
+ 
+.admin-sidebar h4 {
+    font-weight: 800;
+    color: #2e7d32;
+    margin-bottom: 2.5rem;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+}
+ 
+.admin-sidebar .nav-link {
+    color: #2e7d32;
+    padding: 0.9rem 1.2rem;
+    margin-bottom: 6px;
+    border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+}
+ 
+.admin-sidebar .nav-link i {
+    font-size: 1.3em;
+    opacity: 0.9;
+    transition: all 0.2s ease;
+}
+ 
+.admin-sidebar .nav-link.active,
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link:focus {
+    background: linear-gradient(90deg, #4caf50 0%, #66bb6a 100%);
+    color: #fff;
+    box-shadow: 0 6px 12px rgba(76, 175, 80, 0.15);
+    transform: translateX(5px);
+}
+ 
+.admin-sidebar .nav-link.active i,
+.admin-sidebar .nav-link:hover i,
+.admin-sidebar .nav-link:focus i {
+    opacity: 1;
+    transform: scale(1.1);
+}
+ 
+.admin-sidebar .nav-link.text-danger {
+    color: #d64545 !important;
+}
+ 
+.admin-sidebar .nav-link.text-danger:hover {
+    background: linear-gradient(90deg, #fbeaea 0%, #ef5350 90%);
+    color: #fff !important;
+    box-shadow: 0 6px 12px rgba(239, 83, 80, 0.15);
+}
+ 
+.admin-sidebar form {
+    margin-top: 1.5rem;
+    padding: 0 0.5rem;
+}
+ 
+/* Header/Navbar */
+.admin-header-th {
+    width: 100%;
+    background: linear-gradient(90deg, #ffffff 70%, #e8f5e9 100%);
+    border-bottom: 2px solid #d3e0d3;
+    box-shadow: 0 4px 20px rgba(76, 175, 80, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+ 
+.admin-navbar-new {
+    min-height: 80px;
+    padding: 1rem 2rem;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+ 
+.admin-navbar-new .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+}
+ 
+.admin-navbar-new .navbar-brand i {
+    font-size: 2rem;
+    color: #4caf50;
+    transition: all 0.3s ease;
+}
+ 
+.admin-navbar-new .navbar-brand span {
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: #2e7d32;
+    transition: all 0.3s ease;
+}
+ 
+.admin-navbar-new .navbar-brand:hover i,
+.admin-navbar-new .navbar-brand:hover span {
+    color: #388e3c;
+    transform: scale(1.05);
+}
+ 
+/* Search box nổi bật */
+.search-box-new {
+    background: #ffffff;
+    padding: 0.3rem 1.2rem;
+    border-radius: 40px;
+    box-shadow: 0 4px 12px rgba(168, 230, 207, 0.2);
+    min-width: 300px;
+    max-width: 400px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #d3e0d3;
+}
+ 
+.search-box-new .form-control {
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+    color: #388e3c;
+    box-shadow: none;
+    height: 100%;
+    padding-left: 1rem;
+}
+ 
+.search-box-new .form-control:focus {
+    box-shadow: none;
+    outline: none;
+}
+ 
+.btn-search-new {
+    background: var(--gradient-green);
+    color: #fff;
+    border-radius: 50%;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
+.btn-search-new:hover {
+    background: linear-gradient(135deg, #388e3c, #66bb6a);
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4);
+}
+ 
+.btn-search-new:active {
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+    transform: scale(0.95);
+}
+ 
+/* Profile + thông báo */
+.admin-header-right {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+}
+ 
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: #388e3c;
+    position: relative;
+    padding: 0.3rem 0.6rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    font-size: 1.3rem;
+}
+ 
+.btn-icon:hover {
+    background: rgba(168, 230, 207, 0.3);
+    color: #4caf50;
+    transform: rotate(10deg);
+}
+ 
+.btn-icon .badge {
+    width: 10px;
+    height: 10px;
+    min-width: 10px;
+    min-height: 10px;
+    background: #ef5350;
+    border: 2px solid #fff;
+}
+ 
+.admin-profile-new {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+ 
+.admin-profile-new .admin-avatar {
+    border: 3px solid #a8e6cf;
+    box-shadow: 0 4px 12px rgba(168, 230, 207, 0.4);
+    width: 46px;
+    height: 46px;
+    transition: all 0.3s ease;
+}
+ 
+.admin-profile-new .admin-avatar:hover {
+    border-color: #4caf50;
+    transform: scale(1.1);
+}
+ 
+.admin-profile-new span {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2e7d32;
+    transition: all 0.3s ease;
+}
+ 
+.admin-profile-new .dropdown-toggle {
+    background: transparent;
+    border: none;
+    color: #388e3c;
+    display: flex;
+    align-items: center;
+    font-size: 1.15rem;
+    padding: 0.2rem;
+    transition: all 0.3s ease;
+}
+ 
+.admin-profile-new .dropdown-toggle:hover {
+    color: #4caf50;
+}
+ 
+.dropdown-menu {
+    font-size: 1.05rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.1);
+    border: 1px solid #d3e0d3;
+    padding: 0.5rem 0;
+}
+ 
+.dropdown-item {
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.6rem 1.2rem;
+    color: #2e7d32;
+}
+ 
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background: #e8f5e9;
+    color: #388e3c;
+}
+ 
+.dropdown-item:active {
+    background: #a8e6cf;
+    color: #fff;
+}
+ 
+.dropdown-item.text-danger {
+    color: #d64545;
+}
+ 
+.dropdown-item.text-danger:hover {
+    background: #fbeaea;
+    color: #ef5350;
+}
+ 
+/* Dashboard Card */
+.card {
+    border-radius: 18px;
+    border: none;
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.08);
+    transition: all 0.3s ease;
+    background: #fff;
+}
+ 
+.card:hover {
+    box-shadow: 0 10px 30px rgba(76, 175, 80, 0.15);
+    transform: translateY(-4px);
+}
+ 
+.card-title {
+    font-weight: 700;
+    color: #388e3c;
+    margin-bottom: 0.8rem;
+    font-size: 1.25rem;
+}
+ 
+.card-text.display-6 {
+    color: #4caf50;
+    font-weight: 800;
+    font-size: 1.8rem;
+}
+ 
+.btn-outline-success,
+.btn-outline-primary {
+    border-radius: 14px;
+    padding: 0.6rem 1.6rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(168, 230, 207, 0.3);
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+ 
+.btn-outline-success:hover {
+    background: linear-gradient(90deg, #a8e6cf 0%, #4caf50 100%);
+    color: #fff;
+    border-color: #4caf50;
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.4);
+}
+ 
+.btn-outline-primary:hover {
+    background: linear-gradient(90deg, #8bc34a 0%, #388e3c 100%);
+    color: #fff;
+    border-color: #388e3c;
+    box-shadow: 0 4px 16px rgba(56, 142, 60, 0.4);
+}
+ 
+.mb-4 {
+    margin-bottom: 1.8rem !important;
+}
+ 
+h2 {
+    color: #2e7d32;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 1.7rem;
+    text-shadow: 0 1px 2px rgba(46, 125, 50, 0.1);
+}
+ 
+.text-muted {
+    color: #789262 !important;
+    font-size: 1.05rem;
+}
+ 
+/* Responsive */
+@media (max-width: 900px) {
+    .admin-sidebar {
+        min-width: 60px;
+        padding: 1.5rem 0.3rem;
+        transition: all 0.3s ease;
+    }
+ 
+    .admin-sidebar h4 {
+        font-size: 1.1rem;
+        margin-bottom: 1.2rem;
+        display: none;
+    }
+ 
+    .admin-sidebar .nav-link {
+        font-size: 0.95rem;
+        padding: 0.7rem 0.8rem;
+        justify-content: center;
+    }
+ 
+    .admin-sidebar .nav-link span {
+        display: none;
+    }
+ 
+    .admin-sidebar .nav-link i {
+        margin: 0;
+    }
+ 
+    .container-fluid {
+        padding: 1.2rem 0.6rem;
+    }
+ 
+    .admin-header-th .admin-navbar-new {
+        flex-direction: column;
+        gap: 1.2rem;
+        padding: 1rem;
+    }
+ 
+    .admin-header-right {
+        gap: 1.2rem;
+    }
+ 
+    .admin-profile-new span {
+        font-size: 1rem;
+        display: none;
+    }
+ 
+    .search-box-new {
+        min-width: 150px;
+        max-width: 90vw;
+        height: 42px;
+    }
+}
+ 
+@media (max-width: 600px) {
+    .admin-header-right .admin-profile-new span {
+        display: none !important;
+    }
+ 
+    .container-fluid {
+        padding: 0.8rem 0.3rem;
+    }
+ 
+    .search-box-new {
+        min-width: 120px;
+        padding: 0.2rem 0.8rem;
+    }
+ 
+    .btn-search-new {
+        width: 36px;
+        height: 36px;
+        font-size: 1.1rem;
+    }
+}
+ 
+
+/* Search
+/* --- Search Page Styles --- */
+.search-page {
+    background: #f6faf6;
+}
+
+/* Plant Card Gallery - chỉ áp dụng trong search-page */
+.search-page .plant-list-row {
+    row-gap: 32px;
+}
+
+.search-page .plant-col {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.search-page .plant-card {
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px rgba(56,142,60,0.10);
+    overflow: hidden;
+    width: 100%;
+    max-width: 350px;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.3s, transform 0.2s;
+    border: 1px solid #e0e0e0;
+    position: relative;
+}
+.search-page .plant-card:hover {
+    box-shadow: 0 8px 32px rgba(56,142,60,0.16);
+    transform: translateY(-4px) scale(1.03);
+}
+
+.search-page .plant-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    background: #eef6ee;
+    border-bottom:1px solid #eee;
+}
+
+.search-page .plant-body {
+    padding: 18px 20px 16px 20px;
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.search-page .plant-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #388e3c;
+    margin-bottom: 7px;
+    letter-spacing: 0.2px;
+}
+
+.search-page .plant-meta {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 4px;
+    word-break: break-word;
+}
+
+.search-page .plant-desc {
+    color: #444;
+    font-size: 0.98rem;
+    margin-bottom: 8px;
+    min-height: 46px;
+    opacity: 0.96;
+}
+
+.search-page .plant-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.search-page .plant-actions .btn {
+    font-size: 0.98rem;
+}
+
+@media (max-width: 1200px) {
+    .search-page .plant-card {max-width: 100%;}
+}
+
+@media (max-width: 900px) {
+    .search-page .plant-list-row {row-gap: 18px;}
+    .search-page .plant-card {max-width: 100%;}
+}
+
+.search-page .pagination .page-link {
+    color: #388e3c;
+    font-weight: 600;
+    border-radius: 8px !important;
+}
+.search-page .pagination .page-item.active .page-link {
+    background-color: #388e3c;
+    border-color: #388e3c;
+    color: #fff;
+}
+.search-page .pagination .page-link:hover {
+    background: #e8f5e9;
+    color: #388e3c;
+}
+
+.search-page .plant-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.search-page .plant-actions .btn {
+    border-radius: 22px;
+    font-weight: 500;
+    padding: 6px 18px;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px rgba(56,142,60,0.08);
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.16s;
+    outline: none;
+    border: none;
+}
+
+.search-page .plant-actions .btn-success {
+    background: linear-gradient(90deg, #43ea7d 0%, #388e3c 100%);
+    color: #fff;
+    font-weight: 600;
+    box-shadow: 0 2px 12px rgba(56,142,60,0.14);
+}
+.search-page .plant-actions .btn-success:hover {
+    background: linear-gradient(90deg, #388e3c 0%, #43ea7d 100%);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(56,142,60,0.18);
+    transform: scale(1.06);
+}
+
+.search-page .plant-actions .btn-outline-primary {
+    background: #f6faf6;
+    color: #1976d2;
+    border: 1.5px solid #1976d2;
+    font-weight: 500;
+}
+.search-page .plant-actions .btn-outline-primary:hover {
+    background: #e3f2fd;
+    color: #1565c0;
+    border-color: #1565c0;
+    box-shadow: 0 2px 12px rgba(25,118,210,0.12);
+    transform: scale(1.06);
+}
+
+.search-page .plant-actions .btn-outline-danger {
+    background: #f6faf6;
+    color: #c62828;
+    border: 1.5px solid #c62828;
+    font-weight: 500;
+}
+.search-page .plant-actions .btn-outline-danger:hover {
+    background: #ffebee;
+    color: #b71c1c;
+    border-color: #b71c1c;
+    box-shadow: 0 2px 12px rgba(198,40,40,0.10);
+    transform: scale(1.06);
+}
+
+.search-page .plant-actions .btn i {
+    margin-right: 6px;
+    font-size: 1.18em;
+    vertical-align: middle;
+}
+
+
+/*========================================================================================================*/
+/* ================= DASHBOARD ADMIN PAGE =================  admin dashboard==============================*/
+/*========================================================================================================*/
+.dashboard-admin-page {
+    padding: 32px 32px 0 32px;
+    min-height: 86vh;
+    background: radial-gradient(ellipse 80% 70% at 75% 25%, #e8f5e9 0%, #f8fffc 100%);
+}
+
+/* Card tổng quan */
+.dashboard-admin-page .dashboard-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(76,175,80,0.07);
+    border: none;
+    transition: box-shadow 0.15s, border 0.15s;
+    margin-bottom: 18px;
+}
+
+.dashboard-admin-page .dashboard-card:hover {
+    box-shadow: 0 0 0 4px #a8e6cf44;
+    border: 1px solid #a8e6cf33;
+}
+
+/* Tiêu đề card */
+.dashboard-admin-page .dashboard-card-title {
+    font-size: 1.12rem;
+    font-weight: 600;
+    color: #388e3c;
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+/* Số liệu lớn */
+.dashboard-admin-page .dashboard-card-number {
+    font-size: 2.1rem;
+    font-weight: bold;
+    color: #34c759;
+    margin-bottom: 0.3rem;
+}
+
+.dashboard-admin-page .dashboard-user-summary {
+    margin-top: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Badge admin/user */
+.dashboard-admin-page .dashboard-badge-admin,
+.dashboard-admin-page .dashboard-badge-user {
+    font-size: 1rem;
+    border-radius: 10px;
+    background: #e4fbe8;
+    color: #388e3c;
+    font-weight: 500;
+    padding: 4px 13px 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+}
+
+.dashboard-admin-page .dashboard-badge-admin {
+    background: #dcedc8;
+    color: #34c759;
+}
+
+.dashboard-admin-page .dashboard-badge-user {
+    background: #f8fff8;
+    color: #388e3c;
+}
+
+/* Icon xanh lá chủ đạo */
+.dashboard-admin-page .dashboard-card-title .bi,
+.dashboard-admin-page .dashboard-card-number .bi,
+.dashboard-admin-page .dashboard-user-summary .bi {
+    color: #34c759 !important;
+}
+
+/* Nút trong card */
+.dashboard-admin-page .btn-outline-success {
+    border-radius: 12px;
+    font-size: 1.08rem;
+    font-weight: 500;
+    padding: 6px 18px;
+    border: 1.5px solid #34c759;
+    color: #34c759;
+    background: transparent;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 8px #a8e6cf24;
+}
+
+.dashboard-admin-page .btn-outline-success:hover {
+    background: linear-gradient(90deg, #a8e6cf 0%, #4caf50 100%);
+    color: #fff;
+    border-color: #4caf50;
+}
+
+/* Responsive cho dashboard */
+@media (max-width: 991px) {
+    .dashboard-admin-page {
+        padding: 16px 6px 0 6px;
+    }
+    .dashboard-admin-page .dashboard-card {
+        margin-bottom: 14px;
+    }
+}
+
+/* ================= HÀI HÒA VỚI ADMIN LAYOUT ================= */
+/* Sidebar, header, navbar giữ nguyên như site.css bạn đã gửi. */
+
+/* ================= OPTIONAL: ĐỔI MÀU SỐ LIỆU USER/ADMIN ================= */
+.dashboard-admin-page .dashboard-card-number.text-success {
+    color: #34c759;
+}
+.dashboard-admin-page .dashboard-card-number.text-info {
+    color: #388e3c;
+}
+.dashboard-admin-page .dashboard-card-number.text-primary {
+    color: #34c759;
+}
+
+
+
+
+/* =================================================================== */
+/*             [NEW] BIỂU ĐỒ & BÁO CÁO TRÊN DASHBOARD                 */
+/* =================================================================== */
+
+/* --- Card chứa Biểu đồ --- */
+.dashboard-admin-page .chart-card .card-body {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+.dashboard-admin-page .chart-container {
+    position: relative;
+    flex-grow: 1; /* Cho phép canvas co giãn */
+    max-height: 300px; /* Giới hạn chiều cao tối đa */
+    margin: auto;
+}
+
+/* --- Card chứa Form Báo cáo --- */
+.dashboard-admin-page .report-card .form-label {
+    color: #388e3c;
+    font-size: 0.9rem;
+}
+
+.dashboard-admin-page .report-card .form-select {
+    border-radius: 8px;
+    border-color: #e0e0e0;
+}
+.dashboard-admin-page .report-card .form-select:focus {
+    border-color: #34c759;
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15);
+}
+
+.dashboard-admin-page .btn-generate-report {
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+    border: none;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+    transition: all 0.2s ease-in-out;
+}
+.dashboard-admin-page .btn-generate-report:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.25);
+}
+
+
+
+/*========================================================================================================*/
+/* ================= user layout =================  layout user==============================*/
+/*========================================================================================================*/
+/*User Layout*/
+/* ===== MAIN LAYOUT (GUEST/USER) - PHIÊN BẢN HOÀN CHỈNH ===== */
+/* =================================================================== */
+/* STYLESHEET FOR MAIN USER LAYOUT (.main-layout) */
+/* >> PREMIUM REDESIGN - V4 << (Inspired by Material Design & Modern Admin Templates) */
+/* =================================================================== */
+ 
+.main-layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #f8fff8 0%, #e8f5e9 70%, #dcedc8 100%); /* Gradient nền tinh tế */
+    font-family: 'Segoe UI', 'Roboto', sans-serif; /* Font hiện đại */
+    overflow-x: hidden;
+    transition: background 0.3s ease; /* Chuẩn bị cho dark mode */
+}
+ 
+/* --- Header --- */
+.main-header {
+    background: linear-gradient(90deg, #ffffff 70%, #e8f5e9 100%); /* Gradient nhẹ cho header */
+    min-height: 80px;
+    box-shadow: 0 4px 20px rgba(76, 175, 80, 0.08); /* Shadow sâu hơn */
+    border-bottom: 1px solid rgba(224, 224, 224, 0.3);
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+    transition: all 0.3s ease;
+    animation: slideIn 0.5s ease-out;
+}
+ 
+@keyframes slideIn {
+    from { transform: translateY(-100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+ 
+.main-header-container {
+    max-width: 1400px; /* Tăng chiều rộng tối đa cho màn hình lớn */
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+ 
+/* Logo */
+.header-logo {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+}
+ 
+.header-logo:hover {
+    transform: scale(1.05);
+}
+ 
+.header-logo .logo-icon {
+    color: #43ea7d;
+    font-size: 2.2rem;
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
+ 
+.header-logo .logo-text {
+    font-weight: 800;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    color: #2e7d32;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(46, 125, 50, 0.1);
+}
+ 
+/* Search Box - Style premium */
+.search-box-new {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 6px 12px 6px 20px;
+    border-radius: 28px;
+    min-width: 300px;
+    max-width: 500px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(168, 230, 207, 0.15);
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+ 
+.search-box-new:focus-within {
+    border-color: #a8e6cf;
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+}
+ 
+.search-box-new .form-control {
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+    color: #388e3c;
+    box-shadow: none;
+    height: 100%;
+    padding-left: 1rem;
+    transition: color 0.3s ease;
+}
+ 
+.search-box-new .form-control::placeholder {
+    color: #789262;
+    opacity: 0.8;
+}
+ 
+.search-box-new .form-control:focus {
+    outline: none;
+}
+ 
+.btn-search-new {
+    background: linear-gradient(135deg, #4caf50, #66bb6a);
+    color: #fff;
+    border-radius: 50%;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    transition: all 0.3s ease;
+}
+ 
+.btn-search-new:hover {
+    background: linear-gradient(135deg, #388e3c, #43ea7d);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    transform: rotate(360deg) scale(1.1);
+}
+ 
+.btn-search-new:active {
+    transform: scale(0.95);
+}
+ 
+/* Nút Đăng nhập - Style premium */
+.btn-login-custom {
+    border: 2px solid #4caf50;
+    color: #2e7d32 !important;
+    background-color: #f8fff8;
+    border-radius: 20px;
+    font-weight: 600;
+    padding: 8px 24px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(168, 230, 207, 0.2);
+}
+ 
+.btn-login-custom:hover {
+    background: linear-gradient(90deg, #a8e6cf, #4caf50);
+    color: #fff !important;
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.25);
+    transform: translateY(-2px);
+}
+ 
+.btn-login-custom i {
+    font-size: 1.1rem;
+}
+ 
+/* Profile/Avatar Dropdown */
+.user-profile .btn-profile {
+    background: transparent;
+    border: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+ 
+.user-profile .btn-profile:hover {
+    transform: scale(1.05);
+}
+ 
+.header-avatar {
+    border: 3px solid #a8e6cf;
+    box-shadow: 0 4px 12px rgba(168, 230, 207, 0.3);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+ 
+.header-avatar:hover {
+    border-color: #4caf50;
+    transform: rotate(5deg) scale(1.1);
+}
+ 
+.user-profile .profile-name {
+    font-weight: 500;
+    color: #2e7d32;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+ 
+.user-profile .btn-profile:hover .profile-name {
+    color: #388e3c;
+}
+ 
+.dropdown-menu {
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(76, 175, 80, 0.12);
+    border: 1px solid #e0e0e0;
+    padding: 0.5rem 0;
+    animation: fadeInUp 0.3s ease-out;
+    background: #fff;
+}
+ 
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+ 
+.dropdown-item {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: #2e7d32;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+ 
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background: #e8f5e9;
+    color: #388e3c;
+    transform: translateX(5px);
+}
+ 
+.dropdown-item:active {
+    background: #a8e6cf;
+    color: #fff;
+}
+ 
+/* --- Main Content & Footer --- */
+.main-content-area {
+    padding: 60px 20px 40px;
+    flex-grow: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    transition: padding 0.3s ease;
+}
+ 
+.main-footer {
+    background: linear-gradient(90deg, #2e7d32, #388e3c);
+    color: #e8f5e9;
+    padding: 2rem 0;
+    text-align: center;
+    font-size: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -2px 10px rgba(46, 125, 50, 0.1);
+    transition: background 0.3s ease;
+}
+ 
+.main-footer p {
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+}
+ 
+.main-footer a {
+    color: #a8e6cf;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+ 
+.main-footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+ 
+/* --- Responsive --- */
+@media (max-width: 1200px) {
+    .main-header-container {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+ 
+    .main-content-area {
+        padding: 40px 15px;
+    }
+}
+ 
+@media (max-width: 991px) {
+    .main-header {
+        min-height: 64px;
+    }
+ 
+    .main-header-container {
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 0 1rem;
+    }
+ 
+    .header-left { order: 1; }
+    .header-center { order: 2; width: 100%; }
+    .header-right { order: 3; }
+ 
+    .search-box-new {
+        min-width: 100%;
+        max-width: 100%;
+    }
+ 
+    .btn-login-custom {
+        padding: 6px 16px;
+        font-size: 0.95rem;
+    }
+}
+ 
+@media (max-width: 576px) {
+    .main-header {
+        padding: 0.75rem;
+    }
+ 
+    .header-logo .logo-text {
+        font-size: 1.3rem;
+    }
+ 
+    .header-logo .logo-icon {
+        font-size: 1.8rem;
+    }
+ 
+    .search-box-new {
+        height: 40px;
+        padding: 4px 10px 4px 16px;
+    }
+ 
+    .btn-search-new {
+        width: 34px;
+        height: 34px;
+        font-size: 1rem;
+    }
+ 
+    .main-footer {
+        padding: 1.5rem 0;
+        font-size: 0.9rem;
+    }
+}
+ 
+/* --- Dark Mode (Optional, toggle via JS) --- */
+.dark-mode .main-layout {
+    background: linear-gradient(135deg, #1e1e1e 0%, #2c3e50 70%, #34495e 100%);
+}
+ 
+.dark-mode .main-header {
+    background: linear-gradient(90deg, #2c3e50 70%, #34495e 100%);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+ 
+.dark-mode .header-logo .logo-text {
+    color: #a8e6cf;
+}
+ 
+.dark-mode .search-box-new {
+    background: #34495e;
+    border-color: #2c3e50;
+}
+ 
+.dark-mode .search-box-new .form-control {
+    color: #ecf0f1;
+}
+ 
+.dark-mode .search-box-new .form-control::placeholder {
+    color: #bdc3c7;
+}
+ 
+.dark-mode .btn-search-new {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+}
+ 
+.dark-mode .btn-login-custom {
+    background: #34495e;
+    border-color: #27ae60;
+    color: #a8e6cf !important;
+}
+ 
+.dark-mode .btn-login-custom:hover {
+    background: linear-gradient(90deg, #27ae60, #2ecc71);
+    color: #fff !important;
+}
+ 
+.dark-mode .header-avatar {
+    border-color: #27ae60;
+}
+ 
+.dark-mode .user-profile .profile-name {
+    color: #a8e6cf;
+}
+ 
+.dark-mode .main-footer {
+    background: linear-gradient(90deg, #1a252f, #2c3e50);
+    color: #bdc3c7;
+}
+ 
+.dark-mode .main-footer a {
+    color: #7f8c8d;
+}
+ 
+.dark-mode .main-footer a:hover {
+    color: #ecf0f1;
+}
+ 
+/* ======================================================= */
+/* ===== FOOTER HOÀN CHỈNH - GỌN GÀNG & ĐỒNG BỘ 100% ===== */
+/* ======================================================= */
+
+.footer_area {
+    position: relative;
+    z-index: 1;
+    background-color: #ffffff;
+    /* GIẢM PADDING: Làm footer nhỏ gọn hơn */
+    padding: 50px 0;
+    margin-top: auto;
+    border-top: 1px solid #f0f0f0;
+    box-shadow: 0 -8px 48px -8px rgba(76, 175, 80, 0.08);
+}
+
+/* FIX: Đổi màu logo và icon cho đồng bộ header */
+.footer_area .logo-icon {
+    color: #43ea7d; /* Màu xanh lá sáng cho icon */
+    font-size: 2.5rem; /* Kích thước lớn như header */
+}
+.footer_area .logo-text {
+    color: #388e3c; /* Màu xanh lá đậm cho chữ */
+    font-size: 1.8rem; /* Kích thước lớn như header */
+    font-weight: 700;
+}
+
+.single-footer-widget {
+    position: relative;
+    z-index: 1;
+}
+
+.single-footer-widget p {
+    color: #5a6570;
+    font-size: 0.95rem;
+}
+
+.single-footer-widget .widget-title {
+    margin-bottom: 1.5rem;
+    color: #388e3c;
+    font-weight: 600;
+}
+
+.single-footer-widget .footer_menu ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.single-footer-widget .footer_menu li a {
+    color: #5a6570;
+    margin-bottom: 1rem;
+    display: block;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.single-footer-widget .footer_menu li a:hover,
+.single-footer-widget .footer_menu li a:focus {
+    color: #4caf50;
+}
+
+.single-footer-widget .footer_menu li:last-child a {
+    margin-bottom: 0;
+}
+
+.footer_social_area a {
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e8f5e9;
+    box-shadow: none;
+    margin-right: 10px;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+/* FIX: Đổi màu icon mạng xã hội sang xanh lá */
+.footer_social_area a i {
+    color: #388e3c; /* Icon màu xanh lá đậm */
+    transition: color 0.2s;
+}
+
+.footer_social_area a:hover {
+    background-color: #4caf50;
+}
+
+/* Icon chuyển sang màu trắng khi hover */
+.footer_social_area a:hover i {
+    color: #ffffff;
+}
+
+/* ======================================= */
+/* ===== CSS CHO MENU ĐIỀU HƯỚNG MỚI ===== */
+/* ======================================= */
+
+/* Căn chỉnh lại các nhóm trong header */
+.header-group-right {
+    gap: 1.5rem; /* Tạo khoảng cách giữa Search và Login */
+}
+
+/* Container của menu */
+.main-nav {
+    margin-left: 2.5rem; /* Khoảng cách giữa Logo và Menu */
+}
+
+/* Danh sách các mục menu */
+.nav-list {
+    display: flex;
+    align-items: center;
+    gap: 2rem; /* Khoảng cách giữa các mục menu */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Từng link trong menu */
+.nav-link {
+    color: #388e3c !important; /* Màu xanh lá đậm */
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 5px 0;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+/* Hiệu ứng gạch chân khi hover */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #4caf50; /* Màu gạch chân xanh lá */
+    transform: scaleX(0);
+    transform-origin: bottom left;
+    transition: transform 0.25s ease-out;
+}
+
+.nav-link:hover {
+    color: #4caf50; /* Đổi màu chữ khi hover */
+}
+
+.nav-link:hover::after {
+    transform: scaleX(1); /* Hiển thị gạch chân khi hover */
+}
+
+/* =================================================================== */
+/* ===== NÂNG CẤP GIAO DIỆN TRANG QUẢN LÝ CÂY TRỒNG      plant manager    ===== */
+/* =================================================================== */
+/* =================================================================== */
+/* ===== NÂNG CẤP GIAO DIỆN TRANG QUẢN LÝ CÂY TRỒNG plant manager ===== */
+/* =================================================================== */
+/* Biến màu sắc từ dashboard để đồng bộ */
+:root{
+--primary-green:#34c759;
+--secondary-green:#388e3c;
+--accent-green:#4caf50;
+--gradient-green:linear-gradient(90deg,#4caf50 0%,#8bc34a 100%);
+--radial-bg:radial-gradient(ellipse 80% 70% at 75% 25%,#e8f5e9 0%,#f8fffc 100%);
+--light-bg:#f8fff8;
+--border-color:#e0e0e0;
+--text-dark:#212529;
+--text-muted:#6c757d;
+--shadow-soft:0 2px 12px rgba(76,175,80,0.07);
+--shadow-hover:0 0 0 4px rgba(168,230,207,0.27);
+--transition:all 0.15s ease;
+}
+/* Toàn page - Background radial như dashboard, padding điều chỉnh để tránh to quá */
+.plant-manager-page{
+padding:24px 24px 0 24px;
+min-height:86vh;
+background:var(--radial-bg);
+}
+/* Card chính - Giống dashboard-card */
+.plant-manager-page .main-content-card{
+background:#fff;
+border-radius:14px;
+box-shadow:var(--shadow-soft);
+border:none;
+transition:var(--transition);
+padding:1.8rem;
+margin-bottom:18px;
+}
+.plant-manager-page .main-content-card:hover{
+box-shadow:var(--shadow-hover);
+border:1px solid rgba(168,230,207,0.2);
+}
+/* Header - Tăng font chữ để không nhỏ */
+.plant-manager-page .manager-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:1.2rem;
+margin-bottom:1.2rem;
+padding-bottom:1.2rem;
+border-bottom:1px solid var(--border-color);
+}
+.plant-manager-page .manager-header .title-group h4{
+font-size:1.4rem;
+font-weight:600;
+color:var(--secondary-green);
+margin-bottom:0.2rem;
+letter-spacing:0.5px;
+display:flex;
+align-items:center;
+gap:7px;
+}
+.plant-manager-page .manager-header .title-group p{
+color:var(--text-muted);
+margin-bottom:0;
+font-size:1rem;
+}
+.plant-manager-page .manager-header .actions-group{
+display:flex;
+align-items:center;
+gap:1rem;
+}
+/* Nút Add new plant - Giống btn-generate-report */
+.plant-manager-page .actions-group .btn-success{
+background:var(--gradient-green);
+color:#fff;
+border:none;
+padding:0.6rem 1.2rem;
+font-weight:600;
+border-radius:14px;
+transition:var(--transition);
+box-shadow:var(--shadow-soft);
+position:relative;
+overflow:hidden;
+}
+.plant-manager-page .actions-group .btn-success:hover{
+background:linear-gradient(90deg,#a8e6cf 0%,var(--accent-green) 100%);
+color:#fff;
+transform:translateY(-2px);
+box-shadow:0 6px 16px rgba(76,175,80,0.25);
+}
+.plant-manager-page .actions-group .btn-success::after{
+content:'';
+position:absolute;
+top:50%;
+left:50%;
+width:300%;
+height:300%;
+background:rgba(255,255,255,0.2);
+border-radius:50%;
+transform:translate(-50%,-50%) scale(0);
+transition:transform 0.6s ease;
+}
+.plant-manager-page .actions-group .btn-success:active::after{
+transform:translate(-50%,-50%) scale(1);
+opacity:0;
+}
+/* Thanh lọc - Giống report-card, thêm flex responsive */
+.plant-manager-page .filter-bar{
+background-color:#fff;
+padding:0.75rem 1.2rem;
+border-radius:12px;
+border:1px solid var(--border-color);
+display:flex;
+flex-wrap:wrap;
+gap:0.8rem;
+margin-bottom:1.2rem;
+box-shadow:var(--shadow-soft);
+}
+.plant-manager-page .filter-bar .form-select{
+min-width:160px;
+border-radius:8px;
+border-color:var(--border-color);
+box-shadow:none;
+font-size:0.95rem;
+transition:var(--transition);
+}
+.plant-manager-page .filter-bar .form-select:focus{
+border-color:var(--primary-green);
+box-shadow:0 0 0 3px rgba(52,199,89,0.15);
+}
+/* Bảng dữ liệu - Rounded, zebra, hover glow, cải thiện responsive */
+.plant-manager-page .table{
+border-color:transparent;
+border-collapse:separate;
+border-spacing:0;
+border-radius:14px;
+overflow:hidden;
+box-shadow:var(--shadow-soft);
+background:#fff;
+width:100%;
+}
+.plant-manager-page .table thead th{
+background-color:var(--light-bg);
+border-bottom:2px solid var(--border-color);
+font-weight:600;
+text-transform:uppercase;
+font-size:0.8rem;
+letter-spacing:0.5px;
+color:var(--text-muted);
+padding:0.8rem 1.2rem;
+}
+.plant-manager-page .table tbody tr:nth-child(odd){
+background-color:#f8fff8;
+}
+.plant-manager-page .table tbody tr:hover{
+background-color:#e8f5e9;
+}
+.plant-manager-page .table .plant-id{
+font-weight:500;
+color:var(--text-muted);
+font-size:0.95rem;
+}
+.plant-manager-page .plant-thumbnail{
+width:50px;
+height:50px;
+object-fit:cover;
+border-radius:8px;
+border:2px solid var(--border-color);
+transition:var(--transition);
+}
+.plant-manager-page .table tbody tr:hover .plant-thumbnail{
+transform:scale(1.05);
+box-shadow:var(--shadow-hover);
+}
+.plant-manager-page .plant-name{
+font-weight:600;
+color:var(--text-dark);
+font-size:1.05rem;
+}
+.plant-manager-page .scientific-name{
+font-style:italic;
+color:var(--text-muted);
+font-size:0.9rem;
+}
+/* Nút hành động - Giống badge, hover green, thêm tooltip */
+.plant-manager-page .action-buttons .btn-action{
+background-color:transparent;
+border:1px solid transparent;
+color:var(--text-muted);
+width:36px;
+height:36px;
+border-radius:8px;
+transition:var(--transition);
+font-size:1.1rem;
+position:relative;
+}
+.plant-manager-page .action-buttons .btn-action:hover{
+background-color:#e8f5e9;
+color:var(--primary-green);
+}
+.plant-manager-page .action-buttons .btn-action.text-danger:hover{
+background-color:#ffe5e8;
+color:#dc3545;
+}
+/* Thêm tooltip cho nút (nâng cấp thêm) */
+.plant-manager-page .action-buttons .btn-action::after{
+content:attr(data-tooltip);
+position:absolute;
+bottom:100%;
+left:50%;
+transform:translateX(-50%);
+background:var(--text-dark);
+color:#fff;
+padding:0.4rem 0.8rem;
+border-radius:6px;
+font-size:0.8rem;
+white-space:nowrap;
+opacity:0;
+transition:opacity 0.2s;
+pointer-events:none;
+}
+.plant-manager-page .action-buttons .btn-action:hover::after{
+opacity:1;
+}
+/* Phân trang - Nút giống btn-outline-success */
+.plant-manager-page .pagination-footer{
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:1rem;
+margin-top:1.5rem;
+padding-top:1.2rem;
+border-top:1px solid var(--border-color);
+}
+.plant-manager-page .pagination .page-item .page-link{
+border-radius:12px!important;
+margin:0 3px;
+border:1.5px solid var(--primary-green);
+color:var(--primary-green);
+font-weight:500;
+padding:0.5rem 1rem;
+background:transparent;
+transition:var(--transition);
+box-shadow:var(--shadow-soft);
+}
+.plant-manager-page .pagination .page-item.active .page-link{
+background:var(--gradient-green);
+border-color:var(--accent-green);
+color:#fff;
+}
+.plant-manager-page .pagination .page-item:not(.active) .page-link:hover{
+background:linear-gradient(90deg,#a8e6cf 0%,var(--accent-green) 100%);
+color:#fff;
+}
+/* Font weight helper */
+.fw-500{
+font-weight:500!important;
+}
+/* Responsive - Giống dashboard, cải thiện để tránh lỗi trên mobile */
+@media (max-width:991px){
+.plant-manager-page{
+padding:16px 6px 0 6px;
+}
+.plant-manager-page .main-content-card{
+padding:1.2rem;
+}
+.plant-manager-page .filter-bar{
+flex-direction:column;
+gap:0.5rem;
+}
+.plant-manager-page .table{
+display:block;
+overflow-x:auto;
+white-space:nowrap;
+}
+.plant-manager-page .manager-header{
+flex-direction:column;
+align-items:flex-start;
+}
+}
+/* Nâng cấp thêm: Animation fade-in cho table khi load (optional) */
+.plant-manager-page .table{
+animation:fadeIn 0.5s ease-in-out;
+}
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(10px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+/* =================================================================== */
+/* ===== THIẾT KẾ TRANG CHỈNH SỬA CÂY TRỒNG    //edit plant              ===== */
+/* =================================================================== */
+
+/* =================================================================== */
+/*             STYLESHEET FOR EDIT PLANT PAGE (.edit-plant-page)       */
+/*             >> FINAL REDESIGN - V2 <<                               */
+/* =================================================================== */
+
+/* =================================================================== */
+/* ===== THIẾT KẾ TRANG CHỈNH SỬA CÂY TRỒNG //edit plant ===== */
+/* =================================================================== */
+/* =================================================================== */
+/* STYLESHEET FOR EDIT PLANT PAGE (.edit-plant-page) */
+/* >> FINAL REDESIGN - V3 << (Nâng cấp để đồng bộ hoàn hảo với dashboard và manager: tông xanh lá, gradients, shadows nhẹ, hover mượt, responsive premium) */
+/* =================================================================== */
+ 
+/* --- Biến màu và các giá trị chung (đồng bộ chính xác từ dashboard: #34c759, #388e3c, #4caf50, gradients) --- */
+.edit-plant-page {
+    --primary-green: #34c759; /* Xanh lá sáng chủ đạo từ dashboard */
+    --secondary-green: #388e3c; /* Xanh đậm */
+    --accent-green: #4caf50; /* Xanh phụ */
+    --gradient-green: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+    --light-bg: #f8fff8; /* Nền sáng */
+    --border-color: #e0e0e0; /* Viền nhạt hơn */
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+    --shadow-soft: 0 2px 12px rgba(76, 175, 80, 0.07);
+    --shadow-hover: 0 0 0 4px rgba(168, 230, 207, 0.27); /* Glow như dashboard */
+    --transition: all 0.15s ease;
+    --radius-xl: 14px; /* Đồng bộ bo góc từ dashboard */
+    --radius-md: 8px;
+}
+ 
+/* --- Toàn page - Background radial như dashboard, padding đồng bộ --- */
+.edit-plant-page {
+    padding: 32px 32px 0 32px;
+    min-height: 86vh;
+    background: radial-gradient(ellipse 80% 70% at 75% 25%, #e8f5e9 0%, #f8fffc 100%);
+}
+ 
+/* --- Header của trang (đồng bộ font, border, hover icon) --- */
+.edit-plant-page .manager-header-pro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+ 
+.edit-plant-page .manager-header-pro .title-group h4 {
+    font-weight: 700;
+    font-size: 1.6rem; /* Đồng bộ với dashboard title */
+    color: var(--secondary-green);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+ 
+.edit-plant-page .manager-header-pro .title-group .bi {
+    font-size: 1.5rem;
+    color: var(--primary-green);
+    transition: var(--transition);
+}
+ 
+.edit-plant-page .manager-header-pro .title-group:hover .bi {
+    color: var(--secondary-green);
+}
+ 
+.edit-plant-page .manager-header-pro .title-group p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+ 
+/* --- Thiết kế Card (đồng bộ shadow, hover lift như dashboard-card) --- */
+.edit-plant-page .form-card {
+    background-color: #fff;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    border: none;
+    transition: var(--transition);
+    margin-bottom: 18px;
+    overflow: visible;
+}
+ 
+.edit-plant-page .form-card:hover {
+    box-shadow: var(--shadow-hover);
+    border: 1px solid rgba(168, 230, 207, 0.2);
+    transform: translateY(-4px);
+}
+ 
+.edit-plant-page .form-card-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+ 
+.edit-plant-page .form-card-header h5 {
+    font-weight: 600;
+    color: var(--secondary-green);
+    font-size: 1.3rem;
+}
+ 
+.edit-plant-page .form-card-body {
+    padding: 1.5rem;
+}
+ 
+/* --- Các thành phần Form (đồng bộ focus, font) --- */
+.edit-plant-page .form-label {
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+ 
+.edit-plant-page .form-control, .edit-plant-page .form-select {
+    border-radius: var(--radius-md);
+    border-color: var(--border-color);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+ 
+.edit-plant-page .form-control:focus, .edit-plant-page .form-select:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15);
+}
+ 
+/* --- [REDESIGN] Thiết kế lại nút "Thêm nhanh" (+) (đồng bộ gradient, ripple) --- */
+.edit-plant-page .input-group-wrapper {
+    position: relative;
+}
+ 
+.edit-plant-page .input-group-wrapper .btn-add-attribute {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-md);
+    padding: 0;
+    background: var(--gradient-green);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    transform: translateY(-50%);
+    transition: var(--transition);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+ 
+.edit-plant-page .input-group-wrapper .btn-add-attribute:hover {
+    background: linear-gradient(90deg, #388e3c 0%, #689f38 100%);
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+ 
+.edit-plant-page .input-group-wrapper .btn-add-attribute .bi-plus {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+ 
+/* Ripple effect cho nút */
+.edit-plant-page .input-group-wrapper .btn-add-attribute::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s ease;
+}
+ 
+.edit-plant-page .input-group-wrapper .btn-add-attribute:active::after {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+}
+ 
+/* --- Tùy chỉnh thư viện Choices.js (đồng bộ màu, hover) --- */
+.edit-plant-page .choices__inner {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--border-color) !important;
+    padding: 0.375rem 45px 0.375rem 0.75rem !important;
+    min-height: 44px;
+    background-color: #fff;
+    transition: var(--transition);
+}
+ 
+.edit-plant-page .is-focused .choices__inner {
+    border-color: var(--primary-green) !important;
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15) !important;
+}
+ 
+.edit-plant-page .choices__list--multiple .choices__item {
+    background-color: var(--accent-green);
+    border: 1px solid var(--accent-green);
+    border-radius: 6px;
+    color: #fff;
+}
+ 
+/* [FIX] Sửa lỗi Dropdown và Scrollbar (custom scrollbar đồng bộ) */
+.edit-plant-page .choices__list--dropdown {
+    z-index: 100 !important;
+    max-height: 280px !important;
+    overflow-y: auto !important;
+    border-radius: var(--radius-md) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: var(--shadow-soft);
+    background-color: #fff;
+}
+ 
+.edit-plant-page .choices__list--dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+ 
+.edit-plant-page .choices__list--dropdown::-webkit-scrollbar-thumb {
+    background-color: var(--primary-green);
+    border-radius: 10px;
+}
+ 
+.edit-plant-page .choices__list--dropdown .choices__list {
+    max-height: none !important;
+    overflow-y: visible !important;
+}
+ 
+.edit-plant-page .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--primary-green) !important;
+    color: #fff;
+}
+ 
+/* --- Nút bấm trong Header (đồng bộ btn từ manager/dashboard) --- */
+/* =================================================================== */
+/* [REDESIGN] NÚT BẤM TRONG HEADER (Đồng bộ với manager, thêm ripple) */
+/* =================================================================== */
+.edit-plant-page .actions-group .btn {
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border-radius: 14px;
+    border: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+ 
+/* [FIX] Thêm khoảng cách bên phải cho icon */
+.edit-plant-page .actions-group .btn .bi {
+    margin-right: 0.5rem;
+}
+ 
+.edit-plant-page .actions-group .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.2);
+}
+ 
+/* Nút Success (Lưu) */
+.edit-plant-page .actions-group .btn-success {
+    background: var(--gradient-green);
+    color: #fff;
+}
+ 
+.edit-plant-page .actions-group .btn-success:hover {
+    background: linear-gradient(90deg, #388e3c 0%, #689f38 100%);
+}
+ 
+/* Nút Neutral (Hủy / Quay lại) */
+.edit-plant-page .actions-group .btn-neutral {
+    background-color: #fff;
+    color: var(--text-dark);
+    border: 1.5px solid var(--border-color);
+}
+ 
+.edit-plant-page .actions-group .btn-neutral:hover {
+    background-color: var(--light-bg);
+    border-color: var(--primary-green);
+}
+ 
+/* Ripple effect cho nút header */
+.edit-plant-page .actions-group .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s ease;
+}
+ 
+.edit-plant-page .actions-group .btn:active::after {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+}
+ 
+/* =================================================================== */
+/* [REDESIGN] NÂNG CẤP GIAO DIỆN MODAL (đồng bộ màu, animation, responsive) */
+/* Scoped to .edit-plant-page */
+/* =================================================================== */
+ 
+/* --- Biến màu và các giá trị chung cho Modal (đồng bộ dashboard) --- */
+.edit-plant-page {
+    --modal-primary-green: #34c759;
+    --modal-secondary-green: #388e3c;
+    --modal-border-color: #e0e0e0;
+    --modal-text-heading: #212529;
+    --modal-text-body: #6c757d;
+    --modal-radius-xl: 14px;
+    --modal-radius-md: 8px;
+    --modal-shadow-soft: 0 4px 8px rgba(76, 175, 80, 0.15);
+}
+ 
+/* --- Thiết kế lại toàn bộ Modal (thêm animation fade-in, như dashboard) --- */
+.edit-plant-page .modal-content {
+    border-radius: var(--modal-radius-xl) !important;
+    border: none !important;
+    box-shadow: var(--modal-shadow-soft) !important;
+    background: #fff;
+    animation: modalFadeIn 0.3s ease-out;
+}
+ 
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+ 
+/* --- Header của Modal --- */
+.edit-plant-page .modal-header {
+    border-bottom: 1px solid var(--modal-border-color) !important;
+    padding: 1.25rem 1.5rem !important;
+    background: var(--light-bg);
+}
+ 
+.edit-plant-page .modal-header .modal-title {
+    font-weight: 600;
+    color: var(--modal-text-heading);
+    font-size: 1.3rem;
+}
+ 
+.edit-plant-page .modal-header .btn-close:focus {
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15);
+}
+ 
+/* --- Body của Modal --- */
+.edit-plant-page .modal-body {
+    padding: 1.5rem !important;
+}
+ 
+.edit-plant-page .modal-body .form-label {
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+ 
+.edit-plant-page .modal-body .form-control {
+    border-radius: var(--modal-radius-md);
+    border-color: var(--modal-border-color);
+    transition: var(--transition);
+}
+ 
+.edit-plant-page .modal-body .form-control:focus {
+    border-color: var(--modal-primary-green);
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15);
+}
+ 
+/* --- Footer của Modal --- */
+.edit-plant-page .modal-footer {
+    border-top: 1px solid var(--modal-border-color) !important;
+    background-color: #f8fafc;
+    padding: 1rem 1.5rem !important;
+    border-bottom-left-radius: var(--modal-radius-xl);
+    border-bottom-right-radius: var(--modal-radius-xl);
+}
+ 
+.edit-plant-page .modal-footer .btn {
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border-radius: 14px;
+    transition: var(--transition);
+    box-shadow: var(--shadow-soft);
+}
+ 
+.edit-plant-page .modal-footer .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.2);
+}
+ 
+/* Nút Lưu (Primary) */
+.edit-plant-page .modal-footer .btn-primary {
+    background: var(--gradient-green);
+    color: #fff;
+    border: none;
+}
+ 
+.edit-plant-page .modal-footer .btn-primary:hover {
+    background: linear-gradient(90deg, #388e3c 0%, #689f38 100%);
+}
+ 
+/* Nút Hủy (Secondary/Neutral) */
+.edit-plant-page .modal-footer .btn-secondary {
+    background-color: #fff;
+    color: var(--text-dark);
+    border: 1.5px solid var(--border-color);
+}
+ 
+.edit-plant-page .modal-footer .btn-secondary:hover {
+    background-color: var(--light-bg);
+    border-color: var(--primary-green);
+}
+ 
+/* Responsive cho modal và form (đồng bộ với dashboard) */
+@media (max-width: 991px) {
+    .edit-plant-page {
+        padding: 16px 6px 0 6px;
+    }
+    .edit-plant-page .form-card {
+        padding: 1rem;
+    }
+    .edit-plant-page .manager-header-pro {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .edit-plant-page .modal-content {
+        margin: 1rem;
+    }
+}
+ 
+
+
+
+/*Add Plant*/
+/* =================================================================== */
+/*             STYLESHEET FOR ADD PLANT PAGE (.add-plant-page)         */
+/*             Theme based on Edit Plant Page                          */
+/* =================================================================== */
+/*Add Plant*/
+/* =================================================================== */
+/* STYLESHEET FOR ADD PLANT PAGE (.add-plant-page) */
+/* Theme based on Edit Plant Page */
+/* =================================================================== */
+/* =================================================================== */
+/* STYLESHEET FOR ADD PLANT PAGE (.add-plant-page) */
+/* >> FINAL REDESIGN - V3 << (Nâng cấp để đồng bộ hoàn hảo với dashboard và manager: tông xanh lá, gradients, shadows nhẹ, hover mượt, responsive premium) */
+/* =================================================================== */
+ 
+/* --- Biến màu và các giá trị chung (đồng bộ chính xác từ dashboard: #34c759, #388e3c, #4caf50, gradients) --- */
+.add-plant-page {
+    --primary-green: #34c759; /* Xanh lá sáng chủ đạo từ dashboard */
+    --secondary-green: #388e3c; /* Xanh đậm */
+    --accent-green: #4caf50; /* Xanh phụ */
+    --gradient-green: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+    --light-bg: #f8fff8; /* Nền sáng */
+    --border-color: #e0e0e0; /* Viền nhạt hơn */
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+    --shadow-soft: 0 2px 12px rgba(76, 175, 80, 0.07);
+    --shadow-hover: 0 0 0 4px rgba(168, 230, 207, 0.27); /* Glow như dashboard */
+    --transition: all 0.15s ease;
+    --radius-xl: 14px; /* Đồng bộ bo góc từ dashboard */
+    --radius-md: 8px;
+}
+ 
+/* --- Toàn page - Background radial như dashboard, padding đồng bộ --- */
+.add-plant-page {
+    padding: 32px 32px 0 32px;
+    min-height: 86vh;
+    background: radial-gradient(ellipse 80% 70% at 75% 25%, #e8f5e9 0%, #f8fffc 100%);
+}
+ 
+/* --- Header của trang (đồng bộ font, border, hover icon) --- */
+.add-plant-page .manager-header-pro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+ 
+.add-plant-page .manager-header-pro .title-group h4 {
+    font-weight: 700;
+    font-size: 1.6rem; /* Đồng bộ với dashboard title */
+    color: var(--secondary-green);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+ 
+.add-plant-page .manager-header-pro .title-group .bi {
+    font-size: 1.5rem;
+    color: var(--primary-green);
+    transition: var(--transition);
+}
+ 
+.add-plant-page .manager-header-pro .title-group:hover .bi {
+    color: var(--secondary-green);
+}
+ 
+.add-plant-page .manager-header-pro .title-group p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+ 
+/* --- Thiết kế Card (đồng bộ shadow, hover lift như dashboard-card) --- */
+.add-plant-page .form-card {
+    background-color: #fff;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    border: none;
+    transition: var(--transition);
+    margin-bottom: 18px;
+    overflow: visible;
+}
+ 
+.add-plant-page .form-card:hover {
+    box-shadow: var(--shadow-hover);
+    border: 1px solid rgba(168, 230, 207, 0.2);
+    transform: translateY(-4px);
+}
+ 
+.add-plant-page .form-card-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+ 
+.add-plant-page .form-card-header h5 {
+    font-weight: 600;
+    color: var(--secondary-green);
+    font-size: 1.3rem;
+}
+ 
+.add-plant-page .form-card-header .form-card-subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+ 
+.add-plant-page .form-card-body {
+    padding: 1.5rem;
+}
+ 
+/* --- Các thành phần Form (đồng bộ focus, font) --- */
+.add-plant-page .form-label {
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+ 
+.add-plant-page .form-control, .add-plant-page .form-select {
+    border-radius: var(--radius-md);
+    border-color: var(--border-color);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+ 
+.add-plant-page .form-control:focus, .add-plant-page .form-select:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15);
+}
+ 
+/* --- [REDESIGN] Thiết kế lại nút "Thêm nhanh" (+) (đồng bộ gradient, ripple) --- */
+.add-plant-page .input-group-wrapper {
+    position: relative;
+}
+ 
+.add-plant-page .input-group-wrapper .btn-add-attribute {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-md);
+    padding: 0;
+    background: var(--gradient-green);
+    color: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    transform: translateY(-50%);
+    transition: var(--transition);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+ 
+.add-plant-page .input-group-wrapper .btn-add-attribute:hover {
+    background: linear-gradient(90deg, #388e3c 0%, #689f38 100%);
+    transform: translateY(-50%) scale(1.05);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+ 
+.add-plant-page .input-group-wrapper .btn-add-attribute .bi-plus {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+ 
+/* Ripple effect cho nút */
+.add-plant-page .input-group-wrapper .btn-add-attribute::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s ease;
+}
+ 
+.add-plant-page .input-group-wrapper .btn-add-attribute:active::after {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+}
+ 
+/* --- Tùy chỉnh thư viện Choices.js (đồng bộ màu, hover) --- */
+.add-plant-page .choices__inner {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--border-color) !important;
+    padding: 0.375rem 45px 0.375rem 0.75rem !important;
+    min-height: 44px;
+    background-color: #fff;
+    transition: var(--transition);
+}
+ 
+.add-plant-page .is-focused .choices__inner {
+    border-color: var(--primary-green) !important;
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15) !important;
+}
+ 
+.add-plant-page .choices__list--multiple .choices__item {
+    background-color: var(--accent-green);
+    border: 1px solid var(--accent-green);
+    border-radius: 6px;
+    color: #fff;
+}
+ 
+/* [FIX] Sửa lỗi Dropdown và Scrollbar (custom scrollbar đồng bộ) */
+.add-plant-page .choices__list--dropdown {
+    z-index: 100 !important;
+    max-height: 280px !important;
+    overflow-y: auto !important;
+    border-radius: var(--radius-md) !important;
+    border-color: var(--border-color) !important;
+    box-shadow: var(--shadow-soft);
+    background-color: #fff;
+}
+ 
+.add-plant-page .choices__list--dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+ 
+.add-plant-page .choices__list--dropdown::-webkit-scrollbar-thumb {
+    background-color: var(--primary-green);
+    border-radius: 10px;
+}
+ 
+.add-plant-page .choices__list--dropdown .choices__list {
+    max-height: none !important;
+    overflow-y: visible !important;
+}
+ 
+.add-plant-page .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background-color: var(--primary-green) !important;
+    color: #fff;
+}
+ 
+/* --- Nút bấm trong Header (đồng bộ btn từ manager/dashboard) --- */
+/* =================================================================== */
+/* [REDESIGN] NÚT BẤM TRONG HEADER (Đồng bộ với manager, thêm ripple) */
+/* =================================================================== */
+.add-plant-page .actions-group .btn {
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border-radius: 14px;
+    border: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+ 
+/* [FIX] Thêm khoảng cách bên phải cho icon */
+.add-plant-page .actions-group .btn .bi {
+    margin-right: 0.5rem;
+}
+ 
+.add-plant-page .actions-group .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.2);
+}
+ 
+/* Nút Success (Lưu) */
+.add-plant-page .actions-group .btn-success {
+    background: var(--gradient-green);
+    color: #fff;
+}
+ 
+.add-plant-page .actions-group .btn-success:hover {
+    background: linear-gradient(90deg, #388e3c 0%, #689f38 100%);
+}
+ 
+/* Nút Neutral (Hủy / Quay lại) */
+.add-plant-page .actions-group .btn-neutral {
+    background-color: #fff;
+    color: var(--text-dark);
+    border: 1.5px solid var(--border-color);
+}
+ 
+.add-plant-page .actions-group .btn-neutral:hover {
+    background-color: var(--light-bg);
+    border-color: var(--primary-green);
+}
+ 
+/* Ripple effect cho nút header */
+.add-plant-page .actions-group .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s ease;
+}
+ 
+.add-plant-page .actions-group .btn:active::after {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+}
+ 
+/* =================================================================== */
+/* [REDESIGN] NÂNG CẤP GIAO DIỆN MODAL (đồng bộ màu, animation, responsive) */
+/* Scoped to .add-plant-page */
+/* =================================================================== */
+ 
+/* --- Biến màu và các giá trị chung cho Modal (đồng bộ dashboard) --- */
+.add-plant-page {
+    --modal-primary-green: #34c759;
+    --modal-secondary-green: #388e3c;
+    --modal-border-color: #e0e0e0;
+    --modal-text-heading: #212529;
+    --modal-text-body: #6c757d;
+    --modal-radius-xl: 14px;
+    --modal-radius-md: 8px;
+    --modal-shadow-soft: 0 4px 8px rgba(76, 175, 80, 0.15);
+}
+ 
+/* --- Thiết kế lại toàn bộ Modal (thêm animation fade-in, như dashboard) --- */
+.add-plant-page .modal-content {
+    border-radius: var(--modal-radius-xl) !important;
+    border: none !important;
+    box-shadow: var(--modal-shadow-soft) !important;
+    background: #fff;
+    animation: modalFadeIn 0.3s ease-out;
+}
+ 
+@keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+ 
+/* --- Header của Modal --- */
+.add-plant-page .modal-header {
+    border-bottom: 1px solid var(--modal-border-color) !important;
+    padding: 1.25rem 1.5rem !important;
+    background: var(--light-bg);
+}
+ 
+.add-plant-page .modal-header .modal-title {
+    font-weight: 600;
+    color: var(--modal-text-heading);
+    font-size: 1.3rem;
+}
+ 
+.add-plant-page .modal-header .btn-close:focus {
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15);
+}
+ 
+/* --- Body của Modal --- */
+.add-plant-page .modal-body {
+    padding: 1.5rem !important;
+}
+ 
+.add-plant-page .modal-body .form-label {
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+ 
+.add-plant-page .modal-body .form-control {
+    border-radius: var(--modal-radius-md);
+    border-color: var(--modal-border-color);
+    transition: var(--transition);
+}
+ 
+.add-plant-page .modal-body .form-control:focus {
+    border-color: var(--modal-primary-green);
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15);
+}
+ 
+/* --- Footer của Modal --- */
+.add-plant-page .modal-footer {
+    border-top: 1px solid var(--modal-border-color) !important;
+    background-color: #f8fafc;
+    padding: 1rem 1.5rem !important;
+    border-bottom-left-radius: var(--modal-radius-xl);
+    border-bottom-right-radius: var(--modal-radius-xl);
+}
+ 
+.add-plant-page .modal-footer .btn {
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    border-radius: 14px;
+    transition: var(--transition);
+    box-shadow: var(--shadow-soft);
+}
+ 
+.add-plant-page .modal-footer .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.2);
+}
+ 
+/* Nút Lưu (Primary) */
+.add-plant-page .modal-footer .btn-primary {
+    background: var(--gradient-green);
+    color: #fff;
+    border: none;
+}
+ 
+.add-plant-page .modal-footer .btn-primary:hover {
+    background: linear-gradient(90deg, #388e3c 0%, #689f38 100%);
+}
+ 
+/* Nút Hủy (Secondary/Neutral) */
+.add-plant-page .modal-footer .btn-secondary {
+    background-color: #fff;
+    color: var(--text-dark);
+    border: 1.5px solid var(--border-color);
+}
+ 
+.add-plant-page .modal-footer .btn-secondary:hover {
+    background-color: var(--light-bg);
+    border-color: var(--primary-green);
+}
+ 
+/* Responsive cho modal và form (đồng bộ với dashboard) */
+@media (max-width: 991px) {
+    .add-plant-page {
+        padding: 16px 6px 0 6px;
+    }
+    .add-plant-page .form-card {
+        padding: 1rem;
+    }
+    .add-plant-page .manager-header-pro {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .add-plant-page .modal-content {
+        margin: 1rem;
+    }
+}
+ 
+/* =================================================================== */
+/* STYLESHEET FOR PLANT DETAIL PAGE (.plant-detail-page) */
+/* >> FINAL REDESIGN - V3 << (Đồng bộ với dashboard, edit-plant, add-plant: tông xanh lá, gradients, shadows nhẹ, hover mượt, responsive premium) */
+/* =================================================================== */
+ 
+.plant-detail-page {
+    --primary-green: #34c759; /* Xanh lá sáng chủ đạo */
+    --secondary-green: #388e3c; /* Xanh đậm */
+    --accent-green: #4caf50; /* Xanh phụ */
+    --gradient-green: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+    --light-bg: #f8fff8; /* Nền sáng */
+    --border-color: #e0e0e0; /* Viền nhạt */
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+    --shadow-soft: 0 2px 12px rgba(76, 175, 80, 0.07);
+    --shadow-hover: 0 0 0 4px rgba(168, 230, 207, 0.27); /* Glow như dashboard */
+    --transition: all 0.15s ease;
+    --radius-xl: 14px; /* Bo góc lớn */
+    --radius-md: 8px; /* Bo góc vừa */
+}
+ 
+/* --- Toàn trang - Background và padding đồng bộ --- */
+.plant-detail-page {
+    padding: 32px 32px 0 32px;
+    min-height: 86vh;
+    background: radial-gradient(ellipse 80% 70% at 75% 25%, #e8f5e9 0%, #f8fffc 100%);
+}
+ 
+/* --- Header của chi tiết cây (Tiêu đề và mô tả ngắn) --- */
+.plant-detail-page .plant-header {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+ 
+.plant-detail-page .plant-header:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+}
+ 
+.plant-detail-page .plant-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--secondary-green);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+}
+ 
+.plant-detail-page .scientific-name {
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--text-dark);
+    opacity: 0.9;
+}
+ 
+.plant-detail-page .lead.text-muted {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+ 
+/* --- Detail Card (Đồng bộ với dashboard card) --- */
+.plant-detail-page .detail-card {
+    background-color: #fff;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    border: none;
+    transition: var(--transition);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+ 
+.plant-detail-page .detail-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+}
+ 
+.plant-detail-page .card-header {
+    background: var(--gradient-green);
+    color: #fff;
+    padding: 0.9rem 1.2rem;
+    font-weight: 600;
+    font-size: 1.15rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+ 
+.plant-detail-page .card-body {
+    padding: 1.2rem;
+}
+ 
+.plant-detail-page .card-subtitle {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+}
+ 
+/* --- Hình ảnh cây --- */
+.plant-detail-page .plant-image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    object-fit: cover;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+ 
+.plant-detail-page .plant-image:hover {
+    box-shadow: var(--shadow-hover);
+    transform: scale(1.02);
+}
+ 
+/* --- Tag Container và Info Badge --- */
+.plant-detail-page .tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem; /* Tăng gap để dễ nhìn hơn */
+}
+ 
+.plant-detail-page .info-badge {
+    background-color: var(--accent-green);
+    color: #fff;
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+ 
+.plant-detail-page .info-badge:hover {
+    background-color: var(--secondary-green);
+    transform: scale(1.05);
+}
+ 
+/* --- Mô tả chi tiết --- */
+.plant-detail-page .description-text {
+    font-size: 1rem;
+    color: var(--text-dark);
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+ 
+/* --- List group (Điều kiện sinh trưởng) --- */
+.plant-detail-page .list-group-item {
+    background: transparent;
+    border: none;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+ 
+.plant-detail-page .list-group-item:last-child {
+    border-bottom: none;
+}
+ 
+.plant-detail-page .list-group-item strong {
+    color: var(--secondary-green);
+}
+ 
+/* --- Nút quay lại --- */
+.plant-detail-page .btn-outline-success {
+    padding: 0.6rem 1.4rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+ 
+.plant-detail-page .btn-outline-success:hover {
+    background: var(--gradient-green);
+    color: #fff;
+    box-shadow: var(--shadow-hover);
+}
+ 
+.plant-detail-page .btn-outline-success i {
+    margin-right: 0.5rem;
+}
+ 
+/* --- Responsive Design --- */
+@media (max-width: 991px) {
+    .plant-detail-page {
+        padding: 16px 6px 0 6px;
+    }
+ 
+    .plant-detail-page .plant-header {
+        padding: 1rem;
+    }
+ 
+    .plant-detail-page .plant-title {
+        font-size: 1.8rem;
+    }
+ 
+    .plant-detail-page .scientific-name {
+        font-size: 1.1rem;
+    }
+ 
+    .plant-detail-page .row {
+        flex-direction: column;
+    }
+ 
+    .plant-detail-page .col-lg-4,
+    .plant-detail-page .col-lg-8 {
+        width: 100%;
+    }
+ 
+    .plant-detail-page .detail-card {
+        margin-bottom: 1rem;
+    }
+}
+ 
+@media (max-width: 600px) {
+    .plant-detail-page .plant-title {
+        font-size: 1.5rem;
+    }
+ 
+    .plant-detail-page .info-badge {
+        font-size: 0.85rem;
+        padding: 0.25rem 0.6rem;
+    }
+ 
+    .plant-detail-page .card-header {
+        font-size: 1rem;
+    }
+}
+ 
+/* =================================================================== */
+/* STYLESHEET FOR PROFILE PAGE (.profile-page) */
+/* >> PREMIUM REDESIGN - V6 << (Tông xanh lá, gradient, shadow mượt, responsive như AdminLTE/Material Design) */
+/* =================================================================== */
+ 
+.profile-page {
+    --primary-green: #34c759; /* Xanh lá sáng */
+    --secondary-green: #388e3c; /* Xanh đậm */
+    --accent-green: #4caf50; /* Xanh phụ */
+    --gradient-green: linear-gradient(90deg, #4caf50 0%, #8bc34a 100%);
+    --light-bg: #f8fff8; /* Nền sáng */
+    --border-color: #e0e0e0; /* Viền nhạt */
+    --text-dark: #212529;
+    --text-muted: #6c757d;
+    --shadow-soft: 0 4px 16px rgba(76, 175, 80, 0.08);
+    --shadow-hover: 0 0 0 4px rgba(168, 230, 207, 0.2);
+    --transition: all 0.2s ease;
+    --radius-xl: 16px;
+    --radius-md: 10px;
+}
+ 
+/* --- Toàn trang --- */
+.profile-page {
+    padding: 40px 20px;
+    min-height: 86vh;
+    background: radial-gradient(ellipse 80% 70% at 75% 25%, #e8f5e9 0%, #f8fffc 100%);
+    animation: fadeIn 0.5s ease-out;
+}
+ 
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+ 
+/* --- Header --- */
+.profile-page .profile-header {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+    text-align: center;
+}
+ 
+.profile-page .profile-header:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+}
+ 
+.profile-page .profile-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--secondary-green);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 2px rgba(46, 125, 50, 0.1);
+}
+ 
+.profile-page .lead.text-muted {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+ 
+/* --- Tabs --- */
+.profile-page .nav-tabs {
+    border-bottom: none;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+}
+ 
+.profile-page .nav-link {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.8rem 1.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+ 
+.profile-page .nav-link.active {
+    background: var(--gradient-green);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: var(--shadow-soft);
+}
+ 
+.profile-page .nav-link:hover {
+    background: var(--light-bg);
+    border-color: var(--primary-green);
+    color: var(--secondary-green);
+}
+ 
+.profile-page .tab-content {
+    background: #fff;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    padding: 1.5rem;
+}
+ 
+/* --- Profile Card --- */
+.profile-page .profile-card {
+    background: #fff;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    border: none;
+    transition: var(--transition);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+ 
+.profile-page .profile-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-4px);
+}
+ 
+.profile-page .card-header {
+    background: var(--gradient-green);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+ 
+.profile-page .card-body {
+    padding: 1.5rem;
+}
+ 
+/* --- Avatar --- */
+.profile-page .profile-avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-green);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+ 
+.profile-page .profile-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-hover);
+}
+ 
+/* --- Form elements --- */
+.profile-page .form-label {
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+ 
+.profile-page .form-control {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    font-size: 0.95rem;
+    padding: 0.6rem 1rem;
+    transition: var(--transition);
+}
+ 
+.profile-page .form-control:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.15);
+}
+ 
+.profile-page .form-control:disabled {
+    background: #f8f9fa;
+    color: var(--text-muted);
+}
+ 
+.profile-page .text-danger {
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+}
+ 
+/* --- Nút --- */
+.profile-page .btn-success {
+    background: var(--gradient-green);
+    border: none;
+    color: #fff;
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+    transition: var(--transition);
+}
+ 
+.profile-page .btn-success:hover {
+    background: linear-gradient(90deg, #388e3c 0%, #689f38 100%);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    transform: translateY(-2px);
+}
+ 
+.profile-page .btn-outline-success {
+    padding: 0.6rem 1.4rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+ 
+.profile-page .btn-outline-success:hover {
+    background: var(--gradient-green);
+    color: #fff;
+    box-shadow: var(--shadow-hover);
+}
+ 
+/* --- Bình luận và Lịch sử hoạt động --- */
+.profile-page .list-group-item {
+    background: transparent;
+    border: none;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    transition: background 0.2s ease;
+}
+ 
+.profile-page .list-group-item:hover {
+    background: #f1f8f1;
+}
+ 
+.profile-page .list-group-item:last-child {
+    border-bottom: none;
+}
+ 
+.profile-page .comment-item {
+    background: var(--light-bg);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+ 
+.profile-page .comment-item:hover {
+    box-shadow: var(--shadow-hover);
+}
+ 
+.profile-page .badge.bg-success {
+    background: var(--accent-green) !important;
+    font-size: 0.85rem;
+}
+ 
+/* --- Responsive --- */
+@media (max-width: 991px) {
+    .profile-page {
+        padding: 20px 10px;
+    }
+ 
+    .profile-page .profile-title {
+        font-size: 2rem;
+    }
+ 
+    .profile-page .row {
+        flex-direction: column;
+    }
+ 
+    .profile-page .col-lg-4,
+    .profile-page .col-lg-8 {
+        width: 100%;
+    }
+ 
+    .profile-page .profile-avatar {
+        width: 120px;
+        height: 120px;
+    }
+}
+ 
+@media (max-width: 576px) {
+    .profile-page .profile-title {
+        font-size: 1.6rem;
+    }
+ 
+    .profile-page .card-header {
+        font-size: 1.1rem;
+    }
+ 
+    .profile-page .btn-success,
+    .profile-page .btn-outline-success {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+ 
+/* --- Dark Mode --- */
+.dark-mode .profile-page {
+    background: linear-gradient(135deg, #1e1e1e 0%, #2c3e50 100%);
+}
+ 
+.dark-mode .profile-page .profile-header,
+.dark-mode .profile-page .profile-card {
+    background: #34495e;
+    color: #ecf0f1;
+}
+ 
+.dark-mode .profile-page .card-header {
+    background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+}
+ 
+.dark-mode .profile-page .form-control {
+    background: #2c3e50;
+    color: #ecf0f1;
+    border-color: #34495e;
+}
+ 
+.dark-mode .profile-page .form-control:disabled {
+    background: #3b4e66;
+}
+ 
+.dark-mode .profile-page .btn-success {
+    background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+}
+ 
+.dark-mode .profile-page .btn-outline-success {
+    border-color: #27ae60;
+    color: #27ae60;
+}
+ 
+.dark-mode .profile-page .btn-outline-success:hover {
+    background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+    color: #fff;
+}
+ 
+.dark-mode .profile-page .list-group-item {
+    color: #ecf0f1;
+    border-bottom-color: #34495e;
+}
+ 
+.dark-mode .profile-page .comment-item {
+    background: #2c3e50;
+}
+ 
+.dark-mode .profile-page .badge.bg-success {
+    background: #27ae60 !important;
+}
+ 
+
+/* =================================================================== */
+/* STYLESHEET FOR FAVORITES BUTTON (.favorites-button) */
+/* >> MODERN VIBRANT DESIGN - ALIGNED WITH USER DROPDOWN << */
+/* Green heart icon, orange-yellow gradient badge, premium effects */
+/* Matches SearchPlant's green-themed aesthetic */
+/* =================================================================== */
+ 
+.favorites-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 0;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 8px rgba(168, 230, 207, 0.15), 0 0 8px rgba(76, 175, 80, 0.1); /* Added glow effect */
+    transition: all 0.3s ease;
+    position: relative;
+    width: 48px; /* Matches header-avatar for alignment */
+    height: 48px;
+    margin-right: 0.5rem; /* Consistent spacing with user dropdown */
+    line-height: 1;
+}
+ 
+.favorites-button:hover {
+    background: linear-gradient(135deg, #e8f5e9, #dcedc8); /* Subtle green gradient on hover */
+    border-color: #a8e6cf;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25), 0 0 12px rgba(76, 175, 80, 0.2); /* Enhanced glow */
+    transform: scale(1.05);
+}
+ 
+.favorites-button i {
+    font-size: 1.6rem;
+    color: #4caf50; /* Vibrant green for heart icon */
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+ 
+.favorites-button:hover i {
+    color: #388e3c; /* Darker green on hover for depth */
+    transform: pulse(1.1); /* Modern pulse animation */
+}
+ 
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1.1); }
+}
+ 
+.favorites-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(135deg, #ff9800, #ffb300); /* Orange-yellow gradient */
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2), 0 0 6px rgba(255, 152, 0, 0.3); /* Subtle orange glow */
+    transition: all 0.3s ease;
+}
+ 
+.favorites-button:hover .favorites-badge {
+    transform: scale(1.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), 0 0 8px rgba(255, 152, 0, 0.4);
+}
+ 
+/* --- Responsive --- */
+@media (max-width: 576px) {
+    .favorites-button {
+        width: 40px;
+        height: 40px;
+        margin-right: 0.25rem;
+    }
+ 
+    .favorites-button i {
+        font-size: 1.4rem;
+    }
+ 
+    .favorites-badge {
+        width: 16px;
+        height: 16px;
+        font-size: 0.65rem;
+        top: -2px;
+        right: -2px;
+    }
+}
+ 
+/* --- Dark Mode --- */
+.dark-mode .favorites-button {
+    background: #34495e;
+    border-color: #2c3e50;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 8px rgba(39, 174, 96, 0.1);
+}
+ 
+.dark-mode .favorites-button:hover {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    border-color: #27ae60;
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3), 0 0 12px rgba(39, 174, 96, 0.2);
+}
+ 
+.dark-mode .favorites-button i {
+    color: #27ae60; /* Green in dark mode */
+}
+ 
+.dark-mode .favorites-button:hover i {
+    color: #2ecc71; /* Lighter green on hover */
+}
+ 
+.dark-mode .favorites-badge {
+    border-color: #34495e;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2), 0 0 6px rgba(255, 152, 0, 0.3);
+}
+ 
+/* =================================================================== */
+/* STYLESHEET FOR FAVORITES PAGE (.favorites-page) */
+/* >> PREMIUM MODERN DESIGN << */
+/* Green-themed, vibrant, glowing effects, Material Design inspired */
+/* Matches SearchPlant's aesthetic with green heart and orange-yellow accents */
+/* =================================================================== */
+ 
+.favorites-page {
+    --primary-green: #4caf50; /* Vibrant green */
+    --secondary-green: #388e3c; /* Darker green */
+    --accent-orange: linear-gradient(135deg, #ff9800, #ffb300); /* Orange-yellow gradient */
+    --light-bg: #f8fff8; /* Light green background */
+    --shadow-soft: 0 4px 16px rgba(76, 175, 80, 0.08);
+    --shadow-glow: 0 0 12px rgba(76, 175, 80, 0.2);
+    --transition: all 0.3s ease;
+    --radius-xl: 16px;
+}
+ 
+/* --- Page Background --- */
+.favorites-page {
+    background: linear-gradient(135deg, #f8fff8 0%, #e8f5e9 70%, #dcedc8 100%);
+    border-radius: var(--radius-xl);
+    padding: 3rem 2rem;
+    box-shadow: var(--shadow-soft);
+}
+ 
+/* --- Header --- */
+.favorite-header-icon {
+    font-size: 2.5rem;
+    color: var(--primary-green);
+    transition: var(--transition);
+}
+ 
+.favorite-header-icon:hover {
+    transform: scale(1.1);
+    color: var(--secondary-green);
+}
+ 
+.favorite-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary-green);
+    text-shadow: 0 1px 2px rgba(46, 125, 50, 0.1);
+}
+ 
+/* --- Plant Card --- */
+.plant-card {
+    background: #fff;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: var(--transition);
+}
+ 
+.plant-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+}
+ 
+.plant-image {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+ 
+.plant-card:hover .plant-image {
+    transform: scale(1.05);
+}
+ 
+.plant-card .card-body {
+    padding: 1.5rem;
+}
+ 
+.plant-card .card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 0.5rem;
+}
+ 
+.plant-card .card-title a:hover {
+    color: var(--primary-green);
+}
+ 
+.plant-card .card-text {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 0.75rem;
+}
+ 
+.plant-card i {
+    font-size: 1rem;
+    color: var(--primary-green);
+}
+ 
+/* --- Favorites Button --- */
+.favorite-toggle-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--primary-green);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
+    transition: var(--transition);
+}
+ 
+.favorite-toggle-btn:hover {
+    transform: scale(1.1);
+    background: var(--light-bg);
+    border-color: #a8e6cf;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
+}
+ 
+.favorite-toggle-btn.active {
+    color: var(--primary-green);
+}
+ 
+/* --- Empty State --- */
+.empty-state {
+    background: #fff;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    padding: 3rem;
+    transition: var(--transition);
+}
+ 
+.empty-state:hover {
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+}
+ 
+.empty-state-icon {
+    font-size: 4rem;
+    color: #a8e6cf;
+    transition: var(--transition);
+}
+ 
+.empty-state:hover .empty-state-icon {
+    color: var(--primary-green);
+    transform: scale(1.05);
+}
+ 
+.empty-state h4 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--secondary-green);
+}
+ 
+.empty-state p {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+ 
+.btn-explore {
+    background: var(--accent-orange);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.2);
+    transition: var(--transition);
+}
+ 
+.btn-explore:hover {
+    background: linear-gradient(135deg, #f57c00, #ffa726);
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+    transform: translateY(-2px);
+}
+ 
+/* --- Responsive --- */
+@media (max-width: 991px) {
+    .favorite-title {
+        font-size: 1.8rem;
+    }
+ 
+    .favorite-header-icon {
+        font-size: 2rem;
+    }
+ 
+    .plant-image {
+        height: 180px;
+    }
+ 
+    .empty-state {
+        padding: 2rem;
+    }
+ 
+    .empty-state-icon {
+        font-size: 3rem;
+    }
+}
+ 
+@media (max-width: 576px) {
+    .favorites-page {
+        padding: 2rem 1rem;
+    }
+ 
+    .favorite-title {
+        font-size: 1.5rem;
+    }
+ 
+    .favorite-header-icon {
+        font-size: 1.8rem;
+    }
+ 
+    .plant-card .card-title {
+        font-size: 1.2rem;
+    }
+ 
+    .favorite-toggle-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+ 
+    .btn-explore {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+    }
+}
+ 
+/* --- Dark Mode --- */
+.dark-mode .favorites-page {
+    background: linear-gradient(135deg, #1e1e1e 0%, #2c3e50 70%, #34495e 100%);
+}
+ 
+.dark-mode .plant-card {
+    background: #34495e;
+    color: #ecf0f1;
+}
+ 
+.dark-mode .plant-card .card-title a {
+    color: #ecf0f1;
+}
+ 
+.dark-mode .plant-card .card-title a:hover {
+    color: #27ae60;
+}
+ 
+.dark-mode .plant-card .card-text {
+    color: #bdc3c7;
+}
+ 
+.dark-mode .plant-card i {
+    color: #27ae60;
+}
+ 
+.dark-mode .favorite-toggle-btn {
+    background: rgba(52, 73, 94, 0.9);
+    border-color: #2c3e50;
+    color: #27ae60;
+}
+ 
+.dark-mode .favorite-toggle-btn:hover {
+    background: #2c3e50;
+    border-color: #27ae60;
+    color: #2ecc71;
+}
+ 
+.dark-mode .empty-state {
+    background: #34495e;
+    color: #ecf0f1;
+}
+ 
+.dark-mode .empty-state h4 {
+    color: #ecf0f1;
+}
+ 
+.dark-mode .empty-state p {
+    color: #bdc3c7;
+}
+ 
+.dark-mode .empty-state-icon {
+    color: #27ae60;
+}
+ 
+.dark-mode .empty-state:hover .empty-state-icon {
+    color: #2ecc71;
+}
+ 
+.dark-mode .btn-explore {
+    background: var(--accent-orange);
+}
+ 
+.dark-mode .btn-explore:hover {
+    background: linear-gradient(135deg, #f57c00, #ffa726);
+}
+ /* =================================================================== */
+/* STYLESHEET FOR HOME PAGE (.home-page) */
+/* >> PREMIUM MODERN DESIGN << */
+/* Green-themed, vibrant, glowing effects, Material Design inspired */
+/* Matches SearchPlant's aesthetic with green and orange-yellow accents */
+/* =================================================================== */
+ 
+.home-page {
+    --primary-green: #4caf50; /* Vibrant green */
+    --secondary-green: #388e3c; /* Darker green */
+    --accent-orange: linear-gradient(135deg, #ff9800, #ffb300); /* Orange-yellow gradient */
+    --light-bg: #f8fff8; /* Light green background */
+    --shadow-soft: 0 4px 16px rgba(76, 175, 80, 0.08);
+    --shadow-glow: 0 0 12px rgba(76, 175, 80, 0.2);
+    --transition: all 0.3s ease;
+    --radius-xl: 16px;
+    --radius-md: 8px;
+}
+ 
+/* --- Page Background --- */
+.home-page {
+    background: linear-gradient(135deg, #f8fff8 0%, #e8f5e9 70%, #dcedc8 100%);
+    min-height: 100vh;
+}
+ 
+/* --- Header --- */
+.home-header {
+    background: #fff;
+    border-radius: var(--radius-xl);
+    padding: 2.5rem;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition);
+}
+ 
+.home-header:hover {
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+    transform: translateY(-4px);
+}
+ 
+.home-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--secondary-green);
+    text-shadow: 0 1px 2px rgba(46, 125, 50, 0.1);
+}
+ 
+.lead.text-muted {
+    font-size: 1.2rem;
+    color: #6c757d;
+    line-height: 1.6;
+}
+ 
+/* --- Section Title --- */
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary-green);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+ 
+/* --- Plant Card --- */
+.plant-card {
+    background: #fff;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: var(--shadow-soft);
+}
+ 
+.plant-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+}
+ 
+.plant-image {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+ 
+.plant-card:hover .plant-image {
+    transform: scale(1.05);
+}
+ 
+.plant-card .card-body {
+    padding: 1.5rem;
+}
+ 
+.plant-card .card-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #212529;
+    margin-bottom: 0.5rem;
+}
+ 
+.plant-card .card-title a:hover {
+    color: var(--primary-green);
+}
+ 
+.plant-card .card-subtitle {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 0.75rem;
+}
+ 
+.plant-card .card-text {
+    font-size: 0.95rem;
+    color: #212529;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+ 
+.plant-card .card-text i {
+    font-size: 1rem;
+    color: var(--primary-green);
+}
+ 
+.plant-card .btn-detail {
+    background: var(--primary-green);
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: var(--transition);
+    padding: 0.6rem 1.2rem;
+}
+ 
+.plant-card .btn-detail:hover {
+    background: var(--secondary-green);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
+    transform: translateY(-2px);
+}
+ 
+/* --- Empty State --- */
+.empty-state {
+    background: #fff;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-soft);
+    padding: 3rem;
+    transition: var(--transition);
+}
+ 
+.empty-state:hover {
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+}
+ 
+.empty-state-icon {
+    font-size: 4rem;
+    color: #a8e6cf;
+    transition: var(--transition);
+}
+ 
+.empty-state:hover .empty-state-icon {
+    color: var(--primary-green);
+    transform: scale(1.05);
+}
+ 
+.empty-state h4 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--secondary-green);
+}
+ 
+.empty-state p {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+ 
+/* --- Pagination --- */
+.pagination .page-item .page-link {
+    border-radius: var(--radius-md);
+    margin: 0 0.2rem;
+    border: 1px solid #e0e0e0;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: var(--transition);
+}
+ 
+.pagination .page-item.active .page-link {
+    background: var(--primary-green);
+    border-color: var(--primary-green);
+    color: #fff;
+}
+ 
+.pagination .page-item:not(.active) .page-link:hover {
+    background: var(--light-bg);
+    color: var(--primary-green);
+    border-color: var(--primary-green);
+}
+ 
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background: #f8f9fa;
+    border-color: #e0e0e0;
+}
+ 
+/* --- Responsive --- */
+@media (max-width: 991px) {
+    .home-title {
+        font-size: 2rem;
+    }
+ 
+    .section-title {
+        font-size: 1.8rem;
+    }
+ 
+    .plant-image {
+        height: 180px;
+    }
+ 
+    .empty-state {
+        padding: 2rem;
+    }
+ 
+    .empty-state-icon {
+        font-size: 3rem;
+    }
+}
+ 
+@media (max-width: 576px) {
+    .home-page .container {
+        padding: 2rem 1rem;
+    }
+ 
+    .home-title {
+        font-size: 1.8rem;
+    }
+ 
+    .section-title {
+        font-size: 1.5rem;
+    }
+ 
+    .plant-card .card-title {
+        font-size: 1.2rem;
+    }
+ 
+    .plant-card .btn-detail {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+ 
+    .pagination .page-link {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
+}
+ 
+/* --- Dark Mode --- */
+.dark-mode .home-page {
+    background: linear-gradient(135deg, #1e1e1e 0%, #2c3e50 70%, #34495e 100%);
+}
+ 
+.dark-mode .home-header {
+    background: #34495e;
+    color: #ecf0f1;
+}
+ 
+.dark-mode .home-title {
+    color: #ecf0f1;
+}
+ 
+.dark-mode .plant-card {
+    background: #34495e;
+    color: #ecf0f1;
+}
+ 
+.dark-mode .plant-card .card-title {
+    color: #ecf0f1;
+}
+ 
+.dark-mode .plant-card .card-title a:hover {
+    color: #27ae60;
+}
+ 
+.dark-mode .plant-card .card-text {
+    color: #ecf0f1;
+}
+ 
+.dark-mode .plant-card .card-text i {
+    color: #27ae60;
+}
+ 
+.dark-mode .plant-card .btn-detail {
+    background: #27ae60;
+}
+ 
+.dark-mode .plant-card .btn-detail:hover {
+    background: #2ecc71;
+}
+ 
+.dark-mode .empty-state {
+    background: #34495e;
+    color: #ecf0f1;
+}
+ 
+.dark-mode .empty-state h4 {
+    color: #ecf0f1;
+}
+ 
+.dark-mode .empty-state p {
+    color: #bdc3c7;
+}
+ 
+.dark-mode .empty-state-icon {
+    color: #27ae60;
+}
+ 
+.dark-mode .empty-state:hover .empty-state-icon {
+    color: #2ecc71;
+}
+ 
+.dark-mode .pagination .page-item .page-link {
+    color: #ecf0f1;
+    border-color: #2c3e50;
+}
+ 
+.dark-mode .pagination .page-item.active .page-link {
+    background: #27ae60;
+    border-color: #27ae60;
+}
+ 
+.dark-mode .pagination .page-item:not(.active) .page-link:hover {
+    background: #2c3e50;
+    color: #2ecc71;
+    border-color: #2ecc71;
+}
+ 
+.dark-mode .pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background: #2c3e50;
+}
+ 

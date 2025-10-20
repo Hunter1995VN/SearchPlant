@@ -1,0 +1,349 @@
+﻿@page
+@model SearchPlant.Pages.AddPlant.IndexModel
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Thêm cây trồng mới";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <link rel="stylesheet" href="~/css/admin-forms.css" asp-append-version="true" />
+    <style>
+        /* Sửa lỗi dropdown bị cắt */
+        .form-card {
+            overflow: visible;
+        }
+    </style>
+}
+<div class="add-plant-page">
+
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="manager-header-pro">
+            <div class="title-group">
+                <h4 class="mb-0"><i class="bi bi-plus-circle"></i> Thêm cây trồng mới</h4>
+                <p class="text-muted mb-0 d-none d-md-block">Nhập thông tin chi tiết cho cây trồng mới.</p>
+            </div>
+            <div class="actions-group">
+                <a asp-page="/PlantsManager/Index" class="btn btn-neutral"><i class="bi bi-x-lg"></i> Hủy bỏ</a>
+                <button type="submit" class="btn btn-success"><i class="bi bi-check-lg"></i> Lưu cây mới</button>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- CỘT TRÁI -->
+            <div class="col-lg-8">
+                <!-- Card Thông tin cơ bản -->
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <h5>Thông tin cơ bản</h5>
+                    </div>
+                    <div class="form-card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6"><label asp-for="Plant.Plantname" class="form-label">Tên thường gọi</label><input asp-for="Plant.Plantname" class="form-control" /><span asp-validation-for="Plant.Plantname" class="text-danger"></span></div>
+                            <div class="col-md-6"><label asp-for="Plant.Scientificname" class="form-label">Tên khoa học</label><input asp-for="Plant.Scientificname" class="form-control" /></div>
+                            <div class="col-12"><label asp-for="Plant.Description" class="form-label">Mô tả chi tiết</label><textarea asp-for="Plant.Description" class="form-control" rows="5"></textarea></div>
+                            <div class="col-12"><label asp-for="Plant.Tooltiptext" class="form-label">Tóm tắt (Tooltip)</label><textarea asp-for="Plant.Tooltiptext" class="form-control" rows="2"></textarea><div class="form-text">Nội dung này sẽ hiện ra khi người dùng di chuột vào tên cây.</div></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Thông số môi trường -->
+                <div class="form-card">
+                    <div class="form-card-header"><h5>Thông số môi trường</h5></div>
+                    <div class="form-card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3"><label asp-for="Plant.Minph" class="form-label">Min pH</label><input asp-for="Plant.Minph" class="form-control" type="number" step="0.1" /></div>
+                            <div class="col-md-3"><label asp-for="Plant.Maxph" class="form-label">Max pH</label><input asp-for="Plant.Maxph" class="form-control" type="number" step="0.1" /></div>
+                            <div class="col-md-3"><label asp-for="Plant.Minhumidity" class="form-label">Min Độ ẩm (%)</label><input asp-for="Plant.Minhumidity" class="form-control" type="number" /></div>
+                            <div class="col-md-3"><label asp-for="Plant.Maxhumidity" class="form-label">Max Độ ẩm (%)</label><input asp-for="Plant.Maxhumidity" class="form-control" type="number" /></div>
+                            <div class="col-md-3"><label asp-for="Plant.Mintemperature" class="form-label">Min Nhiệt độ (°C)</label><input asp-for="Plant.Mintemperature" class="form-control" type="number" /></div>
+                            <div class="col-md-3"><label asp-for="Plant.Maxtemperature" class="form-label">Max Nhiệt độ (°C)</label><input asp-for="Plant.Maxtemperature" class="form-control" type="number" /></div>
+                            <div class="col-md-6"><label asp-for="Plant.Lighttype" class="form-label">Yêu cầu ánh sáng</label><input asp-for="Plant.Lighttype" class="form-control" /></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Phân loại & Thuộc tính -->
+                <div class="form-card">
+                    <div class="form-card-header"><h5>Phân loại & Thuộc tính</h5><p class="form-card-subtitle">Chọn các thuộc tính phù hợp cho cây.</p></div>
+                    <div class="form-card-body">
+                        <div class="row g-4">
+                            <!-- ... các ô select của bạn ... -->
+                             <div class="col-md-6">
+                                <label asp-for="SelectedTypeIds" class="form-label">Loại cây</label>
+                                <div class="input-group-wrapper">
+                                    <select id="SelectedTypeIds" asp-for="SelectedTypeIds" asp-items="Model.PlanttypeOptions" class="form-control" multiple></select>
+                                    <button type="button" class="btn-add-attribute" data-attribute-type="PlantType" data-target-select="#SelectedTypeIds" data-modal-title="Thêm Loại cây mới"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SelectedRegionIds" class="form-label">Vùng trồng</label>
+                                <div class="input-group-wrapper">
+                                    <select id="SelectedRegionIds" asp-for="SelectedRegionIds" asp-items="Model.RegionOptions" class="form-control" multiple></select>
+                                    <button type="button" class="btn-add-attribute" data-attribute-type="Region" data-target-select="#SelectedRegionIds" data-modal-title="Thêm Vùng trồng mới"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SelectedSeasonIds" class="form-label">Mùa vụ</label>
+                                <div class="input-group-wrapper">
+                                    <select id="SelectedSeasonIds" asp-for="SelectedSeasonIds" asp-items="Model.SeasonOptions" class="form-control" multiple></select>
+                                    <button type="button" class="btn-add-attribute" data-attribute-type="Season" data-target-select="#SelectedSeasonIds" data-modal-title="Thêm Mùa vụ mới"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SelectedSoilIds" class="form-label">Loại đất</label>
+                                <div class="input-group-wrapper">
+                                    <select id="SelectedSoilIds" asp-for="SelectedSoilIds" asp-items="Model.SoilOptions" class="form-control" multiple></select>
+                                    <button type="button" class="btn-add-attribute" data-attribute-type="SoilType" data-target-select="#SelectedSoilIds" data-modal-title="Thêm Loại đất mới"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SelectedFertilizerIds" class="form-label">Phân bón</label>
+                                <div class="input-group-wrapper">
+                                    <select id="SelectedFertilizerIds" asp-for="SelectedFertilizerIds" asp-items="Model.FertilizerOptions" class="form-control" multiple></select>
+                                    <button type="button" class="btn-add-attribute" data-attribute-type="Fertilizer" data-target-select="#SelectedFertilizerIds" data-modal-title="Thêm Phân bón mới"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="SelectedDiseaseIds" class="form-label">Bệnh thường gặp</label>
+                                <div class="input-group-wrapper">
+                                    <select id="SelectedDiseaseIds" asp-for="SelectedDiseaseIds" asp-items="Model.DiseaseOptions" class="form-control" multiple></select>
+                                    <button type="button" class="btn-add-attribute" data-attribute-type="PlantDisease" data-target-select="#SelectedDiseaseIds" data-modal-title="Thêm Bệnh mới"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label asp-for="SelectedPropertyIds" class="form-label">Đặc tính cây trồng</label>
+                                <div class="input-group-wrapper">
+                                    <select id="SelectedPropertyIds" asp-for="SelectedPropertyIds" asp-items="Model.PlantpropertyOptions" class="form-control" multiple></select>
+                                    <button type="button" class="btn-add-attribute" data-attribute-type="PlantProperty" data-target-select="#SelectedPropertyIds" data-modal-title="Thêm Đặc tính mới"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- CỘT PHẢI -->
+            <div class="col-lg-4">
+                <div class="form-card">
+                    <div class="form-card-header"><h5>Ảnh đại diện</h5></div>
+                    <div class="form-card-body">
+                        <label asp-for="Plant.Imagepath" class="form-label">Đường dẫn ảnh</label>
+                        <input asp-for="Plant.Imagepath" class="form-control" placeholder="https://example.com/image.jpg" />
+                    </div>
+                </div>
+                <div class="form-card">
+                    <div class="form-card-header"><h5>Chu kỳ phát triển</h5></div>
+                    <div class="form-card-body">
+                        <select id="SelectedCycleId" asp-for="SelectedCycleId" asp-items="Model.CycleOptions" class="form-select">
+                            <option value="">-- Chọn chu kỳ --</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-card">
+                    <div class="form-card-header"><h5>Chăm sóc & Bảo tồn</h5></div>
+                    <div class="form-card-body">
+                        <div class="mb-3">
+                            <label asp-for="SelectedWateringIds" class="form-label">Phương pháp tưới</label>
+                            <div class="input-group-wrapper">
+                                <select id="SelectedWateringIds" asp-for="SelectedWateringIds" asp-items="Model.WateringmethodOptions" class="form-control" multiple></select>
+                                <button type="button" class="btn-add-attribute" data-attribute-type="WateringMethod" data-target-select="#SelectedWateringIds" data-modal-title="Thêm Phương pháp tưới mới"><i class="bi bi-plus"></i></button>
+                            </div>
+                        </div>
+                        <div>
+                            <label asp-for="SelectedStatusIds" class="form-label">Tình trạng bảo tồn</label>
+                            <div class="input-group-wrapper">
+                                <select id="SelectedStatusIds" asp-for="SelectedStatusIds" asp-items="Model.ConservationstatusOptions" class="form-control" multiple></select>
+                                <button type="button" class="btn-add-attribute" data-attribute-type="ConservationStatus" data-target-select="#SelectedStatusIds" data-modal-title="Thêm Tình trạng bảo tồn mới"><i class="bi bi-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Modal "thông minh" để thêm thuộc tính -->
+    <div class="modal fade" id="addAttributeModal" tabindex="-1" aria-labelledby="addAttributeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAttributeModalLabel">Thêm mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addAttributeForm" onsubmit="return false;">
+                        <div class="mb-3"><label for="newAttributeName" class="form-label">Tên thuộc tính mới</label><input type="text" class="form-control" id="newAttributeName" required></div>
+                        <div class="mb-3" id="generic-description-field" style="display: none;"><label for="newAttributeDescription" class="form-label">Mô tả</label><textarea class="form-control" id="newAttributeDescription" rows="3"></textarea></div>
+                        <div id="fertilizer-fields" style="display: none;">
+                            <div class="mb-3"><label for="newFertilizerComposition" class="form-label">Thành phần</label><textarea class="form-control" id="newFertilizerComposition" rows="2"></textarea></div>
+                            <div class="mb-3"><label for="newFertilizerUsageNote" class="form-label">Lưu ý sử dụng</label><textarea class="form-control" id="newFertilizerUsageNote" rows="2"></textarea></div>
+                        </div>
+                        <div id="disease-fields" style="display: none;">
+                            <div class="mb-3"><label for="newDiseaseSymptoms" class="form-label">Triệu chứng</label><textarea class="form-control" id="newDiseaseSymptoms" rows="2"></textarea></div>
+                            <div class="mb-3"><label for="newDiseaseCause" class="form-label">Nguyên nhân</label><textarea class="form-control" id="newDiseaseCause" rows="2"></textarea></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-lg me-2"></i>Hủy</button>
+                    <button type="button" class="btn btn-primary" id="saveNewAttributeBtn"><i class="bi bi-floppy me-2"></i>Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Modal "thông minh" để thêm thuộc tính -->
+<div class="modal fade" id="addAttributeModal" tabindex="-1" aria-labelledby="addAttributeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addAttributeModalLabel">Thêm mới</h5><button type="button" class="btn-close"
+                    data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addAttributeForm" onsubmit="return false;">
+                    <div class="mb-3"><label for="newAttributeName" class="form-label">Tên thuộc tính mới</label><input
+                            type="text" class="form-control" id="newAttributeName" required></div>
+                    <div class="mb-3" id="generic-description-field" style="display: none;"><label
+                            for="newAttributeDescription" class="form-label">Mô tả</label><textarea class="form-control"
+                            id="newAttributeDescription" rows="3"></textarea></div>
+                    <div id="fertilizer-fields" style="display: none;">
+                        <div class="mb-3"><label for="newFertilizerComposition" class="form-label">Thành
+                                phần</label><textarea class="form-control" id="newFertilizerComposition"
+                                rows="2"></textarea></div>
+                        <div class="mb-3"><label for="newFertilizerUsageNote" class="form-label">Lưu ý sử
+                                dụng</label><textarea class="form-control" id="newFertilizerUsageNote"
+                                rows="2"></textarea></div>
+                    </div>
+                    <div id="disease-fields" style="display: none;">
+                        <div class="mb-3"><label for="newDiseaseSymptoms" class="form-label">Triệu
+                                chứng</label><textarea class="form-control" id="newDiseaseSymptoms" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3"><label for="newDiseaseCause" class="form-label">Nguyên nhân</label><textarea
+                                class="form-control" id="newDiseaseCause" rows="2"></textarea></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x-lg me-2"></i>Hủy</button>
+    <button type="button" class="btn btn-primary" id="saveNewAttributeBtn"><i class="bi bi-floppy me-2"></i>Lưu</button>
+</div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const choicesInstances = {};
+            document.querySelectorAll('select[multiple], select:not([multiple])').forEach(select => {
+                choicesInstances[select.id] = new Choices(select, {
+                    removeItemButton: select.multiple,
+                    placeholder: true,
+                    placeholderValue: 'Chọn từ danh sách...',
+                    searchPlaceholderValue: 'Tìm kiếm...',
+                    itemSelectText: 'Chọn'
+                });
+            });
+
+            const addAttributeModal = new bootstrap.Modal(document.getElementById('addAttributeModal'));
+            const modalElement = document.getElementById('addAttributeModal');
+            const modalTitle = document.getElementById('addAttributeModalLabel');
+            const newAttributeNameInput = document.getElementById('newAttributeName');
+            const saveBtn = document.getElementById('saveNewAttributeBtn');
+
+            const genericDescField = document.getElementById('generic-description-field');
+            const newAttributeDescriptionInput = document.getElementById('newAttributeDescription');
+            const fertilizerFields = document.getElementById('fertilizer-fields');
+            const newFertilizerCompositionInput = document.getElementById('newFertilizerComposition');
+            const newFertilizerUsageNoteInput = document.getElementById('newFertilizerUsageNote');
+            const diseaseFields = document.getElementById('disease-fields');
+            const newDiseaseSymptomsInput = document.getElementById('newDiseaseSymptoms');
+            const newDiseaseCauseInput = document.getElementById('newDiseaseCause');
+
+            document.querySelectorAll('.btn-add-attribute').forEach(button => {
+                button.addEventListener('click', function () {
+                    const attributeType = this.dataset.attributeType.toLowerCase();
+                    modalElement.dataset.type = attributeType;
+                    modalElement.dataset.target = this.dataset.targetSelect;
+                    modalTitle.textContent = this.dataset.modalTitle;
+
+                    newAttributeNameInput.value = '';
+                    newAttributeDescriptionInput.value = '';
+                    newFertilizerCompositionInput.value = '';
+                    newFertilizerUsageNoteInput.value = '';
+                    newDiseaseSymptomsInput.value = '';
+                    newDiseaseCauseInput.value = '';
+
+                    genericDescField.style.display = 'none';
+                    fertilizerFields.style.display = 'none';
+                    diseaseFields.style.display = 'none';
+
+                    switch (attributeType) {
+                        case 'fertilizer': fertilizerFields.style.display = 'block'; break;
+                        case 'plantdisease': diseaseFields.style.display = 'block'; break;
+                        default: genericDescField.style.display = 'block'; break;
+                    }
+                    addAttributeModal.show();
+                });
+            });
+
+            saveBtn.addEventListener('click', async function () {
+                const type = modalElement.dataset.type;
+                const targetSelectId = modalElement.dataset.target.substring(1);
+                const name = newAttributeNameInput.value.trim();
+                const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+                if (!name) {
+                    Swal.fire('Lỗi!', 'Tên thuộc tính không được để trống.', 'error');
+                    return;
+                }
+
+                let payload = { type: type, name: name };
+                switch (type) {
+                    case 'fertilizer':
+                        payload.composition = newFertilizerCompositionInput.value.trim();
+                        payload.usageNote = newFertilizerUsageNoteInput.value.trim();
+                        break;
+                    case 'plantdisease':
+                        payload.symptoms = newDiseaseSymptomsInput.value.trim();
+                        payload.cause = newDiseaseCauseInput.value.trim();
+                        break;
+                    default:
+                        payload.description = newAttributeDescriptionInput.value.trim();
+                        break;
+                }
+
+                try {
+                    // === THAY ĐỔI QUAN TRỌNG: Gọi đến API Controller dùng chung ===
+                    const response = await fetch('/api/AttributesApi', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': token
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        const newAttribute = await response.json();
+                        const choiceInstance = choicesInstances[targetSelectId];
+                        if (choiceInstance) {
+                            choiceInstance.setChoices([{ value: newAttribute.id.toString(), label: newAttribute.text, selected: true }], 'value', 'label', false);
+                        }
+                        addAttributeModal.hide();
+                        Swal.fire('Thành công!', `Đã thêm '${newAttribute.text}' thành công.`, 'success');
+                    } else {
+                        const errorText = await response.text();
+                        Swal.fire('Lỗi!', `Không thể thêm thuộc tính: ${errorText}`, 'error');
+                    }
+                } catch (error) {
+                    Swal.fire('Lỗi!', 'Đã xảy ra lỗi không mong muốn.', 'error');
+                }
+            });
+        });
+    </script>
+}

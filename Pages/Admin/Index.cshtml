@@ -1,0 +1,283 @@
+﻿@page
+@model SearchPlant.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Dashboard Admin";
+}
+
+<div class="dashboard-admin-page">
+    <h2 class="mb-2 fw-bold">
+        <i class="bi bi-bar-chart-line me-2 text-success"></i>
+        Dashboard Admin
+    </h2>
+    <p class="text-muted mb-3">Chào mừng bạn đến với hệ thống quản trị cây trồng.</p>
+
+    <!-- HÀNG 1: CÁC CARD TỔNG QUAN -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body text-center">
+                    <div class="dashboard-card-title"><i class="bi bi-flower1 me-1 text-success"></i> Tổng số cây</div>
+                    <div class="dashboard-card-number text-success">@Model.TotalPlants</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body text-center">
+                    <div class="dashboard-card-title"><i class="bi bi-people-fill me-1 text-success"></i> Người dùng
+                    </div>
+                    <div class="dashboard-card-number text-success">@Model.TotalUsers</div>
+                    <div class="mt-2 dashboard-user-summary">
+                        <span class="badge dashboard-badge-admin"><i
+                                class="bi bi-person-badge-fill me-1 text-success"></i> Admin: @Model.TotalAdmin</span>
+                        <span class="badge dashboard-badge-user ms-2"><i
+                                class="bi bi-person-fill me-1 text-success"></i> User: @Model.TotalUser</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body text-center">
+                    <div class="dashboard-card-title"><i class="bi bi-tags-fill me-1 text-success"></i> Total Plant types
+                        </div>
+                    <div class="dashboard-card-number text-success">@Model.TotalType</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HÀNG 2: BIỂU ĐỒ VÀ TRÍCH XUẤT BÁO CÁO -->
+    <div class="row g-4 mb-4">
+        <div class="col-lg-7">
+            <div class="card dashboard-card chart-card h-100">
+                <div class="card-body">
+                    <h5 class="dashboard-card-title"><i class="bi bi-pie-chart-fill me-1 text-success"></i> Phân bổ loại
+                        cây</h5>
+                    <p class="text-muted mb-4">Biểu đồ thể hiện tỷ lệ các loại cây trồng trong hệ thống.</p>
+                    <div class="chart-container" style="position: relative; height:300px">
+                        <canvas id="plantTypeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <!-- ✅ SỬA LỖI: THAY THẾ HOÀN TOÀN KHU VỰC BÁO CÁO -->
+            <div class="card dashboard-card report-card h-100">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="dashboard-card-title"><i
+                            class="bi bi-file-earmark-arrow-down-fill me-1 text-success"></i> Trích xuất báo cáo</h5>
+                    <p class="text-muted mb-4">Tạo và tải xuống báo cáo chi tiết về dữ liệu hệ thống.</p>
+
+                    
+
+
+                    <!-- Form này sẽ gọi trực tiếp đến API để tải file -->
+                    <form class="mt-auto" method="get" action="/api/PdfExport/download-plant-report" target="_blank">
+                        <div class="mb-3">
+                            <label for="reportType" class="form-label fw-bold">Loại báo cáo</label>
+                            <select id="reportType" name="reportType" class="form-select" disabled>
+                                <option selected>Toàn bộ danh sách cây</option>
+                            </select>
+                            <small class="form-text text-muted">Các loại báo cáo khác sẽ được cập nhật sau.</small>
+                        </div>
+
+                          <!-- ===== THÊM KHU VỰC DATE PICKER VÀO ĐÂY ===== -->
+ <div class="row g-2 mb-3">
+        <div class="col-md-6">
+            <label for="startDateDisplay" class="form-label fw-bold">Từ ngày</label>
+            <div class="input-group" id="startDatePicker" data-td-target-input="nearest" data-td-target-toggle="nearest">
+                <!-- ✅ Input này chỉ để HIỂN THỊ, không có thuộc tính 'name' -->
+                <input id="startDateDisplay" type="text" class="form-control" data-td-target="#startDatePicker" placeholder="dd/mm/yyyy" />
+                <span class="input-group-text" data-td-target="#startDatePicker" data-td-toggle="datetimepicker">
+                    <i class="bi bi-calendar-event"></i>
+                </span>
+            </div>
+            <!-- ✅ Input ẨN này sẽ GỬI DỮ LIỆU đi, có thuộc tính 'name' -->
+            <input type="hidden" id="hiddenStartDate" name="startDate" />
+        </div>
+        <div class="col-md-6">
+            <label for="endDateDisplay" class="form-label fw-bold">Đến ngày</label>
+            <div class="input-group" id="endDatePicker" data-td-target-input="nearest" data-td-target-toggle="nearest">
+                <!-- ✅ Input này chỉ để HIỂN THỊ, không có thuộc tính 'name' -->
+                <input id="endDateDisplay" type="text" class="form-control" data-td-target="#endDatePicker" placeholder="dd/mm/yyyy" />
+                <span class="input-group-text" data-td-target="#endDatePicker" data-td-toggle="datetimepicker">
+                    <i class="bi bi-calendar-event"></i>
+                </span>
+            </div>
+            <!-- ✅ Input ẨN này sẽ GỬI DỮ LIỆU đi, có thuộc tính 'name' -->
+            <input type="hidden" id="hiddenEndDate" name="endDate" />
+        </div>
+    </div>
+    <!-- ============================================= -->
+
+                        <div class="mb-3">
+                            <label for="format" class="form-label fw-bold">Định dạng file</label>
+                            <!-- Thuộc tính 'name="format"' rất quan trọng, nó sẽ gửi giá trị đến API -->
+                            <select id="format" name="format" class="form-select">
+                                <option value="excel">Excel (.xlsx)</option>
+                                <option value="pdf" selected>PDF</option>
+                            </select>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-success w-100 py-2">
+                                <i class="bi bi-download me-2"></i> Tạo & Tải xuống
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- HÀNG 3: CÁC CARD CHỨC NĂNG -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <h5 class="dashboard-card-title"><i class="bi bi-clock-history text-info me-1"></i> Cập nhật gần đây
+                    </h5>
+                    <p class="text-muted">Bạn có thể xem danh sách cây mới được thêm hoặc chỉnh sửa gần đây.</p>
+                    <a href="/PlantsManager" class="btn btn-outline-success">Xem danh sách cây</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-body">
+                    <h5 class="dashboard-card-title"><i class="bi bi-gear text-warning me-1"></i> Quản lý hệ thống</h5>
+                    <p class="text-muted">Truy cập các chức năng quản lý người dùng, phân quyền và cài đặt.</p>
+                    <a href="/#" class="btn btn-outline-success">Quản lý người dùng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // ✅ SỬA LỖI: Xóa bỏ sampleData và lấy dữ liệu thật từ Model
+            const chartLabels = @Json.Serialize(Model.PlantTypeLabels);
+            const chartValues = @Json.Serialize(Model.PlantTypeValues);
+
+            // Kiểm tra xem có dữ liệu không trước khi vẽ biểu đồ
+            if (chartLabels.length > 0) {
+                const ctx = document.getElementById('plantTypeChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        // Sử dụng dữ liệu thật
+                        labels: chartLabels, 
+                        datasets: [{
+                            label: 'Numbers',
+                            // Sử dụng dữ liệu thật
+                            data: chartValues, 
+                            backgroundColor: [
+                                '#4CAF50', '#8BC34A', '#AED581', '#DCEDC8', 
+                                '#FFC107', '#FF9800', '#FF5722', '#795548'
+                            ],
+                            borderColor: '#fff',
+                            borderWidth: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { 
+                            legend: { 
+                                position: 'bottom', 
+                                labels: { 
+                                    padding: 20, 
+                                    font: { size: 14, weight: '500' }, 
+                                    color: '#388e3c' 
+                                } 
+                            } 
+                        },
+                        cutout: '65%'
+                    }
+                });
+            } else {
+                // Tùy chọn: Hiển thị thông báo nếu không có dữ liệu
+                const chartContainer = document.querySelector('.chart-container');
+                if(chartContainer) {
+                    chartContainer.innerHTML = '<p class="text-center text-muted mt-5">Chưa có dữ liệu để hiển thị biểu đồ.</p>';
+                }
+            }
+
+            // Nếu bạn có code cho date picker, hãy giữ nó ở đây
+            // Ví dụ: new tempusDominus.TempusDominus(...)
+
+
+
+             // ===== KHỞI TẠO TEMPUS DOMINUS DATE PICKER =====
+            const startDatePickerElement = document.getElementById('startDatePicker');
+            const endDatePickerElement = document.getElementById('endDatePicker');
+
+            // Cấu hình chung
+            const pickerOptions = {
+                localization: {
+                    format: 'dd/MM/yyyy', // Định dạng ngày tháng kiểu Việt Nam
+                    locale: 'vi' // Nếu bạn có file locale cho tiếng Việt
+                },
+                display: {
+                    icons: {
+                        date: 'bi bi-calendar-event',
+                        previous: 'bi bi-chevron-left',
+                        next: 'bi bi-chevron-right',
+                    },
+                    buttons: {
+                        today: true,
+                        clear: true,
+                        close: true
+                    }
+                }
+            };
+            
+            // Khởi tạo date picker
+            const startDatePicker = new tempusDominus.TempusDominus(startDatePickerElement, pickerOptions);
+            const endDatePicker = new tempusDominus.TempusDominus(endDatePickerElement, pickerOptions);
+
+            function updateHiddenInput(pickerElement, hiddenInputId) {
+    const hiddenInput = document.getElementById(hiddenInputId);
+    const date = pickerElement.dates.lastPicked;
+    if (date) {
+        // Chuyển đổi sang định dạng YYYY-MM-DD
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2);
+        const day = ('0' + date.getDate()).slice(-2);
+        hiddenInput.value = `${year}-${month}-${day}`;
+    } else {
+        hiddenInput.value = '';
+    }
+}
+
+// ✅ LẮNG NGHE SỰ KIỆN THAY ĐỔI VÀ CẬP NHẬT
+startDatePickerElement.addEventListener('change.td', function() {
+    updateHiddenInput(startDatePicker, 'hiddenStartDate');
+    const selectedDate = startDatePicker.dates.lastPicked;
+    if (selectedDate) {
+        endDatePicker.updateOptions({ restrictions: { minDate: selectedDate } });
+    }
+});
+
+endDatePickerElement.addEventListener('change.td', function() {
+    updateHiddenInput(endDatePicker, 'hiddenEndDate');
+    const selectedDate = endDatePicker.dates.lastPicked;
+    if (selectedDate) {
+        startDatePicker.updateOptions({ restrictions: { maxDate: selectedDate } });
+    }
+});
+        });
+
+
+
+
+
+
+    </script>
+}

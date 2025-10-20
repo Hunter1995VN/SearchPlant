@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
+    <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">$(UserProfile)\.nuget\packages\</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">C:\Users\nhiem\.nuget\packages\;C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages</NuGetPackageFolders>
+    <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">6.14.0</NuGetToolVersion>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <SourceRoot Include="C:\Users\nhiem\.nuget\packages\" />
+    <SourceRoot Include="C:\Program Files (x86)\Microsoft Visual Studio\Shared\NuGetPackages\" />
+  </ItemGroup>
+  <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.6\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.6\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore.design\8.0.6\build\net8.0\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore.design\8.0.6\build\net8.0\Microsoft.EntityFrameworkCore.Design.props')" />
+  </ImportGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\nhiem\.nuget\packages\microsoft.codeanalysis.analyzers\3.3.3</PkgMicrosoft_CodeAnalysis_Analyzers>
+    <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\nhiem\.nuget\packages\microsoft.entityframeworkcore.tools\8.0.6</PkgMicrosoft_EntityFrameworkCore_Tools>
+    <PkgGrapeCity_ActiveReports_SpreadBuilder Condition=" '$(PkgGrapeCity_ActiveReports_SpreadBuilder)' == '' ">C:\Users\nhiem\.nuget\packages\grapecity.activereports.spreadbuilder\2.2.0</PkgGrapeCity_ActiveReports_SpreadBuilder>
+    <PkgGrapeCity_ActiveReports_Core_DataProviders Condition=" '$(PkgGrapeCity_ActiveReports_Core_DataProviders)' == '' ">C:\Users\nhiem\.nuget\packages\grapecity.activereports.core.dataproviders\3.1.2</PkgGrapeCity_ActiveReports_Core_DataProviders>
+    <PkgGrapeCity_ActiveReports Condition=" '$(PkgGrapeCity_ActiveReports)' == '' ">C:\Users\nhiem\.nuget\packages\grapecity.activereports\18.2.2</PkgGrapeCity_ActiveReports>
+    <PkgGrapeCity_ActiveReports_Export_Xml Condition=" '$(PkgGrapeCity_ActiveReports_Export_Xml)' == '' ">C:\Users\nhiem\.nuget\packages\grapecity.activereports.export.xml\18.2.2</PkgGrapeCity_ActiveReports_Export_Xml>
+    <PkgGrapeCity_ActiveReports_Export_Word Condition=" '$(PkgGrapeCity_ActiveReports_Export_Word)' == '' ">C:\Users\nhiem\.nuget\packages\grapecity.activereports.export.word\18.2.2</PkgGrapeCity_ActiveReports_Export_Word>
+    <PkgGrapeCity_ActiveReports_Export_Pdf Condition=" '$(PkgGrapeCity_ActiveReports_Export_Pdf)' == '' ">C:\Users\nhiem\.nuget\packages\grapecity.activereports.export.pdf\18.2.2</PkgGrapeCity_ActiveReports_Export_Pdf>
+    <PkgGrapeCity_ActiveReports_Export_Image Condition=" '$(PkgGrapeCity_ActiveReports_Export_Image)' == '' ">C:\Users\nhiem\.nuget\packages\grapecity.activereports.export.image\18.2.2</PkgGrapeCity_ActiveReports_Export_Image>
+    <PkgGrapeCity_ActiveReports_Export_Html Condition=" '$(PkgGrapeCity_ActiveReports_Export_Html)' == '' ">C:\Users\nhiem\.nuget\packages\grapecity.activereports.export.html\18.2.2</PkgGrapeCity_ActiveReports_Export_Html>
+    <PkgGrapeCity_ActiveReports_Export_Excel Condition=" '$(PkgGrapeCity_ActiveReports_Export_Excel)' == '' ">C:\Users\nhiem\.nuget\packages\grapecity.activereports.export.excel\18.2.2</PkgGrapeCity_ActiveReports_Export_Excel>
+  </PropertyGroup>
+</Project>

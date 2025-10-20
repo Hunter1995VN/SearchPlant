@@ -1,0 +1,13 @@
+@page
+@model SearchPlant.Pages.VerifyEmail.IndexModel
+@{
+    ViewData["Title"] = "Xác thực Email";
+}
+<div class="container text-center mt-5">
+    <h1>@ViewData["Title"]</h1>
+    <p class="lead">@Model.Message</p>
+    @if (Model.IsSuccess)
+    {
+        <a asp-page="/Login/Index" class="btn btn-success">Tới trang Đăng nhập</a>
+    }
+</div>

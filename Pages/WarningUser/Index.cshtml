@@ -1,0 +1,27 @@
+﻿@page
+@model SearchPlant.Pages.WarningUser.IndexModel
+@{
+    ViewData["Title"] = "Warning";
+}
+
+<div class="text-center mt-5">
+    <h1 class="text-warning">⚠️ Warning</h1>
+    <p>Bạn không được phép truy cập vào trang này hoặc hành động này không hợp lệ.</p>
+    <p id="countdown">Quay về trang chủ sau 5 giây...</p>
+    <a class="btn btn-primary" href="/">Về trang chủ ngay</a>
+</div>
+
+@section Scripts {
+    <script>
+        let seconds = 5;
+        const countdown = document.getElementById("countdown");
+        const interval = setInterval(() => {
+            seconds--;
+            countdown.innerText = `Quay về trang chủ sau ${seconds} giây...`;
+            if (seconds <= 0) {
+                clearInterval(interval);
+                window.location.href = "/";
+            }
+        }, 1000);
+    </script>
+}

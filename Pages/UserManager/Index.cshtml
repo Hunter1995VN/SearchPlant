@@ -1,0 +1,132 @@
+﻿@page
+@model SearchPlant.Pages.UsersManager.IndexModel
+@{
+    ViewData["Title"] = "Quản lý người dùng";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-1">Danh sách người dùng</h4>
+            <p class="text-muted mb-0">Quản lý, phân quyền và trạng thái của người dùng trong hệ thống.</p>
+        </div>
+        <a href="#" class="btn btn-success rounded-pill px-4 py-2">
+            <i class="bi bi-plus-lg me-2"></i>Thêm người dùng
+        </a>
+    </div>
+
+    <!-- Main Content Card -->
+    <div class="card shadow-sm border-0" style="border-radius: 1rem;">
+        <div class="card-body p-4">
+            <!-- Filter & Search Bar -->
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                <form method="get" class="d-flex align-items-center gap-2">
+                    <label for="statusFilter" class="form-label mb-0 text-nowrap">Lọc theo:</label>
+                    <select class="form-select form-select-sm" id="statusFilter" name="StatusFilter" onchange="this.form.submit()" style="width: auto;">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Active" selected="@(Model.StatusFilter == "Active")">Active</option>
+                        <option value="Inactive" selected="@(Model.StatusFilter == "Inactive")">Inactive</option>
+                    </select>
+                </form>
+                <form method="get" style="max-width: 300px;">
+                    <input type="hidden" name="StatusFilter" value="@Model.StatusFilter" />
+                    <input class="form-control rounded-pill" type="search" name="CurrentFilter" value="@Model.CurrentFilter" placeholder="Tìm kiếm theo tên hoặc email...">
+                </form>
+            </div>
+
+            <!-- Users Table -->
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Họ và tên</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Vai trò</th>
+                            <th scope="col">Ngày tạo</th>
+                            <th scope="col">Trạng thái</th>
+                            <th scope="col" class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="@(user.Avatarurl ?? "/images/avatar.png")" alt="Avatar" class="rounded-circle me-3" width="40" height="40" style="object-fit: cover;" />
+                                        <span class="fw-semibold">@user.Username</span>
+                                    </div>
+                                </td>
+                                <td>@user.Email</td>
+                                <td>
+                                    @if (user.Role == "Admin")
+                                    {
+                                        <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill">@user.Role</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">@user.Role</span>
+                                    }
+                                </td>
+                                <td>
+                                @user.CreatedAt?.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    <form method="post" asp-page-handler="ChangeStatus">
+                                        <input type="hidden" name="userId" value="@user.Userid" />
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm dropdown-toggle w-100 d-flex justify-content-between align-items-center @(user.Status == "Active" ? "btn-outline-success" : "btn-outline-secondary")" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                @user.Status
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button type="submit" name="newStatus" value="Active" class="dropdown-item">
+                                                        <i class="bi bi-check-circle-fill text-success me-2"></i>Active
+                                                    </button>
+                                                </li>
+                                                <li>
+                                                    <button type="submit" name="newStatus" value="Inactive" class="dropdown-item">
+                                                        <i class="bi bi-x-circle-fill text-secondary me-2"></i>Inactive
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </form>
+                                </td>
+                                <td class="text-center">
+                                    <a asp-page="/EditUser/Index" asp-route-id="@user.Userid" class="btn btn-sm text-secondary" title="Chỉnh sửa"><i class="bi bi-pencil-square fs-5"></i></a>
+                                    <button class="btn btn-sm text-danger" title="Xóa" onclick="confirmDelete(@user.Userid, '@user.Username')"><i class="bi bi-trash fs-5"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(userId, userName) {
+            Swal.fire({
+                title: 'Bạn có chắc chắn?',
+                text: `Bạn sẽ xóa người dùng "${userName}". Hành động này không thể hoàn tác!`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Đồng ý, xóa!',
+                cancelButtonText: 'Hủy bỏ'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // TODO: Tạo một form Post để xử lý việc xóa
+                    // Ví dụ: document.getElementById('deleteForm-' + userId).submit();
+                    Swal.fire( 'Đã xóa!', `Người dùng "${userName}" đã được xóa.`, 'success' );
+                }
+            });
+        }
+    </script>
+}

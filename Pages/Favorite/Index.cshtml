@@ -1,0 +1,144 @@
+﻿@page
+@model SearchPlant.Pages.Favorite.IndexModel
+@{
+    ViewData["Title"] = "Cây yêu thích";
+}
+ 
+<div class="container my-5 favorites-page">
+    <!-- Header -->
+    <div class="d-flex align-items-center mb-5">
+        <i class="bi bi-heart-fill favorite-header-icon me-3"></i>
+        <h1 class="mb-0 favorite-title">Danh sách yêu thích của tôi</h1>
+    </div>
+ 
+    @if (Model.FavoritePlants != null && Model.FavoritePlants.Any())
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4" id="favorites-list">
+            @foreach (var plant in Model.FavoritePlants)
+            {
+                <div class="col" id="plant-card-@plant.Plantid">
+                    <div class="card h-100 plant-card position-relative shadow-sm border-0">
+                        <!-- Favorites Button -->
+                        <button class="favorite-toggle-btn active" data-plant-id="@plant.Plantid" data-is-favorited="true" data-bs-toggle="tooltip" title="Bỏ yêu thích">
+                            <i class="bi bi-heart-fill"></i>
+                        </button>
+                        <!-- Plant Image -->
+                        <a href="/Detail/@plant.Plantid" class="text-decoration-none">
+                            <img src="@(string.IsNullOrEmpty(plant.Imagepath) ? "/images/placeholder.png" : plant.Imagepath)" class="card-img-top plant-image" alt="@plant.Plantname">
+                        </a>
+                        <!-- Card Body -->
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">
+                                <a href="/Detail/@plant.Plantid" class="text-decoration-none text-dark stretched-link">@plant.Plantname</a>
+                            </h5>
+                            <p class="card-text text-muted small fst-italic">@plant.Scientificname</p>
+                            <div class="mt-2 small">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-pin-map-fill text-success me-2"></i>
+                                    <span><strong>Vùng trồng:</strong> @(plant.Regions.FirstOrDefault()?.Regionname ?? "N/A")</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-arrow-repeat text-success me-2"></i>
+                                    <span><strong>Chu kỳ:</strong> @(plant.Cycle?.Cyclename ?? "N/A")</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <!-- Empty State -->
+        <div class="text-center p-5 border rounded bg-light mt-5 empty-state" id="no-favorites-message">
+            <i class="bi bi-bookmarks empty-state-icon"></i>
+            <h4 class="mt-3">Danh sách yêu thích đang trống</h4>
+            <p class="text-muted">Hãy khám phá và lưu lại những cây trồng bạn yêu thích!</p>
+            <a href="/Search" class="btn btn-success btn-explore mt-3">
+                <i class="bi bi-search me-2"></i>Tìm kiếm cây trồng
+            </a>
+        </div>
+    }
+</div>
+ 
+@section Scripts {
+    <!-- JavaScript for Favorites Functionality -->
+    <script>
+        $(document).ready(function () {
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            // If no token is present, append it
+            if (!token) {
+                $('body').append('@Html.AntiForgeryToken()');
+                token = $('input[name="__RequestVerificationToken"]').val();
+            }
+ 
+            // Initialize tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+ 
+            // Handle favorite button click
+            $('#favorites-list').on('click', '.favorite-toggle-btn', function () {
+                var button = $(this);
+                var isFavorited = button.data('is-favorited') === true;
+ 
+                if (!isFavorited) return;
+ 
+                if (!confirm("Bạn có muốn xóa cây này khỏi danh sách yêu thích không?")) {
+                    return;
+                }
+ 
+                var plantId = button.data('plant-id');
+                $.ajax({
+                    type: 'DELETE',
+                    url: `/api/Favorites/${plantId}`,
+                    headers: {
+                        "RequestVerificationToken": token
+                    },
+                    success: function () {
+                        // Update UI (remove card and trigger event)
+                        updateFavoriteStatus(button, false);
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi, không thể bỏ yêu thích.");
+                    }
+                });
+            });
+ 
+            function updateFavoriteStatus(buttonElement, newIsFavoritedState) {
+                // Part 1: Remove card from UI
+                if (!newIsFavoritedState) {
+                    var cardWrapper = buttonElement.closest('.col');
+                    cardWrapper.fadeOut(400, function () {
+                        $(this).remove();
+                        // Check if list is empty
+                        if ($('#favorites-list .col').length === 0) {
+                            // Replace with empty state
+                            $('#favorites-list').replaceWith(`
+                                <div class="text-center p-5 border rounded bg-light mt-5 empty-state" id="no-favorites-message">
+                                    <i class="bi bi-bookmarks empty-state-icon"></i>
+                                    <h4 class="mt-3">Danh sách yêu thích đang trống</h4>
+                                    <p class="text-muted">Hãy khám phá và lưu lại những cây trồng bạn yêu thích!</p>
+                                    <a href="/Search" class="btn btn-success btn-explore mt-3">
+                                        <i class="bi bi-search me-2"></i>Tìm kiếm cây trồng
+                                    </a>
+                                </div>
+                            `);
+                            // Re-initialize tooltips for new elements
+                            $('[data-bs-toggle="tooltip"]').tooltip();
+                        }
+                    });
+                }
+ 
+                // Part 2: Update header counter
+                const counterBadge = document.getElementById('favorites-counter-badge');
+                if (counterBadge) {
+                    let currentCount = parseInt(counterBadge.textContent) || 0;
+                    const newCount = Math.max(0, currentCount - 1);
+                    const updateEvent = new CustomEvent('favoritesUpdated', { detail: { count: newCount } });
+                    document.dispatchEvent(updateEvent);
+                }
+            }
+        });
+    </script>
+}
+ 
