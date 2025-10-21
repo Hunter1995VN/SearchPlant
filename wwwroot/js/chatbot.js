@@ -46,6 +46,65 @@
   `;
   document.body.appendChild(container);
 
+  const CHAT_STORAGE_KEY = 'chatbotHistory.v1';
+  const CONTEXT_STORAGE_KEY = 'chatbotLastPlant';
+  let chatHistory = [];
+  let lastPlantName = null;
+
+  function escapeHtml(value) {
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function saveHistory() {
+    try {
+      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chatHistory));
+    } catch (e) {
+      console.warn('Không thể lưu lịch sử chatbot:', e);
+    }
+  }
+
+  function setLastPlantName(name) {
+    lastPlantName = name || null;
+    try {
+      if (lastPlantName) {
+        localStorage.setItem(CONTEXT_STORAGE_KEY, lastPlantName);
+      } else {
+        localStorage.removeItem(CONTEXT_STORAGE_KEY);
+      }
+    } catch (e) {
+      console.warn('Không thể lưu tên cây gần nhất:', e);
+    }
+  }
+
+  function loadStoredState() {
+    try {
+      const storedHistory = localStorage.getItem(CHAT_STORAGE_KEY);
+      const storedPlant = localStorage.getItem(CONTEXT_STORAGE_KEY);
+      if (storedPlant) {
+        lastPlantName = storedPlant;
+      }
+      if (storedHistory) {
+        const parsed = JSON.parse(storedHistory);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const welcome = container.querySelector('.chatbot-welcome');
+          if (welcome) welcome.remove();
+          parsed.forEach(msg => {
+            addMessage(msg.text || '', !!msg.isUser, msg.imageUrl || null, msg.detailUrl || null, true);
+          });
+          chatHistory = parsed;
+        }
+      }
+    } catch (e) {
+      console.warn('Không thể tải lịch sử chatbot:', e);
+      chatHistory = [];
+    }
+  }
+
   // Toggle button functionality
   toggleBtn.onclick = function() {
     container.classList.toggle('chatbot-hidden');
@@ -59,19 +118,36 @@
   };
 
   // Message rendering with animation and max length
-  function addMessage(text, isUser) {
+  function addMessage(text, isUser, imageUrl = null, detailUrl = null, skipSave = false) {
     const messages = container.querySelector('#chatbotMessages');
+    const welcome = messages.querySelector('.chatbot-welcome');
+    if (welcome) welcome.remove();
     const msgDiv = document.createElement('div');
     msgDiv.className = 'chatbot-message' + (isUser ? ' user' : ' bot');
     msgDiv.style.opacity = '0';
     msgDiv.style.transform = 'translateY(10px)';
+
+    const normalizedText = text == null ? '' : String(text);
+    const safeText = escapeHtml(normalizedText).replace(/\n/g, '<br>');
+    const safeDetailUrl = detailUrl ? escapeHtml(detailUrl) : null;
+    const safeImageUrl = imageUrl ? escapeHtml(imageUrl) : null;
+    let imgHtml = '';
+    let detailHtml = '';
     
-    // Giới hạn độ dài tin nhắn hiển thị
-    let displayText = text;
-    if (text.length > 600) {
-      displayText = text.substring(0, 600) + '...';
+    // Nếu có imageUrl được truyền vào từ API, hiển thị ảnh
+    if (safeImageUrl && safeImageUrl.trim() !== '') {
+      if (safeDetailUrl) {
+        imgHtml = `<div class="chatbot-image"><a class="chatbot-detail-link" href="${safeDetailUrl}" target="_blank" rel="noopener noreferrer"><img src="${safeImageUrl}" style="max-width:100%;border-radius:12px" alt="Plant image"></a></div>`;
+      } else {
+        imgHtml = `<div class="chatbot-image"><img src="${safeImageUrl}" style="max-width:100%;border-radius:12px" alt="Plant image"></div>`;
+      }
     }
-    msgDiv.innerHTML = `<div class="bubble">${displayText}</div>`;
+
+    if (safeDetailUrl) {
+      detailHtml = `<div class="chatbot-detail-tip">Nhấn vào ảnh hoặc <a class="chatbot-detail-link" href="${safeDetailUrl}" target="_blank" rel="noopener noreferrer">mở trang chi tiết</a> để xem hướng dẫn đầy đủ.</div>`;
+    }
+
+    msgDiv.innerHTML = `<div class="bubble"><div class="chatbot-bubble-content">${safeText}</div>${imgHtml}${detailHtml}</div>`;
     messages.appendChild(msgDiv);
     
     // Animation fade in
@@ -84,7 +160,17 @@
     setTimeout(() => {
       messages.scrollTop = messages.scrollHeight;
     }, 100);
+
+    if (!skipSave) {
+      chatHistory.push({ text: normalizedText, isUser, imageUrl: imageUrl || null, detailUrl: detailUrl || null });
+      if (chatHistory.length > 100) {
+        chatHistory = chatHistory.slice(-100);
+      }
+      saveHistory();
+    }
   }
+
+  loadStoredState();
 
   // Handle form submit
   container.querySelector('.chatbot-input').onsubmit = function(e) {
@@ -107,13 +193,24 @@
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ message: text })
+      body: JSON.stringify({
+        message: text,
+        contextPlant: lastPlantName || null
+      })
     })
     .then(res => res.json())
     .then(data => {
       messages.removeChild(loadingDiv);
       if (data.reply) {
-        addMessage(data.reply, false);
+        addMessage(data.reply, false, data.imageUrl, data.detailUrl || null);
+        if (data.plantName) {
+          setLastPlantName(data.plantName);
+        } else {
+          const plantMatch = data.reply.match(/Plant:\s*(.+)/i);
+          if (plantMatch) {
+            setLastPlantName(plantMatch[1].trim());
+          }
+        }
       } else {
         addMessage('Không nhận được phản hồi từ AI.', false);
       }
