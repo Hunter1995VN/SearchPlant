@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SearchPlant")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a728bfa892f254c9c2fb07cc2860387438e3b3e2")]
 [assembly: System.Reflection.AssemblyProductAttribute("SearchPlant")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SearchPlant")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

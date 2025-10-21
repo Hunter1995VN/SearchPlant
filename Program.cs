@@ -56,6 +56,9 @@ builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpS
 // Đăng ký EmailService
 builder.Services.AddTransient<IEmailService, EmailService>();
 
+// Đăng ký IHttpClientFactory cho GeminiChatController
+builder.Services.AddHttpClient();
+
 
 var app = builder.Build();
 
