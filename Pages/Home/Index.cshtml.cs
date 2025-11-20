@@ -21,23 +21,37 @@ namespace SearchPlant.Pages.Home
         public Dictionary<int, (double Average, int Count)> PlantRatings { get; set; } = new();
 
         public List<Plant> TopRatedPlants { get; set; } = new();
-        public async Task OnGetAsync([FromQuery] int page = 1)
+        public string SortOrder { get; set; } = "newest";
+        
+        public async Task OnGetAsync([FromQuery] int page = 1, [FromQuery] string sortOrder = "newest")
         {
-
+            SortOrder = sortOrder;
             int pageSize = 6;
             int totalCount = await _context.Plants.CountAsync();
 
             TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
             CurrentPage = page;
 
+            // Áp dụng sắp xếp
+            IQueryable<Plant> query = _context.Plants
+                .Include(p => p.Cycle)
+                .Include(p => p.Regions);
 
-            Plants = await _context.Plants
-         .Include(p => p.Cycle)
-         .Include(p => p.Regions)
-         .OrderBy(p => p.Plantname)
-         .Skip((page - 1) * pageSize)
-         .Take(pageSize)
-         .ToListAsync();
+            switch (sortOrder)
+            {
+                case "name_asc":
+                    query = query.OrderBy(p => p.Plantname);
+                    break;
+                case "newest":
+                default:
+                    query = query.OrderByDescending(p => p.Plantid); // Giả sử ID tăng theo thời gian
+                    break;
+            }
+
+            Plants = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             var PlantsIdOnPages = Plants.Select(a => a.Plantid).ToList();
             if (PlantsIdOnPages.Any())

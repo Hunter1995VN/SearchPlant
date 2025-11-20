@@ -8,12 +8,126 @@
 <link rel="stylesheet" href="/css/sites.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
+@{
+    // Helper function to build query string with all filters
+    string BuildQueryString(int pageNum)
+    {
+        var queryParams = new System.Collections.Generic.List<string>();
+        if (!string.IsNullOrEmpty(Model.Query)) queryParams.Add($"query={Uri.EscapeDataString(Model.Query)}");
+        if (Model.FilterTypeId.HasValue) queryParams.Add($"FilterTypeId={Model.FilterTypeId}");
+        if (Model.FilterRegionId.HasValue) queryParams.Add($"FilterRegionId={Model.FilterRegionId}");
+        if (Model.FilterCycleId.HasValue) queryParams.Add($"FilterCycleId={Model.FilterCycleId}");
+        if (Model.FilterSeasonId.HasValue) queryParams.Add($"FilterSeasonId={Model.FilterSeasonId}");
+        if (Model.FilterSoilId.HasValue) queryParams.Add($"FilterSoilId={Model.FilterSoilId}");
+        if (Model.FilterFertilizerId.HasValue) queryParams.Add($"FilterFertilizerId={Model.FilterFertilizerId}");
+        if (Model.FilterDiseaseId.HasValue) queryParams.Add($"FilterDiseaseId={Model.FilterDiseaseId}");
+        if (Model.FilterPropertyId.HasValue) queryParams.Add($"FilterPropertyId={Model.FilterPropertyId}");
+        if (Model.FilterWateringId.HasValue) queryParams.Add($"FilterWateringId={Model.FilterWateringId}");
+        if (Model.FilterStatusId.HasValue) queryParams.Add($"FilterStatusId={Model.FilterStatusId}");
+        queryParams.Add($"SortOrder={Model.SortOrder}");
+        queryParams.Add($"Pagenum={pageNum}");
+        return "?" + string.Join("&", queryParams);
+    }
+}
+
 <main class="container py-4 mb-5 search-page">
     <div class="mb-4">
         <h2 class="fw-bold" style="color:#388e3c;">Kết quả tìm kiếm cho: "<span
                 style="color:#2e7d32">@Model.Query</span>"</h2>
         <hr>
     </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar mb-4">
+        <form method="get" id="filter-form">
+            <input type="hidden" name="Query" value="@Model.Query" />
+            <input type="hidden" name="Pagenum" value="1" />
+            <div class="row g-3">
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Loại cây</label>
+                    <select class="form-select auto-submit-filter" asp-for="FilterTypeId"
+                        asp-items="Model.PlantTypes">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Vùng trồng</label>
+                    <select class="form-select auto-submit-filter" asp-for="FilterRegionId"
+                        asp-items="Model.Regions">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Chu kỳ</label>
+                    <select class="form-select auto-submit-filter" asp-for="FilterCycleId"
+                        asp-items="Model.Cycles">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Mùa vụ</label>
+                    <select class="form-select auto-submit-filter" asp-for="FilterSeasonId"
+                        asp-items="Model.Seasons">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Loại đất</label>
+                    <select class="form-select auto-submit-filter" asp-for="FilterSoilId"
+                        asp-items="Model.SoilTypes">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Phân bón</label>
+                    <select class="form-select auto-submit-filter" asp-for="FilterFertilizerId"
+                        asp-items="Model.Fertilizers">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Bệnh</label>
+                    <select class="form-select auto-submit-filter" asp-for="FilterDiseaseId"
+                        asp-items="Model.Diseases">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Đặc tính</label>
+                    <select class="form-select auto-submit-filter" asp-for="FilterPropertyId"
+                        asp-items="Model.Properties">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Tưới nước</label>
+                    <select class="form-select auto-submit-filter" asp-for="FilterWateringId"
+                        asp-items="Model.WateringMethods">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Bảo tồn</label>
+                    <select class="form-select auto-submit-filter" asp-for="FilterStatusId"
+                        asp-items="Model.ConservationStatuses">
+                        <option value="">Tất cả</option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-lg-2">
+                    <label class="form-label fw-500 text-muted small">Sắp xếp</label>
+                    <select class="form-select auto-submit-filter" asp-for="SortOrder">
+                        <option value="name_asc">Tên A-Z</option>
+                        <option value="name_desc">Tên Z-A</option>
+                        <option value="date_desc">Mới nhất</option>
+                        <option value="date_asc">Cũ nhất</option>
+                        <option value="id_asc">ID Tăng dần</option>
+                        <option value="id_desc">ID Giảm dần</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+
     @if (Model.Results.Count == 0)
     {
         <div class="alert alert-warning mt-4" style="font-size:1.1rem;">
@@ -48,7 +162,7 @@
 </a>
     @if (User.IsInRole("Admin"))
     {
-        <a href="/EditPlant/@plant.Plantid?returnUrl=@Uri.EscapeDataString(backUrl)" class="btn btn-outline-primary">
+        <a href="/EditPlant/@plant.Plantid?returnUrl=@Uri.EscapeDataString(BuildQueryString(Model.PageIndex))" class="btn btn-outline-primary">
             <i class="bi bi-pencil-fill"></i> Sửa
         </a>
         <button class="btn btn-outline-danger" onclick="confirmDelete(@plant.Plantid, '@plant.Plantname')">
@@ -66,18 +180,18 @@
         <nav aria-label="Pagination" class="mt-4">
             <ul class="pagination justify-content-center">
                 <li class="page-item @(Model.PageIndex <= 1 ? "disabled" : "")">
-                    <a class="page-link" href="?query=@Model.Query&Pagenum=@(Model.PageIndex - 1)" aria-label="Trang trước">
+                    <a class="page-link" href="@BuildQueryString(Model.PageIndex - 1)" aria-label="Trang trước">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 @for (int i = 1; i <= Model.TotalPages; i++)
                 {
                     <li class="page-item @(i == Model.PageIndex ? "active" : "")">
-                        <a class="page-link" href="?query=@Model.Query&Pagenum=@i">@i</a>
+                        <a class="page-link" href="@BuildQueryString(i)">@i</a>
                     </li>
                 }
                 <li class="page-item @(Model.PageIndex >= Model.TotalPages ? "disabled" : "")">
-                    <a class="page-link" href="?query=@Model.Query&Pagenum=@(Model.PageIndex + 1)" aria-label="Trang sau">
+                    <a class="page-link" href="@BuildQueryString(Model.PageIndex + 1)" aria-label="Trang sau">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -90,4 +204,14 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/js/sites.js"></script>
+    <script>
+        // Auto-submit filter form
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.auto-submit-filter').forEach(function(select) {
+                select.addEventListener('change', function() {
+                    document.getElementById('filter-form').submit();
+                });
+            });
+        });
+    </script>
 }

@@ -59,6 +59,21 @@
 
         <hr class="mb-5">
  
+        <!-- Filter Bar cho trang Home -->
+        <div class="filter-bar mb-4">
+            <form method="get" id="filter-form">
+                <div class="row g-3 justify-content-center">
+                    <div class="col-md-4 col-lg-3">
+                        <label class="form-label fw-500 text-muted small">Sắp xếp</label>
+                        <select class="form-select auto-submit-filter" name="sortOrder">
+                            <option value="newest" selected="@(Model.SortOrder == "newest")">Mới nhất</option>
+                            <option value="name_asc" selected="@(Model.SortOrder == "name_asc")">Tên A-Z</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+ 
         <!-- Danh sách cây trồng -->
         <h4 class="section-title">🌿 Danh sách cây trồng</h4>
         @if (Model.Plants.Count == 0)
@@ -180,6 +195,13 @@
                         slidesPerView: 4,
                     }
                 }
+            });
+        });
+
+        // Auto-submit filter form
+        document.querySelectorAll('.auto-submit-filter').forEach(function(select) {
+            select.addEventListener('change', function() {
+                document.getElementById('filter-form').submit();
             });
         });
     </script>
