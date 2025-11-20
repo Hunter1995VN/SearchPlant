@@ -21,6 +21,22 @@
 </head>
 
 <body class="main-layout">
+    <!-- Global Natural Background -->
+    <div class="global-background">
+        <!-- Floating Leaves -->
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+        <div class="floating-leaf"></div>
+
+        <!-- Floating Flowers -->
+        <div class="floating-flower"></div>
+        <div class="floating-flower"></div>
+        <div class="floating-flower"></div>
+    </div>
+
+    <div class="page-container">
     <header class="main-header">
         <div class="main-header-container">
             <!-- Nhóm bên trái: Logo và Menu -->
@@ -209,6 +225,7 @@
             }
         });
     </script>
-    @await RenderSectionAsync("Scripts", required: false)
+    @RenderSection("Scripts", required: false)
+    </div> <!-- End page-container -->
 </body>
 </html>

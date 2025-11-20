@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchPlant", "SearchPlant.csproj", "{F50164E0-89C9-DBF6-3B4F-9E7C8FEA5C5B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F50164E0-89C9-DBF6-3B4F-9E7C8FEA5C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F50164E0-89C9-DBF6-3B4F-9E7C8FEA5C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F50164E0-89C9-DBF6-3B4F-9E7C8FEA5C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F50164E0-89C9-DBF6-3B4F-9E7C8FEA5C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9B1854D2-BBD5-4336-8916-55AEE83E8945}
+	EndGlobalSection
+EndGlobal

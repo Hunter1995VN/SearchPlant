@@ -1,0 +1,333 @@
+﻿@page
+@model SearchPlant.Pages.Diagnosis.IndexModel
+@{
+    ViewData["Title"] = "Chẩn đoán cây";
+}
+
+<link rel="stylesheet" href="~/css/diagnosis.css" />
+
+<div class="diagnosis-container">
+    <div class="diagnosis-card">
+        <div class="diagnosis-header">
+            <h1 class="diagnosis-title">
+                <i class="bi bi-prescription2"></i> Chẩn đoán sức khỏe cây trồng
+            </h1>
+            <p class="diagnosis-subtitle">
+                <i class="bi bi-info-circle"></i>
+                Tải ảnh cây lên để nhận dạng loài và phát hiện bệnh
+            </p>
+        </div>
+
+        <div class="diagnosis-body">
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible fade show status-alert" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    @Html.Raw(Model.ErrorMessage)
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <form method="post" enctype="multipart/form-data" id="diagnosisForm">
+                <div class="upload-zone">
+                    <div class="upload-icon">
+                        <i class="bi bi-image"></i>
+                    </div>
+                    <div class="upload-text">Chọn ảnh cây trồng</div>
+                    <div class="upload-hint">hoặc kéo thả file vào đây</div>
+                    <input type="file"
+                           name="PlantImage"
+                           class="file-input"
+                           accept="image/jpeg,image/jpg,image/png"
+                           required
+                           id="imageInput" />
+                    <div class="form-text mt-2">
+                        <i class="bi bi-info-circle"></i>
+                        Chấp nhận file JPG, JPEG, PNG. Tối đa 10MB.
+                    </div>
+                </div>
+
+                <div id="imagePreview" class="image-preview" style="display:none;">
+                    <div class="preview-container">
+                        <img id="preview" src="" alt="Preview" class="preview-image" />
+                    </div>
+                </div>
+
+                <button type="submit" class="diagnose-button" id="submitBtn">
+                    <i class="bi bi-search"></i> Bắt đầu chẩn đoán
+                </button>
+            </form>
+
+            @if (Model.Response != null)
+            {
+                <div class="results-section">
+                    <!-- Uploaded Image -->
+                    @if (!string.IsNullOrEmpty(Model.UploadedImageBase64))
+                    {
+                        <div class="result-card">
+                            <div class="result-header success">
+                                <i class="bi bi-image-fill"></i> Ảnh đã tải lên
+                            </div>
+                            <div class="result-body text-center">
+                                <img src="@Model.UploadedImageBase64"
+                                     alt="Uploaded plant"
+                                     class="img-fluid rounded preview-image" />
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Plant Detection Status -->
+                    @if (Model.Response.IsPlant != null)
+                    {
+                        <div class="status-alert @(Model.Response.IsPlant.Binary ? "success" : "warning")">
+                            <h5 class="alert-heading">
+                                @if (Model.Response.IsPlant.Binary)
+                                {
+                                    <i class="bi bi-check-circle-fill"></i> <text>Đây là cây trồng</text>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-exclamation-triangle-fill"></i> <text>Không phải cây trồng</text>
+                                }
+                            </h5>
+                            <p class="mb-0">
+                                Độ tin cậy: <strong>@($"{Model.Response.IsPlant.Probability * 100:0.00}%")</strong>
+                            </p>
+                        </div>
+                    }
+
+                    <!-- Health Status -->
+                    @if (Model.Response.IsHealthy != null)
+                    {
+                        <div class="status-alert @(Model.Response.IsHealthy.Binary ? "success" : "danger")">
+                            <h5 class="alert-heading">
+                                @if (Model.Response.IsHealthy.Binary)
+                                {
+                                    <i class="bi bi-heart-fill"></i> <text>Cây khỏe mạnh</text>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-heartbreak-fill"></i> <text>Cây có vấn đề về sức khỏe</text>
+                                }
+                            </h5>
+                            <p class="mb-0">
+                                Độ tin cậy: <strong>@($"{Model.Response.IsHealthy.Probability * 100:0.00}%")</strong>
+                            </p>
+                        </div>
+                    }
+
+                    <!-- Plant Classification -->
+                    @if (Model.Response.Result?.Classification?.Suggestions?.Any() == true)
+                    {
+                        <div class="result-card">
+                            <div class="result-header">
+                                <i class="bi bi-flower2"></i> Nhận dạng loài thực vật
+                            </div>
+                            <div class="result-body">
+                                @foreach (var suggestion in Model.Response.Result.Classification.Suggestions.Take(3))
+                                {
+                                    <div class="plant-suggestion">
+                                        <h5 class="text-success mb-3">
+                                            <i class="bi bi-leaf-fill"></i> @suggestion.Name
+                                        </h5>
+
+                                        <div class="confidence-bar mb-3">
+                                            <div class="confidence-fill" style="width: @($"{suggestion.Probability * 100}%")">
+                                                @($"{suggestion.Probability * 100:0.00}%")
+                                            </div>
+                                        </div>
+
+                                        @if (suggestion.Details?.CommonNames?.Any() == true)
+                                        {
+                                            <p class="mb-2">
+                                                <strong><i class="bi bi-tag-fill"></i> Tên thường gọi:</strong>
+                                                @string.Join(", ", suggestion.Details.CommonNames)
+                                            </p>
+                                        }
+
+                                        @if (!string.IsNullOrEmpty(suggestion.Details?.Description?.Value))
+                                        {
+                                            <div class="mt-2">
+                                                <strong><i class="bi bi-info-circle-fill"></i> Mô tả:</strong>
+                                                <p class="text-muted">@suggestion.Details.Description.Value</p>
+                                            </div>
+                                        }
+
+                                        @if (!string.IsNullOrEmpty(suggestion.Details?.Url))
+                                        {
+                                            <a href="@suggestion.Details.Url"
+                                               target="_blank"
+                                               class="btn btn-sm btn-outline-primary mt-2">
+                                                <i class="bi bi-link-45deg"></i> Xem thêm thông tin
+                                            </a>
+                                        }
+
+                                        @if (suggestion.SimilarImages?.Any() == true)
+                                        {
+                                            <div class="image-gallery mt-3">
+                                                @foreach (var img in suggestion.SimilarImages.Take(4))
+                                                {
+                                                    <div class="gallery-item">
+                                                        <img src="@(img.UrlSmall ?? img.Url ?? string.Empty)"
+                                                             data-full-src="@(img.Url ?? img.UrlSmall ?? string.Empty)"
+                                                             alt="Similar plant"
+                                                             class="result-thumbnail" />
+                                                        <small class="text-center">@($"{img.Similarity * 100:0}%")</small>
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Disease Detection -->
+                    @if (Model.Response.Result?.Disease?.Suggestions?.Any() == true)
+                    {
+                        <div class="result-card">
+                            <div class="result-header danger">
+                                <i class="bi bi-bug-fill"></i> Chẩn đoán bệnh
+                            </div>
+                            <div class="result-body">
+                                @foreach (var disease in Model.Response.Result.Disease.Suggestions.Take(3))
+                                {
+                                    <div class="disease-suggestion">
+                                        <h5 class="text-danger mb-3">
+                                            <i class="bi bi-exclamation-circle-fill"></i> @disease.Name
+                                        </h5>
+
+                                        <div class="confidence-bar mb-3">
+                                            <div class="confidence-fill danger" style="width: @($"{disease.Probability * 100}%")">
+                                                @($"{disease.Probability * 100:0.00}%")
+                                            </div>
+                                        </div>
+
+                                        @if (disease.Details != null)
+                                        {
+                                            @if (disease.Details.CommonNames?.Any() == true)
+                                            {
+                                                <p class="mb-2">
+                                                    <strong><i class="bi bi-tag"></i> Tên khác:</strong>
+                                                    @string.Join(", ", disease.Details.CommonNames)
+                                                </p>
+                                            }
+
+                                            @if (!string.IsNullOrEmpty(disease.Details.Description))
+                                            {
+                                                <div class="alert alert-light mb-2">
+                                                    <strong><i class="bi bi-card-text"></i> Mô tả:</strong>
+                                                    <p class="mb-0 mt-1">@disease.Details.Description</p>
+                                                </div>
+                                            }
+
+                                            @if (!string.IsNullOrEmpty(disease.Details.Cause))
+                                            {
+                                                <div class="alert alert-warning mb-2">
+                                                    <strong><i class="bi bi-lightning-fill"></i> Nguyên nhân:</strong>
+                                                    <p class="mb-0 mt-1">@disease.Details.Cause</p>
+                                                </div>
+                                            }
+
+                                            @if (disease.Details.Treatment != null)
+                                            {
+                                                <div class="treatment-section">
+                                                    <h6 class="treatment-title">
+                                                        <i class="bi bi-capsule"></i> Phương pháp điều trị:
+                                                    </h6>
+
+                                                    @if (disease.Details.Treatment.Prevention?.Any() == true)
+                                                    {
+                                                        <div class="mb-2">
+                                                            <strong class="text-primary">Phòng ngừa:</strong>
+                                                            <ul class="treatment-list mb-0">
+                                                                @foreach (var item in disease.Details.Treatment.Prevention)
+                                                                {
+                                                                    <li>@item</li>
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    }
+
+                                                    @if (disease.Details.Treatment.Biological?.Any() == true)
+                                                    {
+                                                        <div class="mb-2">
+                                                            <strong class="text-success">Sinh học:</strong>
+                                                            <ul class="treatment-list mb-0">
+                                                                @foreach (var item in disease.Details.Treatment.Biological)
+                                                                {
+                                                                    <li>@item</li>
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    }
+
+                                                    @if (disease.Details.Treatment.Chemical?.Any() == true)
+                                                    {
+                                                        <div class="mb-0">
+                                                            <strong class="text-danger">Hóa học:</strong>
+                                                            <ul class="treatment-list mb-0">
+                                                                @foreach (var item in disease.Details.Treatment.Chemical)
+                                                                {
+                                                                    <li>@item</li>
+                                                                }
+                                                            </ul>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
+
+                                            @if (!string.IsNullOrEmpty(disease.Details.Url))
+                                            {
+                                                <a href="@disease.Details.Url"
+                                                   target="_blank"
+                                                   class="btn btn-sm btn-outline-danger">
+                                                    <i class="bi bi-link-45deg"></i> Tìm hiểu thêm
+                                                </a>
+                                            }
+                                        }
+
+                                        @if (disease.SimilarImages?.Any() == true)
+                                        {
+                                            <div class="image-gallery mt-3">
+                                                @foreach (var img in disease.SimilarImages.Take(4))
+                                                {
+                                                    <div class="gallery-item">
+                                                        <img src="@(img.UrlSmall ?? img.Url ?? string.Empty)"
+                                                             data-full-src="@(img.Url ?? img.UrlSmall ?? string.Empty)"
+                                                             alt="Disease example"
+                                                             class="result-thumbnail" />
+                                                    </div>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    else if (Model.Response.IsHealthy?.Binary == true)
+                    {
+                        <div class="status-alert success">
+                            <h5 class="alert-heading">
+                                <i class="bi bi-check-circle-fill"></i> Không phát hiện bệnh
+                            </h5>
+                            <p class="mb-0">Cây của bạn có vẻ khỏe mạnh và không có dấu hiệu bệnh tật!</p>
+                        </div>
+                    }
+
+                    <div class="text-center">
+                        <a href="/Diagnosis" class="retry-button">
+                            <i class="bi bi-arrow-clockwise"></i> Chẩn đoán ảnh khác
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/diagnosis.js"></script>
+}
