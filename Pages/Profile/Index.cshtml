@@ -29,6 +29,11 @@
                     role="tab" aria-controls="info" aria-selected="true"><i
                         class="bi bi-info-circle-fill me-2"></i>Thông tin cá nhân</button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button"
+                    role="tab" aria-controls="security" aria-selected="false"><i
+                        class="bi bi-shield-lock-fill me-2"></i>Bảo mật</button>
+            </li>
 
         </ul>
 
@@ -79,6 +84,45 @@
                                     </div>
                                     <button type="submit" class="btn btn-success w-100"><i
                                             class="bi bi-floppy me-2"></i>Lưu thay đổi</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Section Bảo mật -->
+            <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                <div class="row g-4">
+                    <div class="col-md-6 mx-auto">
+                        <div class="profile-card">
+                            <div class="card-body">
+                                <h5 class="mb-3">Đổi mật khẩu</h5>
+                                <form id="password-form" method="post" asp-page-handler="ChangePassword">
+                                    @Html.AntiForgeryToken()
+                                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                                    @if (!Model.HasPassword)
+                                    {
+                                        <div class="alert alert-info">Bạn chưa có mật khẩu. Bạn có thể tạo mật khẩu mới ở đây.</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="mb-3">
+                                            <label asp-for="ChangePasswordInput.CurrentPassword" class="form-label">Mật khẩu hiện tại</label>
+                                            <input asp-for="ChangePasswordInput.CurrentPassword" class="form-control" type="password" />
+                                            <span asp-validation-for="ChangePasswordInput.CurrentPassword" class="text-danger"></span>
+                                        </div>
+                                    }
+                                    <div class="mb-3">
+                                        <label asp-for="ChangePasswordInput.NewPassword" class="form-label">Mật khẩu mới</label>
+                                        <input asp-for="ChangePasswordInput.NewPassword" class="form-control" type="password" />
+                                        <span asp-validation-for="ChangePasswordInput.NewPassword" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label asp-for="ChangePasswordInput.ConfirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                                        <input asp-for="ChangePasswordInput.ConfirmPassword" class="form-control" type="password" />
+                                        <span asp-validation-for="ChangePasswordInput.ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                    <button type="submit" class="btn btn-success w-100">Cập nhật mật khẩu</button>
                                 </form>
                             </div>
                         </div>

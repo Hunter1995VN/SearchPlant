@@ -33,12 +33,16 @@ namespace SearchPlant.Pages.Profile
         public string Username { get; set; }
         public string Email { get; set; }
         public string AvatarUrl { get; set; }
+        public bool HasPassword { get; set; }
 
         [TempData]
         public string StatusMessage { get; set; }
 
         [BindProperty]
         public ProfileInputModel ProfileInput { get; set; }
+
+        [BindProperty]
+        public ChangePasswordInputModel ChangePasswordInput { get; set; }
 
         // <<< ĐÃ XÓA >>> ChangePasswordInputModel không còn cần thiết
 
@@ -49,6 +53,24 @@ namespace SearchPlant.Pages.Profile
             public string Username { get; set; }
 
             public string AvatarUrl { get; set; }
+        }
+
+        public class ChangePasswordInputModel
+        {
+            [DataType(DataType.Password)]
+            [Display(Name = "Current Password")]
+            public string? CurrentPassword { get; set; }
+
+            [Required(ErrorMessage = "Please enter a new password.")]
+            [StringLength(100, ErrorMessage = "The password must be at least 6 characters long.", MinimumLength = 6)]
+            [DataType(DataType.Password)]
+            [Display(Name = "New Password")]
+            public string? NewPassword { get; set; }
+
+            [DataType(DataType.Password)]
+            [Display(Name = "Confirm New Password")]
+            [Compare("NewPassword", ErrorMessage = "The new password and confirmation do not match.")]
+            public string? ConfirmPassword { get; set; }
         }
 
         // <<< ĐÃ XÓA >>> class ChangePasswordInputModel không còn cần thiết
@@ -66,6 +88,7 @@ namespace SearchPlant.Pages.Profile
             Email = user.Email;
             AvatarUrl = user.Avatarurl ?? "/images/default-avatar.png";
             ProfileInput = new ProfileInputModel { Username = user.Username, AvatarUrl = user.Avatarurl ?? "" };
+            HasPassword = !string.IsNullOrEmpty(user.Password);
         }
 
         private async Task RefreshSignInSign(Appuser user)
@@ -99,24 +122,48 @@ namespace SearchPlant.Pages.Profile
             var user = await GetCurrentUserAsync();
             if (user == null) return Forbid();
 
-            // <<< ĐÃ XÓA >>> Các dòng ModelState.Remove cho password không còn cần thiết
-
-            if (!ModelState.IsValid)
+            if (ProfileInput == null)
             {
+                _logger.LogWarning("ProfileInput bound as null while calling OnPostUpdateProfileAsync for user {UserId}", user.Userid);
+            }
+            // Clear non-related validation and validate only ProfileInput
+            ModelState.Clear();
+            if (ProfileInput == null || !TryValidateModel(ProfileInput, nameof(ProfileInput)))
+            {
+                // Log ModelState errors to help debugging
+                foreach (var kvp in ModelState.Where(m => (m.Value?.Errors?.Count ?? 0) > 0))
+                {
+                    foreach (var error in kvp.Value?.Errors ?? new Microsoft.AspNetCore.Mvc.ModelBinding.ModelErrorCollection())
+                    {
+                        _logger.LogWarning("Validation error in {Field}: {Error}", kvp.Key, error.ErrorMessage);
+                    }
+                }
                 await LoadUserInfoAsync(user);
                 return Page();
             }
 
             _logger.LogInformation($"Updating user {user.Userid}: Username to {ProfileInput.Username}, AvatarUrl to {ProfileInput.AvatarUrl ?? "null"}");
 
-            user.Username = ProfileInput.Username;
+            user.Username = (ProfileInput.Username ?? "").Trim();
             // Chỉ cập nhật AvatarUrl nếu người dùng nhập gì đó vào ô URL
-            if (!string.IsNullOrWhiteSpace(ProfileInput.AvatarUrl))
+            var profileAvatar = (ProfileInput.AvatarUrl ?? string.Empty).Trim();
+            if (!string.IsNullOrEmpty(profileAvatar))
             {
-                user.Avatarurl = ProfileInput.AvatarUrl;
+                user.Avatarurl = profileAvatar;
             }
 
-            await _context.SaveChangesAsync();
+            _logger.LogInformation("Saving profile changes for {UserId}: Username={Username}, AvatarUrl={Avatar}", user.Userid, user.Username, user.Avatarurl);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Failed to save profile changes for user {UserId}", user.Userid);
+                ModelState.AddModelError(string.Empty, "Không thể lưu thay đổi. Vui lòng thử lại hoặc liên hệ quản trị.");
+                await LoadUserInfoAsync(user);
+                return Page();
+            }
             await RefreshSignInSign(user);
 
             // Cập nhật lại thông tin đăng nhập (cookie) để tên mới hiển thị ngay lập tức
@@ -124,7 +171,7 @@ namespace SearchPlant.Pages.Profile
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Userid.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Role),
+            new Claim(ClaimTypes.Role, user.Role ?? string.Empty),
             new Claim("AvatarUrl", user.Avatarurl?? "/images/avatars/default.png")
             };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -165,6 +212,43 @@ namespace SearchPlant.Pages.Profile
             return RedirectToPage();
         }
 
-        // <<< ĐÃ XÓA >>> Phương thức OnPostChangePasswordAsync không còn cần thiết
+        public async Task<IActionResult> OnPostChangePasswordAsync()
+        {
+            var user = await GetCurrentUserAsync();
+            if (user == null) return Forbid();
+
+            _logger.LogInformation("User {UserId} attempting to change password", user.Userid);
+
+            // Clear page-level validation state and validate only the ChangePasswordInput model
+            ModelState.Clear();
+            if (!TryValidateModel(ChangePasswordInput, nameof(ChangePasswordInput)))
+            {
+                await LoadUserInfoAsync(user);
+                return Page();
+            }
+
+            // If user has a password set, require the current password to match
+            if (!string.IsNullOrEmpty(user.Password))
+            {
+                if (string.IsNullOrEmpty(ChangePasswordInput.CurrentPassword) || !BCrypt.Net.BCrypt.Verify(ChangePasswordInput.CurrentPassword, user.Password))
+                {
+                    ModelState.AddModelError("ChangePasswordInput.CurrentPassword", "Mật khẩu hiện tại không đúng.");
+                    _logger.LogWarning("User {UserId} provided wrong current password.", user.Userid);
+                    await LoadUserInfoAsync(user);
+                    return Page();
+                }
+            }
+
+            // Hash and set the new password
+            user.Password = BCrypt.Net.BCrypt.HashPassword(ChangePasswordInput.NewPassword ?? string.Empty);
+            await _context.SaveChangesAsync();
+
+            // Refresh auth cookie so new credentials are effective immediately
+            await RefreshSignInSign(user);
+            _logger.LogInformation("User {UserId} password changed successfully.", user.Userid);
+
+            StatusMessage = "Mật khẩu đã được cập nhật thành công.";
+            return RedirectToPage();
+        }
     }
 }
