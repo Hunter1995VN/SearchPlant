@@ -28,21 +28,26 @@
                     <li class="nav-item"><a href="/Admin" class="nav-link"><i class="bi bi-speedometer2 me-2"></i>Tổng
                             quan</a></li>
                     <li class="nav-item"><a href="/PlantsManager" class="nav-link"><i
-                                class="bi bi-flower1 me-2"></i>Quản lý cây</a></li>
+                                class="fas fa-leaf me-2"></i>Quản lý cây</a></li>
                     <!-- NEW SECTION 1: Quản lý thuộc tính -->
                     <li class="nav-item">
-                        <a href="/#" class="nav-link">
-                            <i class="bi bi-sliders2"></i>
+                        <a href="/PropertiesManager" class="nav-link">
+                            <i class="fas fa-sliders-h"></i>
                             <span>Quản lý thuộc tính</span>
                         </a>
                     </li>
 
                     <!-- NEW SECTION 2: Dịch bệnh và Trị liệu -->
                     <li class="nav-item">
-                        <a href="/#" class="nav-link">
+                        <a href="/#" class="nav-link" data-bs-toggle="collapse" data-bs-target="#diseaseTreatmentMenu" aria-expanded="false">
                             <i class="fas fa-shield-virus"></i>
                             <span>Dịch bệnh & Trị liệu</span>
+                            <i class="bi bi-chevron-down ms-auto"></i>
                         </a>
+                        <ul class="collapse list-unstyled ms-3" id="diseaseTreatmentMenu">
+                            <li><a href="/DiseasesManager" class="nav-link">Quản lý bệnh</a></li>
+                            <li><a href="/TreatmentsManager" class="nav-link">Quản lý trị liệu</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item"><a href="/UserManager" class="nav-link"><i class="bi bi-people me-2"></i>Người
                             dùng</a></li>
@@ -63,7 +68,7 @@
                     <!-- Logo -->
                     <div class="d-flex align-items-center gap-3">
                         <a href="/Admin" class="navbar-brand d-flex align-items-center gap-2">
-                            <i class="bi bi-flower1 fs-3 text-success"></i>
+                            <i class="fas fa-leaf fs-3 text-success"></i>
                             <span class="fw-bold fs-5 text-success">SearchPlant</span>
                         </a>
                     </div>

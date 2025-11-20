@@ -108,6 +108,13 @@ namespace SearchPlant.Controllers
                     _context.Conservationstatuses.Add(newStatus); await _context.SaveChangesAsync();
                     newItem = new { id = newStatus.Statusid, text = newStatus.Statusname }; break;
 
+                case "treatment":
+                    if (await _context.Treatments.AnyAsync(p => p.Treatmentname.ToUpper() == upperTrimmedName))
+                        return Conflict($"Phương pháp trị liệu '{trimmedName}' đã tồn tại.");
+                    var newTreatment = new Treatment { Treatmentname = trimmedName, Description = dto.Description };
+                    _context.Treatments.Add(newTreatment); await _context.SaveChangesAsync();
+                    newItem = new { id = newTreatment.Treatmentid, text = newTreatment.Treatmentname }; break;
+
                 default:
                     return BadRequest("Loại thuộc tính không hợp lệ.");
             }

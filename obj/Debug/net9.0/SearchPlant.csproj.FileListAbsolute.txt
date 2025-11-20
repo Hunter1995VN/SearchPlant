@@ -1,0 +1,9 @@
+D:\VS Code\SearchPlant\bin\Debug\net9.0\SearchPlant.exe
+D:\VS Code\SearchPlant\bin\Debug\net9.0\SearchPlant.dll
+D:\VS Code\SearchPlant\bin\Debug\net9.0\GrapeCity.ActiveReports.dll
+D:\VS Code\SearchPlant\bin\Debug\net9.0\GrapeCity.ActiveReports.Core.Document.dll
+D:\VS Code\SearchPlant\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.dll
+D:\VS Code\SearchPlant\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Abstractions.dll
+D:\VS Code\SearchPlant\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Relational.dll
+D:\VS Code\SearchPlant\bin\Debug\net9.0\Npgsql.dll
+D:\VS Code\SearchPlant\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll

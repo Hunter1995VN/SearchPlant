@@ -4065,9 +4065,20 @@ to{opacity:1;transform:translateY(0);}
 }
 
 .hero-section .hero-icon {
-    font-size: 8rem;
+    font-size: 3rem;
     color: #4caf50;
     animation: float 3s ease-in-out infinite;
+    /* Ensure the hero icon area stays circular */
+    width: 96px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    padding: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.06);
 }
 
 @keyframes float {
@@ -4165,5 +4176,109 @@ to{opacity:1;transform:translateY(0);}
 .filter-bar .form-select:focus {
     border-color: #4caf50;
     box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+}
+
+/* =================================================================== */
+/* ===== ADMIN / MANAGER PAGE FIXES ===== */
+/* Make those statistic widgets round and consistent */
+.stats-card .card-body {
+    padding: 1.5rem 1.2rem;
+}
+
+.stats-icon {
+    width: 72px; /* default size for stat icons */
+    height: 72px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    box-shadow: inset 0 -6px 12px rgba(0,0,0,0.02);
+}
+
+/* Make smaller icons used inside table rows consistent */
+.property-icon, .disease-icon, .treatment-icon {
+    width: 40px !important;
+    height: 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+}
+
+.empty-state-icon {
+    width: 80px !important;
+    height: 80px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+}
+
+.delete-icon {
+    width: 60px !important;
+    height: 60px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+}
+
+/* Search card improvements: rounded input group and subtle shadow */
+.search-card .input-group,
+.data-card .input-group {
+    border-radius: 50px;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.05);
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+}
+
+.search-card .input-group .input-group-text,
+.data-card .input-group .input-group-text {
+    border: none;
+    background: transparent;
+    border-right: 1px solid rgba(0,0,0,0.04);
+    /* make icon appear as a small circular badge */
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    background: #fff; /* keep icon on white */
+}
+
+.data-card .input-group .input-group-text i,
+.search-card .input-group .input-group-text i {
+    color: var(--bs-success, #28a745);
+    font-size: 1.15rem;
+}
+
+.search-card .form-control,
+.data-card .form-control {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+.search-card .btn,
+.data-card .btn {
+    border-radius: 24px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+/* Specific take for the hero stats cards on small screens */
+@media (max-width: 768px) {
+    .stats-icon { width: 56px; height: 56px; font-size: 1.2rem; }
+    .property-icon, .disease-icon, .treatment-icon { width: 36px !important; height: 36px !important; }
+    .hero-section .hero-icon { width: 72px; height: 72px; font-size: 2.2rem; }
+}
+
+/* Make sure icon backgrounds stay circular even when font-size changes */
+.hero-icon i, .stats-icon i, .property-icon i, .disease-icon i, .treatment-icon i, .empty-state-icon i, .delete-icon i {
+    display: inline-block;
+    line-height: 1;
 }
  

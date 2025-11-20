@@ -1,0 +1,529 @@
+@page
+@model SearchPlant.Pages.TreatmentsManager.IndexModel
+@{
+    ViewData["Title"] = "Quản lý phương pháp trị liệu";
+    Layout = "_AdminLayout";
+}
+
+<!-- Hero Section -->
+<section class="hero-section bg-gradient-success text-white py-5">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="hero-icon bg-white bg-opacity-20 rounded-circle p-3 me-3">
+                        <i class="fas fa-medkit fs-1"></i>
+                    </div>
+                    <div>
+                        <h1 class="display-5 fw-bold mb-1">Quản lý phương pháp trị liệu</h1>
+                        <p class="fs-5 mb-0 opacity-90">Quản lý các phương pháp điều trị và phòng ngừa bệnh cho cây trồng</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-end">
+                <button type="button" class="btn btn-light btn-lg px-4" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="bi bi-plus-circle-fill me-2"></i>Thêm phương pháp trị
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container-fluid mt-4">
+    <!-- Success/Error Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="stats-card card border-0 shadow-sm h-100">
+                <div class="card-body text-center p-4">
+                    <div class="stats-icon bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fas fa-medkit fs-2"></i>
+                    </div>
+                    <h3 class="fw-bold text-success mb-1">@Model.TotalTreatments</h3>
+                    <p class="text-muted mb-0">Tổng phương pháp trị</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card card border-0 shadow-sm h-100">
+                <div class="card-body text-center p-4">
+                    <div class="stats-icon bg-info bg-opacity-10 text-info rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fas fa-shield-virus fs-2"></i>
+                    </div>
+                    <h3 class="fw-bold text-info mb-1">@Model.TotalDiseases</h3>
+                    <p class="text-muted mb-0">Tổng bệnh được trị</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="stats-card card border-0 shadow-sm h-100">
+                <div class="card-body text-center p-4">
+                    <div class="stats-icon bg-warning bg-opacity-10 text-warning rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fas fa-seedling fs-2"></i>
+                    </div>
+                    <h3 class="fw-bold text-warning mb-1">@Model.TotalPlants</h3>
+                    <p class="text-muted mb-0">Cây trồng được bảo vệ</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="data-card card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <form method="get" class="d-flex gap-3 align-items-center">
+                <div class="flex-grow-1">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" name="SearchString" value="@Model.SearchString"
+                               class="form-control form-control-lg border-start-0 ps-0"
+                               placeholder="Tìm kiếm phương pháp trị liệu..." />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-lg px-4">
+                    <i class="bi bi-search me-2"></i>Tìm kiếm
+                </button>
+                <a href="?SearchString=" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="bi bi-x-circle me-2"></i>Xóa lọc
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Treatments List -->
+    <div class="data-card card border-0 shadow-sm">
+        <div class="card-header bg-light border-0 py-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-success">
+                    <i class="fas fa-list-ul me-2"></i>Danh sách phương pháp trị liệu
+                    <span class="badge bg-success ms-2">@Model.TotalTreatments</span>
+                </h5>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.Treatments.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="border-0 fw-semibold text-muted ps-4">
+                                    <i class="bi bi-hash me-2"></i>ID
+                                </th>
+                                <th class="border-0 fw-semibold text-muted">
+                                    <i class="fas fa-medkit me-2"></i>Tên phương pháp
+                                </th>
+                                <th class="border-0 fw-semibold text-muted">
+                                    <i class="bi bi-tag me-2"></i>Loại phương pháp
+                                </th>
+                                <th class="border-0 fw-semibold text-muted">
+                                    <i class="bi bi-info-circle me-2"></i>Mô tả
+                                </th>
+                                <th class="border-0 fw-semibold text-muted">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>Lưu ý
+                                </th>
+                                <th class="border-0 fw-semibold text-muted">
+                                    <i class="fas fa-shield-virus me-2"></i>Số bệnh áp dụng
+                                </th>
+                                <th class="border-0 fw-semibold text-muted text-center pe-4">
+                                    <i class="bi bi-gear me-2"></i>Thao tác
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var treatment in Model.Treatments)
+                            {
+                                <tr class="align-middle">
+                                    <td class="ps-4">
+                                        <span class="badge bg-light text-dark fw-semibold">#@treatment.Treatmentid</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="treatment-icon bg-success bg-opacity-10 text-success rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-medkit"></i>
+                                            </div>
+                                            <div>
+                                                <div class="fw-semibold text-dark">@treatment.Treatmentname</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(treatment.Methodtype))
+                                        {
+                                            <span class="badge bg-info bg-opacity-10 text-info px-3 py-2">
+                                                <i class="bi bi-tag me-1"></i>@treatment.Methodtype
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted fst-italic">Không xác định</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(treatment.Description))
+                                        {
+                                            <span title="@treatment.Description">
+                                                @(treatment.Description.Length > 50 ? treatment.Description.Substring(0, 50) + "..." : treatment.Description)
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted fst-italic">Không có mô tả</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(treatment.Precautions))
+                                        {
+                                            <span class="text-warning" title="@treatment.Precautions">
+                                                <i class="bi bi-exclamation-triangle me-1"></i>
+                                                @(treatment.Precautions.Length > 30 ? treatment.Precautions.Substring(0, 30) + "..." : treatment.Precautions)
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted fst-italic">Không có lưu ý</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-danger bg-opacity-10 text-danger px-3 py-2">
+                                            <i class="fas fa-shield-virus me-1"></i>@treatment.Diseases.Count bệnh
+                                        </span>
+                                    </td>
+                                    <td class="text-center pe-4">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                                    data-bs-toggle="modal" data-bs-target="#editModal"
+                                                    onclick="editTreatment(@treatment.Treatmentid, '@treatment.Treatmentname', '@(treatment.Methodtype ?? "")', '@(treatment.Description?.Replace("'", "\\'") ?? "")', '@(treatment.Precautions?.Replace("'", "\\'") ?? "")', [@string.Join(",", treatment.Diseases.Select(d => d.Diseaseid))])"
+                                                    title="Chỉnh sửa">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    onclick="deleteTreatment(@treatment.Treatmentid, '@treatment.Treatmentname')"
+                                                    title="Xóa">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                @if (Model.TotalPages > 1)
+                {
+                    <div class="card-footer bg-light border-0">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mb-0">
+                                @if (Model.CurrentPage > 1)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)&searchString=@Model.SearchString">
+                                            <i class="bi bi-chevron-left"></i>
+                                        </a>
+                                    </li>
+                                }
+
+                                @for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
+                                {
+                                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                        <a class="page-link" href="?page=@i&searchString=@Model.SearchString">@i</a>
+                                    </li>
+                                }
+
+                                @if (Model.CurrentPage < Model.TotalPages)
+                                {
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)&searchString=@Model.SearchString">
+                                            <i class="bi bi-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <div class="empty-state-icon bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-medkit fs-1"></i>
+                    </div>
+                    <h5 class="text-muted mb-2">Không tìm thấy phương pháp trị liệu nào</h5>
+                    <p class="text-muted mb-4">Hãy thêm phương pháp trị liệu mới để bắt đầu quản lý hệ thống điều trị.</p>
+                    <button type="button" class="btn btn-success btn-lg px-4" data-bs-toggle="modal" data-bs-target="#createModal">
+                        <i class="bi bi-plus-circle-fill me-2"></i>Thêm phương pháp trị đầu tiên
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <form method="post" asp-page-handler="Create">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title fw-bold" id="createModalLabel">
+                        <i class="fas fa-medkit me-2"></i>Thêm phương pháp trị liệu mới
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-4">
+                        <label for="Treatment_Treatmentname" class="form-label fw-semibold">
+                            <i class="fas fa-medkit me-2 text-success"></i>Tên phương pháp <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="Treatment_Treatmentname"
+                               name="Treatment.Treatmentname" required
+                               placeholder="Nhập tên phương pháp trị liệu..." />
+                        <div class="form-text">Tên phương pháp phải là duy nhất trong hệ thống</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="Treatment_Methodtype" class="form-label fw-semibold">
+                            <i class="bi bi-tag me-2 text-info"></i>Loại phương pháp
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="Treatment_Methodtype"
+                               name="Treatment.Methodtype"
+                               placeholder="Ví dụ: Hóa học, Sinh học, Cơ học..." />
+                        <div class="form-text">Phân loại phương pháp điều trị (tùy chọn)</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="Treatment_Description" class="form-label fw-semibold">
+                            <i class="bi bi-info-circle me-2 text-primary"></i>Mô tả chi tiết
+                        </label>
+                        <textarea class="form-control" id="Treatment_Description" name="Treatment.Description"
+                                  rows="4" placeholder="Mô tả chi tiết về phương pháp trị liệu..."></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="Treatment_Precautions" class="form-label fw-semibold">
+                            <i class="bi bi-exclamation-triangle me-2 text-warning"></i>Lưu ý phòng ngừa
+                        </label>
+                        <textarea class="form-control" id="Treatment_Precautions" name="Treatment.Precautions"
+                                  rows="3" placeholder="Các lưu ý quan trọng khi áp dụng phương pháp này..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-shield-virus me-2 text-danger"></i>Áp dụng cho bệnh
+                        </label>
+                        <div class="border rounded p-3 bg-light" style="max-height: 200px; overflow-y: auto;">
+                            @if (Model.Diseases.Any())
+                            {
+                                @foreach (var disease in Model.Diseases)
+                                {
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="SelectedDiseaseIds" value="@disease.Value" id="disease_@disease.Value">
+                                        <label class="form-check-label fw-normal" for="disease_@disease.Value">
+                                            <i class="fas fa-shield-virus me-2 text-danger opacity-75"></i>@disease.Text
+                                        </label>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-muted mb-0 fst-italic">Chưa có bệnh nào trong hệ thống</p>
+                            }
+                        </div>
+                        <div class="form-text">Chọn các bệnh mà phương pháp này có thể điều trị</div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>Hủy
+                    </button>
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="bi bi-check-circle me-2"></i>Thêm phương pháp
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <form method="post" asp-page-handler="Edit">
+                <input type="hidden" id="editId" name="id" />
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title fw-bold" id="editModalLabel">
+                        <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa phương pháp trị liệu
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-4">
+                        <label for="editTreatmentname" class="form-label fw-semibold">
+                            <i class="fas fa-medkit me-2 text-success"></i>Tên phương pháp <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="editTreatmentname"
+                               name="Treatment.Treatmentname" required
+                               placeholder="Nhập tên phương pháp trị liệu..." />
+                        <div class="form-text">Tên phương pháp phải là duy nhất trong hệ thống</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="editMethodtype" class="form-label fw-semibold">
+                            <i class="bi bi-tag me-2 text-info"></i>Loại phương pháp
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="editMethodtype"
+                               name="Treatment.Methodtype"
+                               placeholder="Ví dụ: Hóa học, Sinh học, Cơ học..." />
+                        <div class="form-text">Phân loại phương pháp điều trị (tùy chọn)</div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="editDescription" class="form-label fw-semibold">
+                            <i class="bi bi-info-circle me-2 text-primary"></i>Mô tả chi tiết
+                        </label>
+                        <textarea class="form-control" id="editDescription" name="Treatment.Description"
+                                  rows="4" placeholder="Mô tả chi tiết về phương pháp trị liệu..."></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="editPrecautions" class="form-label fw-semibold">
+                            <i class="bi bi-exclamation-triangle me-2 text-warning"></i>Lưu ý phòng ngừa
+                        </label>
+                        <textarea class="form-control" id="editPrecautions" name="Treatment.Precautions"
+                                  rows="3" placeholder="Các lưu ý quan trọng khi áp dụng phương pháp này..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-shield-virus me-2 text-danger"></i>Áp dụng cho bệnh
+                        </label>
+                        <div class="border rounded p-3 bg-light" style="max-height: 200px; overflow-y: auto;">
+                            @if (Model.Diseases.Any())
+                            {
+                                @foreach (var disease in Model.Diseases)
+                                {
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input edit-disease-check" type="checkbox" name="SelectedDiseaseIds" value="@disease.Value" id="edit_disease_@disease.Value">
+                                        <label class="form-check-label fw-normal" for="edit_disease_@disease.Value">
+                                            <i class="fas fa-shield-virus me-2 text-danger opacity-75"></i>@disease.Text
+                                        </label>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p class="text-muted mb-0 fst-italic">Chưa có bệnh nào trong hệ thống</p>
+                            }
+                        </div>
+                        <div class="form-text">Chọn các bệnh mà phương pháp này có thể điều trị</div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>Hủy
+                    </button>
+                    <button type="submit" class="btn btn-warning px-4">
+                        <i class="bi bi-check-circle me-2"></i>Cập nhật
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold" id="deleteModalLabel">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Xác nhận xóa
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="text-center mb-4">
+                    <div class="delete-icon bg-danger bg-opacity-10 text-danger rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="fas fa-medkit fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold">Bạn có chắc muốn xóa?</h5>
+                    <p class="text-muted mb-0" id="deleteMessage"></p>
+                </div>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>Hủy
+                </button>
+                <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
+                    <i class="bi bi-trash me-2"></i>Xóa
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function editTreatment(id, name, methodtype, description, precautions, diseaseIds) {
+        document.getElementById('editId').value = id;
+        document.getElementById('editTreatmentname').value = name;
+        document.getElementById('editMethodtype').value = methodtype;
+        document.getElementById('editDescription').value = description;
+        document.getElementById('editPrecautions').value = precautions;
+
+        // Reset all checkboxes
+        document.querySelectorAll('.edit-disease-check').forEach(cb => cb.checked = false);
+
+        // Check selected diseases
+        if (diseaseIds && diseaseIds.length > 0) {
+            diseaseIds.forEach(diseaseId => {
+                const checkbox = document.getElementById('edit_disease_' + diseaseId);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+    }
+
+    function deleteTreatment(id, name) {
+        document.getElementById('deleteMessage').innerHTML =
+            `Bạn có chắc muốn xóa phương pháp trị liệu <strong>"${name}"</strong>? Hành động này không thể hoàn tác.`;
+        document.getElementById('confirmDeleteBtn').onclick = function() {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.innerHTML = `
+                <input type="hidden" name="__RequestVerificationToken" value="@(HttpContext.Request.Cookies["__RequestVerificationToken"] ?? "")" />
+                <input type="hidden" name="handler" value="Delete" />
+                <input type="hidden" name="id" value="${id}" />
+            `;
+            document.body.appendChild(form);
+            form.submit();
+        };
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    }
+
+    function refreshPage() {
+        window.location.reload();
+    }
+
+    // Auto-hide alerts after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    });
+</script>

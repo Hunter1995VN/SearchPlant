@@ -1,0 +1,398 @@
+@page
+@model SearchPlant.Pages.PropertiesManager.IndexModel
+@{
+    ViewData["Title"] = "Quản lý đặc tính cây trồng";
+    Layout = "_AdminLayout";
+}
+
+<!-- Hero Section -->
+<div class="hero-section bg-gradient-primary text-white py-5 mb-4">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-3">
+                    <i class="fas fa-sliders-h me-3"></i>Quản lý đặc tính cây trồng
+                </h1>
+                <p class="lead mb-0 opacity-75">
+                    Quản lý và tổ chức các đặc tính của cây trồng trong hệ thống
+                </p>
+            </div>
+            <div class="col-lg-4 text-end">
+                <button type="button" class="btn btn-light btn-lg shadow-lg" data-bs-toggle="modal" data-bs-target="#createModal">
+                    <i class="bi bi-plus-circle-fill me-2"></i>Thêm đặc tính mới
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card stats-card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="stats-icon bg-primary bg-opacity-10 text-primary rounded-circle mx-auto mb-3">
+                        <i class="fas fa-sliders-h fs-1"></i>
+                    </div>
+                    <h3 class="fw-bold text-primary mb-1">@Model.TotalProperties</h3>
+                    <p class="text-muted mb-0">Tổng đặc tính</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stats-card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="stats-icon bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-3">
+                        <i class="fas fa-seedling fs-1"></i>
+                    </div>
+                    <h3 class="fw-bold text-success mb-1">@Model.Properties.Sum(p => p.Plants.Count)</h3>
+                    <p class="text-muted mb-0">Cây sử dụng</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stats-card border-0 shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="stats-icon bg-info bg-opacity-10 text-info rounded-circle mx-auto mb-3">
+                        <i class="fas fa-chart-line fs-1"></i>
+                    </div>
+                    <h3 class="fw-bold text-info mb-1">@Math.Round((double)Model.Properties.Count(p => p.Plants.Any()) / Math.Max(Model.Properties.Count, 1) * 100, 1)%</h3>
+                    <p class="text-muted mb-0">Được sử dụng</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Search Bar -->
+    <div class="data-card card border-0 shadow-sm mb-4">
+        <div class="card-body p-4">
+            <form method="get" class="d-flex gap-3 align-items-center">
+                <div class="flex-grow-1">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" name="SearchString" value="@Model.SearchString"
+                               class="form-control form-control-lg border-start-0 ps-0"
+                               placeholder="Tìm kiếm theo tên đặc tính hoặc mô tả..." />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-lg px-4">
+                    <i class="bi bi-search me-2"></i>Tìm kiếm
+                </button>
+                <a href="?SearchString=" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="bi bi-x-circle me-2"></i>Xóa lọc
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Properties List -->
+    <div class="card data-card border-0 shadow-sm">
+        <div class="card-header bg-white border-bottom-0 py-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1 fw-bold text-dark">
+                        <i class="bi bi-list-ul me-2 text-primary"></i>Danh sách đặc tính
+                    </h5>
+                    <p class="text-muted mb-0 small">@Model.TotalProperties đặc tính trong hệ thống</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-primary" onclick="refreshPage()">
+                        <i class="bi bi-arrow-clockwise me-2"></i>Làm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.Properties.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="border-0 fw-semibold text-muted ps-4">
+                                    <i class="bi bi-hash me-2"></i>ID
+                                </th>
+                                <th class="border-0 fw-semibold text-muted">
+                                    <i class="bi bi-tag me-2"></i>Tên đặc tính
+                                </th>
+                                <th class="border-0 fw-semibold text-muted">
+                                    <i class="bi bi-info-circle me-2"></i>Mô tả
+                                </th>
+                                <th class="border-0 fw-semibold text-muted text-center">
+                                    <i class="fas fa-seedling me-2"></i>Sử dụng
+                                </th>
+                                <th class="border-0 fw-semibold text-muted text-center">
+                                    <i class="bi bi-gear me-2"></i>Thao tác
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var property in Model.Properties)
+                            {
+                                <tr class="align-middle">
+                                    <td class="ps-4 fw-monospace text-muted">#@property.Propertyid</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="property-icon bg-primary bg-opacity-10 text-primary rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-sliders-h"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-semibold">@property.Propertyname</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="text-muted small">
+                                            @(property.Description ?? "Chưa có mô tả")
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">
+                                            <i class="fas fa-seedling me-1"></i>@property.Plants.Count cây
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-sm btn-outline-primary rounded-start"
+                                                    data-bs-toggle="modal" data-bs-target="#editModal"
+                                                    onclick="editProperty(@property.Propertyid, '@property.Propertyname', '@(property.Description?.Replace("'", "\\'") ?? "")')"
+                                                    title="Chỉnh sửa">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger rounded-end"
+                                                    onclick="deleteProperty(@property.Propertyid, '@property.Propertyname')"
+                                                    title="Xóa">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                @if (Model.TotalPages > 1)
+                {
+                    <nav aria-label="Page navigation" class="mt-4 mb-3">
+                        <ul class="pagination pagination-modern justify-content-center">
+                            @if (Model.CurrentPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=@(Model.CurrentPage - 1)&searchString=@Model.SearchString" aria-label="Previous">
+                                        <i class="bi bi-chevron-left"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="?page=@i&searchString=@Model.SearchString">@i</a>
+                                </li>
+                            }
+
+                            @if (Model.CurrentPage < Model.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=@(Model.CurrentPage + 1)&searchString=@Model.SearchString" aria-label="Next">
+                                        <i class="bi bi-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                }
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <div class="empty-state-icon bg-light rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <i class="fas fa-sliders-h fs-1 text-muted"></i>
+                    </div>
+                    <h5 class="text-muted mb-3">Không tìm thấy đặc tính nào</h5>
+                    <p class="text-muted mb-4">Hãy thêm đặc tính mới để bắt đầu quản lý.</p>
+                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#createModal">
+                        <i class="bi bi-plus-circle me-2"></i>Thêm đặc tính đầu tiên
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <form method="post" asp-page-handler="Create">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold" id="createModalLabel">
+                        <i class="bi bi-plus-circle me-2"></i>Thêm đặc tính mới
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-4">
+                        <label for="Property_Propertyname" class="form-label fw-semibold">
+                            <i class="bi bi-tag me-2 text-primary"></i>Tên đặc tính <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="Property_Propertyname"
+                               name="Property.Propertyname" required
+                               placeholder="Nhập tên đặc tính..." />
+                        <div class="form-text">Tên đặc tính phải là duy nhất trong hệ thống</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="Property_Description" class="form-label fw-semibold">
+                            <i class="bi bi-info-circle me-2 text-info"></i>Mô tả chi tiết
+                        </label>
+                        <textarea class="form-control" id="Property_Description" name="Property.Description"
+                                  rows="4" placeholder="Mô tả về đặc tính này..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>Hủy
+                    </button>
+                    <button type="submit" class="btn btn-success px-4">
+                        <i class="bi bi-check-circle me-2"></i>Thêm đặc tính
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <form method="post" asp-page-handler="Edit">
+                <input type="hidden" id="editId" name="id" />
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title fw-bold" id="editModalLabel">
+                        <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa đặc tính
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-4">
+                        <label for="editPropertyname" class="form-label fw-semibold">
+                            <i class="bi bi-tag me-2 text-primary"></i>Tên đặc tính <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control form-control-lg" id="editPropertyname"
+                               name="Property.Propertyname" required
+                               placeholder="Nhập tên đặc tính..." />
+                        <div class="form-text">Tên đặc tính phải là duy nhất trong hệ thống</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label fw-semibold">
+                            <i class="bi bi-info-circle me-2 text-info"></i>Mô tả chi tiết
+                        </label>
+                        <textarea class="form-control" id="editDescription" name="Property.Description"
+                                  rows="4" placeholder="Mô tả về đặc tính này..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i>Hủy
+                    </button>
+                    <button type="submit" class="btn btn-warning px-4">
+                        <i class="bi bi-check-circle me-2"></i>Cập nhật
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold" id="deleteModalLabel">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Xác nhận xóa
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="text-center mb-4">
+                    <div class="delete-icon bg-danger bg-opacity-10 text-danger rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bi bi-trash fs-1"></i>
+                    </div>
+                    <h5 class="fw-bold">Bạn có chắc muốn xóa?</h5>
+                    <p class="text-muted mb-0" id="deleteMessage"></p>
+                </div>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>Hủy
+                </button>
+                <button type="button" class="btn btn-danger px-4" id="confirmDeleteBtn">
+                    <i class="bi bi-trash me-2"></i>Xóa
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function editProperty(id, name, description) {
+        document.getElementById('editId').value = id;
+        document.getElementById('editPropertyname').value = name;
+        document.getElementById('editDescription').value = description;
+    }
+
+    function deleteProperty(id, name) {
+        document.getElementById('deleteMessage').innerHTML =
+            `Bạn có chắc muốn xóa đặc tính <strong>"${name}"</strong>? Hành động này không thể hoàn tác.`;
+        document.getElementById('confirmDeleteBtn').onclick = function() {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.innerHTML = `
+                <input type="hidden" name="__RequestVerificationToken" value="@(HttpContext.Request.Cookies["__RequestVerificationToken"] ?? "")" />
+                <input type="hidden" name="handler" value="Delete" />
+                <input type="hidden" name="id" value="${id}" />
+            `;
+            document.body.appendChild(form);
+            form.submit();
+        };
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    }
+
+    function refreshPage() {
+        window.location.reload();
+    }
+
+    // Auto-hide alerts after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    });
+</script>
